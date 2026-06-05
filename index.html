@@ -142,6 +142,31 @@
     border-radius:12px;padding:10px 16px;font-weight:bold;font-size:.9rem;cursor:pointer;
   }
   .quick-btn:hover{background:var(--violet);color:var(--cream)}
+  /* Temporizador de intervalos */
+  .iv-presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .iv-preset{border:2px solid var(--violet);background:var(--panel);color:var(--violet-deep);border-radius:999px;padding:7px 12px;font-weight:bold;font-size:.8rem;cursor:pointer}
+  .iv-preset:hover{background:var(--violet);color:var(--cream)}
+  .iv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+  .iv-total{text-align:center;font-weight:bold;color:var(--violet-deep);margin:12px 0 4px;font-size:.9rem}
+  .iv-run{
+    position:fixed;inset:0;z-index:300;display:none;flex-direction:column;
+    align-items:center;justify-content:center;color:#fff;text-align:center;gap:10px;
+    transition:background .3s;
+  }
+  .iv-run.show{display:flex}
+  .iv-run.phase-prep{background:linear-gradient(160deg,#6a3fb0,#4a2980)}
+  .iv-run.phase-work{background:linear-gradient(160deg,#1f9d55,#0f7a3d)}
+  .iv-run.phase-rest{background:linear-gradient(160deg,#d10a14,#9a0009)}
+  .iv-run.phase-setrest{background:linear-gradient(160deg,#e08e0b,#b36b00)}
+  .iv-run.phase-done{background:linear-gradient(160deg,#333,#111)}
+  .iv-phase{font-size:1.6rem;font-weight:900;text-transform:uppercase;letter-spacing:2px}
+  .iv-clock{font-size:5rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+  .iv-info{font-size:1.2rem;font-weight:bold;opacity:.95}
+  .iv-next{font-size:.95rem;opacity:.8}
+  .iv-controls{display:flex;gap:12px;margin-top:20px}
+  .iv-controls button{border:2px solid #fff;background:transparent;color:#fff;border-radius:12px;padding:12px 22px;font-weight:bold;font-size:1rem;cursor:pointer}
+  .iv-controls button:hover{background:#fff;color:#222}
+  @media (max-width:480px){ .iv-clock{font-size:3.6rem} }
   /* Reordenar ejercicios */
   .reorder{display:flex;flex-direction:column;gap:2px;flex:0 0 auto}
   .reorder button{
@@ -371,6 +396,19 @@
   }
   .lib-empty{text-align:center;opacity:.6;padding:20px;font-size:.9rem}
   .lib-replace-banner{background:rgba(209,10,20,0.1);border:1px solid var(--violet);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:.85rem;color:var(--violet-deep)}
+  .tpl-crumb{display:inline-flex;align-items:center;font-size:.78rem;font-weight:bold;color:var(--violet-deep);opacity:.8;margin-left:4px}
+  .tpl-step-title{font-size:.95rem;font-weight:bold;color:var(--violet-deep);margin:4px 0 10px;text-align:center}
+  .tpl-pick{display:flex;flex-direction:column;gap:3px;width:100%;text-align:left;cursor:pointer;
+    background:#fff;border:2px solid var(--line);border-left:5px solid var(--violet);
+    border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+  .tpl-pick:hover{border-color:var(--violet);background:rgba(209,10,20,0.04);transform:translateX(2px)}
+  .tpl-pick-name{font-weight:bold;font-size:1rem;color:var(--ink)}
+  .tpl-pick-sub{font-size:.78rem;opacity:.65}
+  .tpl-pick.lvl-1{border-left-color:#2a9d3a}
+  .tpl-pick.lvl-2{border-left-color:#7ab800}
+  .tpl-pick.lvl-3{border-left-color:#e0a30b}
+  .tpl-pick.lvl-4{border-left-color:#e0560b}
+  .tpl-pick.lvl-5{border-left-color:#d10a14}
 
   /* Casilla de pausa personalizada */
   .rest-custom{
@@ -504,6 +542,7 @@
   <div class="quick-bar">
     <button id="tplBtn" class="quick-btn">🗂️ Plantillas · Templates</button>
     <button id="propagateBtn" class="quick-btn">⚙️ Propagar config · Apply to all</button>
+    <button id="intervalBtn" class="quick-btn">⏲️ Intervalos · Interval timer</button>
   </div>
 
   <div id="list"></div>
@@ -610,6 +649,41 @@
   </div>
   <button class="add" id="timerAdd">+15s</button>
   <button id="timerSkip">Saltar · Skip</button>
+</div>
+
+<!-- Modal config temporizador de intervalos -->
+<div class="modal-overlay" id="intervalModal">
+  <div class="modal">
+    <div class="modal-head">
+      <strong>⏲️ Temporizador de intervalos</strong>
+      <button class="modal-close" id="intervalClose">✕</button>
+    </div>
+    <div class="lib-body">
+      <div class="iv-presets" id="ivPresets"></div>
+      <div class="iv-grid">
+        <div class="field"><label>Preparación (s)</label><input type="number" id="ivPrep" value="10"></div>
+        <div class="field"><label>Trabajo (s)</label><input type="number" id="ivWork" value="40"></div>
+        <div class="field"><label>Descanso (s)</label><input type="number" id="ivRest" value="20"></div>
+        <div class="field"><label>Rondas</label><input type="number" id="ivRounds" value="8"></div>
+        <div class="field"><label>Sets/ciclos</label><input type="number" id="ivSets" value="1"></div>
+        <div class="field"><label>Descanso entre sets (s)</label><input type="number" id="ivSetRest" value="60"></div>
+      </div>
+      <div class="iv-total" id="ivTotal"></div>
+      <button class="rest-btn" id="ivStart" style="width:100%;margin-top:6px">▶ Iniciar · Start</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pantalla completa del temporizador de intervalos -->
+<div class="iv-run" id="ivRun">
+  <div class="iv-phase" id="ivPhase">Preparación</div>
+  <div class="iv-clock" id="ivClock">00:10</div>
+  <div class="iv-info" id="ivInfo">Ronda 1 / 8</div>
+  <div class="iv-next" id="ivNext"></div>
+  <div class="iv-controls">
+    <button id="ivPause">⏸ Pausar</button>
+    <button id="ivStop">■ Terminar</button>
+  </div>
 </div>
 
 <script>
@@ -1492,17 +1566,17 @@ function stopTimer(){ clearInterval(timerInt); timerInt=null; }
 document.getElementById("timerSkip").onclick = ()=>{ stopTimer(); timerEl.classList.remove("show"); };
 document.getElementById("timerAdd").onclick = ()=>{ timeLeft+=15; updateTimer(); };
 
-function beep(){
+function beep(freq){
   try{
     const ctx = new (window.AudioContext||window.webkitAudioContext)();
     const o = ctx.createOscillator(), g = ctx.createGain();
     o.connect(g); g.connect(ctx.destination);
-    o.frequency.value = 880; o.type="sine";
+    o.frequency.value = freq || 880; o.type="sine";
     g.gain.setValueAtTime(0.3, ctx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.6);
     o.start(); o.stop(ctx.currentTime+0.6);
-    setTimeout(()=>timerEl.classList.remove("show"), 1500);
-  }catch(e){ timerEl.classList.remove("show"); }
+    if(freq===undefined) setTimeout(()=>timerEl.classList.remove("show"), 1500);
+  }catch(e){ if(freq===undefined && typeof timerEl!=="undefined") timerEl.classList.remove("show"); }
 }
 
 /* ---------- Fondo personalizado / Custom background ---------- */
@@ -1963,157 +2037,725 @@ function E(es,en,muscle,sets,reps,weight,rest){ return {es,en,muscle,sets,reps,w
 
 const TEMPLATES = {
   "Fuerza · Strength": [
-    { // 1
-      "Full Body A":[E("Sentadilla goblet","Goblet squat","Piernas",3,8,10,90),E("Press de banca con mancuernas","DB bench press","Pecho",3,8,8,90),E("Remo con mancuerna","DB row","Espalda",3,10,8,75),E("Plancha","Plank","Core",3,30,0,45)],
-      "Full Body B":[E("Peso muerto rumano con mancuernas","DB RDL","Femoral",3,8,12,90),E("Press de hombros","DB shoulder press","Hombros",3,8,6,75),E("Jalón al pecho","Lat pulldown","Espalda",3,10,20,75),E("Puente de glúteo","Glute bridge","Glúteos",3,12,0,45)],
+    {
+      "Día de banca":[E("Sentadilla con barra","Back squat","Piernas",3,8,15,90),E("Peso muerto","Deadlift","Espalda/Piernas",3,8,25,90),E("Press banca inclinado","Incline bench","Pecho",3,8,25,90)],
+      "Fuerza total":[E("Sentadilla con barra","Back squat","Piernas",3,8,20,90),E("Press de banca","Bench press","Pecho",3,8,20,90),E("Press cerrado","Close-grip bench","Tríceps",3,6,15,90),E("Dominadas lastradas","Weighted pull-ups","Espalda",3,10,15,90)],
+      "Fuerza-potencia":[E("Hip thrust","Hip thrust","Glúteos",3,6,25,90),E("Remo con barra","Barbell row","Espalda",3,6,20,90),E("Sentadilla frontal","Front squat","Cuádriceps",3,8,20,90),E("Curl con barra","Barbell curl","Bíceps",3,6,15,90)],
+      "Lower":[E("Remo Pendlay","Pendlay row","Espalda",3,10,20,90),E("Peso muerto","Deadlift","Espalda/Piernas",3,10,20,90),E("Press militar","Overhead press","Hombros",3,8,20,90),E("Peso muerto rumano","Romanian deadlift","Femoral",3,8,20,90)],
+      "Híbrido fuerza":[E("Peso muerto","Deadlift","Espalda/Piernas",3,8,25,90),E("Press de banca","Bench press","Pecho",3,10,20,90),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,8,20,90),E("Press militar","Overhead press","Hombros",3,6,20,90)],
+      "Anterior":[E("Dominadas lastradas","Weighted pull-ups","Espalda",3,6,20,90),E("Zancadas con barra","Barbell lunges","Piernas",3,8,20,90),E("Remo con barra","Barbell row","Espalda",3,10,25,90)],
+      "Upper":[E("Peso muerto sumo","Sumo deadlift","Piernas",3,10,25,90),E("Remo con barra","Barbell row","Espalda",3,8,20,90),E("Fondos lastrados","Weighted dips","Tríceps",3,8,25,90),E("Press militar","Overhead press","Hombros",3,6,15,90),E("Prensa de piernas","Leg press","Piernas",3,6,20,90)],
+      "Piernas":[E("Press cerrado","Close-grip bench","Tríceps",3,10,20,90),E("Peso muerto","Deadlift","Espalda/Piernas",3,6,15,90),E("Zancadas con barra","Barbell lunges","Piernas",3,8,20,90),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,6,20,90)],
+      "Día de sentadilla":[E("Press de banca","Bench press","Pecho",3,6,20,90),E("Curl con barra","Barbell curl","Bíceps",3,8,20,90),E("Sentadilla con barra","Back squat","Piernas",3,8,20,90),E("Remo con barra","Barbell row","Espalda",3,6,20,90),E("Fondos lastrados","Weighted dips","Tríceps",3,10,15,90)],
+      "Torso":[E("Hip thrust","Hip thrust","Glúteos",3,6,20,90),E("Remo Pendlay","Pendlay row","Espalda",3,6,15,90),E("Press militar","Overhead press","Hombros",3,10,15,90)],
+      "Full Body fuerza":[E("Peso muerto sumo","Sumo deadlift","Piernas",3,8,25,90),E("Buenos días","Good mornings","Femoral",3,8,20,90),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,8,25,90),E("Press de banca","Bench press","Pecho",3,8,25,90)],
+      "Posterior":[E("Peso muerto rumano","Romanian deadlift","Femoral",3,6,20,90),E("Press militar","Overhead press","Hombros",3,8,15,90),E("Prensa de piernas","Leg press","Piernas",3,6,15,90),E("Peso muerto","Deadlift","Espalda/Piernas",3,8,15,90),E("Dominadas lastradas","Weighted pull-ups","Espalda",3,6,20,90)],
+      "Empuje":[E("Cargada de potencia","Power clean","Cuerpo completo",3,10,20,90),E("Press militar","Overhead press","Hombros",3,8,25,90),E("Remo con barra","Barbell row","Espalda",3,8,25,90)],
+      "Tracción":[E("Press banca inclinado","Incline bench","Pecho",3,10,25,90),E("Peso muerto rumano","Romanian deadlift","Femoral",3,10,15,90),E("Prensa de piernas","Leg press","Piernas",3,6,15,90),E("Press cerrado","Close-grip bench","Tríceps",3,10,20,90),E("Hip thrust","Hip thrust","Glúteos",3,6,20,90)],
+      "Día de peso muerto":[E("Press banca inclinado","Incline bench","Pecho",3,10,20,90),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,8,25,90),E("Curl con barra","Barbell curl","Bíceps",3,8,15,90),E("Peso muerto sumo","Sumo deadlift","Piernas",3,10,15,90)]
     },
-    { // 2
-      "Empuje":[E("Press de banca","Bench press","Pecho",4,6,30,120),E("Press militar","Overhead press","Hombros",3,8,20,90),E("Fondos","Dips","Tríceps",3,8,0,75)],
-      "Tracción":[E("Peso muerto","Deadlift","Espalda/Piernas",4,5,50,150),E("Dominadas","Pull-ups","Espalda",4,6,0,120),E("Remo con barra","Barbell row","Espalda",3,8,30,90)],
-      "Piernas":[E("Sentadilla con barra","Back squat","Piernas",4,6,40,150),E("Hip thrust","Hip thrust","Glúteos",3,8,40,90),E("Gemelos de pie","Standing calf raise","Gemelos",4,12,20,60)],
+    {
+      "Full Body fuerza 2":[E("Sentadilla con barra","Back squat","Piernas",4,8,40,120),E("Zancadas con barra","Barbell lunges","Piernas",4,6,35,120),E("Remo con barra","Barbell row","Espalda",4,6,35,120),E("Curl con barra","Barbell curl","Bíceps",4,4,30,120),E("Remo Pendlay","Pendlay row","Espalda",4,6,30,120)],
+      "Anterior 2":[E("Prensa de piernas","Leg press","Piernas",4,6,30,120),E("Buenos días","Good mornings","Femoral",4,4,35,120),E("Cargada de potencia","Power clean","Cuerpo completo",4,4,30,120)],
+      "Posterior 2":[E("Zancadas con barra","Barbell lunges","Piernas",4,4,40,120),E("Peso muerto rumano","Romanian deadlift","Femoral",4,6,35,120),E("Press militar","Overhead press","Hombros",4,6,35,120),E("Sentadilla frontal","Front squat","Cuádriceps",4,6,35,120)],
+      "Upper 2":[E("Peso muerto sumo","Sumo deadlift","Piernas",4,4,40,120),E("Remo Pendlay","Pendlay row","Espalda",4,4,30,120),E("Curl con barra","Barbell curl","Bíceps",4,6,35,120),E("Dominadas lastradas","Weighted pull-ups","Espalda",4,6,35,120),E("Peso muerto","Deadlift","Espalda/Piernas",4,4,35,120)],
+      "Fuerza total 2":[E("Remo Pendlay","Pendlay row","Espalda",4,4,35,120),E("Press de banca","Bench press","Pecho",4,4,35,120),E("Curl con barra","Barbell curl","Bíceps",4,6,30,120),E("Fondos lastrados","Weighted dips","Tríceps",4,4,35,120)],
+      "Fuerza-potencia 2":[E("Remo Pendlay","Pendlay row","Espalda",4,6,40,120),E("Press banca inclinado","Incline bench","Pecho",4,6,30,120),E("Dominadas lastradas","Weighted pull-ups","Espalda",4,4,40,120),E("Prensa de piernas","Leg press","Piernas",4,6,30,120)],
+      "Día de sentadilla 2":[E("Dominadas lastradas","Weighted pull-ups","Espalda",4,6,40,120),E("Peso muerto sumo","Sumo deadlift","Piernas",4,8,30,120),E("Remo con barra","Barbell row","Espalda",4,4,30,120)],
+      "Lower 2":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,8,35,120),E("Sentadilla frontal","Front squat","Cuádriceps",4,4,35,120),E("Hip thrust","Hip thrust","Glúteos",4,6,30,120),E("Peso muerto sumo","Sumo deadlift","Piernas",4,6,35,120)],
+      "Piernas 2":[E("Peso muerto rumano","Romanian deadlift","Femoral",4,6,35,120),E("Hip thrust","Hip thrust","Glúteos",4,6,35,120),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,8,30,120),E("Press cerrado","Close-grip bench","Tríceps",4,6,35,120)],
+      "Torso 2":[E("Press militar","Overhead press","Hombros",4,4,40,120),E("Remo con barra","Barbell row","Espalda",4,6,35,120),E("Press de banca","Bench press","Pecho",4,8,35,120),E("Peso muerto rumano","Romanian deadlift","Femoral",4,6,35,120),E("Zancadas con barra","Barbell lunges","Piernas",4,6,30,120)],
+      "Tracción 2":[E("Zancadas con barra","Barbell lunges","Piernas",4,6,35,120),E("Dominadas lastradas","Weighted pull-ups","Espalda",4,8,35,120),E("Remo con barra","Barbell row","Espalda",4,4,30,120),E("Peso muerto","Deadlift","Espalda/Piernas",4,6,35,120)],
+      "Híbrido fuerza 2":[E("Sentadilla frontal","Front squat","Cuádriceps",4,6,40,120),E("Peso muerto rumano","Romanian deadlift","Femoral",4,4,40,120),E("Press cerrado","Close-grip bench","Tríceps",4,6,35,120),E("Hip thrust","Hip thrust","Glúteos",4,4,40,120)],
+      "Día de banca 2":[E("Cargada de potencia","Power clean","Cuerpo completo",4,6,40,120),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,4,35,120),E("Press banca inclinado","Incline bench","Pecho",4,6,30,120)],
+      "Día de peso muerto 2":[E("Cargada de potencia","Power clean","Cuerpo completo",4,8,35,120),E("Remo Pendlay","Pendlay row","Espalda",4,6,35,120),E("Press cerrado","Close-grip bench","Tríceps",4,8,40,120),E("Dominadas lastradas","Weighted pull-ups","Espalda",4,6,35,120)],
+      "Empuje 2":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,8,35,120),E("Sentadilla con barra","Back squat","Piernas",4,8,40,120),E("Remo Pendlay","Pendlay row","Espalda",4,8,35,120),E("Fondos lastrados","Weighted dips","Tríceps",4,8,35,120),E("Press banca inclinado","Incline bench","Pecho",4,4,35,120)]
     },
-    { // 3
-      "Empuje":[E("Press de banca","Bench press","Pecho",5,5,50,150),E("Press inclinado con mancuernas","Incline DB press","Pecho",3,8,18,90),E("Press militar","Overhead press","Hombros",4,6,30,120),E("Press francés","Skull crushers","Tríceps",3,10,15,75)],
-      "Tracción":[E("Peso muerto","Deadlift","Espalda/Piernas",5,3,80,180),E("Dominadas lastradas","Weighted pull-ups","Espalda",4,5,5,120),E("Remo Pendlay","Pendlay row","Espalda",4,6,45,90),E("Curl con barra","Barbell curl","Bíceps",3,10,20,60)],
-      "Piernas":[E("Sentadilla con barra","Back squat","Piernas",5,5,70,180),E("Peso muerto rumano","Romanian deadlift","Femoral",4,8,50,120),E("Zancadas con barra","Barbell lunges","Piernas",3,10,30,90),E("Gemelos","Calf raise","Gemelos",4,15,40,60)],
+    {
+      "Fuerza-potencia 3":[E("Fondos lastrados","Weighted dips","Tríceps",5,7,60,150),E("Peso muerto","Deadlift","Espalda/Piernas",5,7,55,150),E("Curl con barra","Barbell curl","Bíceps",5,5,50,150),E("Press cerrado","Close-grip bench","Tríceps",5,3,60,150),E("Press banca inclinado","Incline bench","Pecho",5,5,55,150)],
+      "Piernas 3":[E("Sentadilla frontal","Front squat","Cuádriceps",5,5,60,150),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,5,60,150),E("Press militar","Overhead press","Hombros",5,7,60,150),E("Peso muerto rumano","Romanian deadlift","Femoral",5,5,60,150),E("Curl con barra","Barbell curl","Bíceps",5,7,55,150)],
+      "Híbrido fuerza 3":[E("Remo con barra","Barbell row","Espalda",5,5,60,150),E("Cargada de potencia","Power clean","Cuerpo completo",5,3,55,150),E("Buenos días","Good mornings","Femoral",5,5,55,150),E("Press militar","Overhead press","Hombros",5,5,55,150)],
+      "Empuje 3":[E("Peso muerto sumo","Sumo deadlift","Piernas",5,7,55,150),E("Fondos lastrados","Weighted dips","Tríceps",5,5,50,150),E("Press militar","Overhead press","Hombros",5,7,60,150)],
+      "Anterior 3":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,5,60,150),E("Curl con barra","Barbell curl","Bíceps",5,7,50,150),E("Press cerrado","Close-grip bench","Tríceps",5,7,60,150),E("Sentadilla frontal","Front squat","Cuádriceps",5,3,55,150)],
+      "Lower 3":[E("Zancadas con barra","Barbell lunges","Piernas",5,7,55,150),E("Press cerrado","Close-grip bench","Tríceps",5,5,60,150),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,7,50,150),E("Press militar","Overhead press","Hombros",5,7,55,150)],
+      "Posterior 3":[E("Press de banca","Bench press","Pecho",5,3,50,150),E("Curl con barra","Barbell curl","Bíceps",5,7,55,150),E("Peso muerto sumo","Sumo deadlift","Piernas",5,7,55,150),E("Sentadilla con barra","Back squat","Piernas",5,3,55,150),E("Zancadas con barra","Barbell lunges","Piernas",5,7,55,150)],
+      "Full Body fuerza 3":[E("Curl con barra","Barbell curl","Bíceps",5,5,60,150),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,5,50,150),E("Prensa de piernas","Leg press","Piernas",5,7,50,150),E("Zancadas con barra","Barbell lunges","Piernas",5,3,55,150)],
+      "Torso 3":[E("Peso muerto","Deadlift","Espalda/Piernas",5,5,50,150),E("Sentadilla frontal","Front squat","Cuádriceps",5,5,55,150),E("Sentadilla con barra","Back squat","Piernas",5,5,60,150),E("Press militar","Overhead press","Hombros",5,3,55,150)],
+      "Tracción 3":[E("Remo con barra","Barbell row","Espalda",5,5,50,150),E("Hip thrust","Hip thrust","Glúteos",5,3,55,150),E("Press de banca","Bench press","Pecho",5,7,60,150),E("Peso muerto rumano","Romanian deadlift","Femoral",5,5,50,150),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,5,50,150)],
+      "Upper 3":[E("Fondos lastrados","Weighted dips","Tríceps",5,7,55,150),E("Peso muerto rumano","Romanian deadlift","Femoral",5,3,55,150),E("Sentadilla frontal","Front squat","Cuádriceps",5,3,60,150),E("Hip thrust","Hip thrust","Glúteos",5,7,50,150)],
+      "Día de sentadilla 3":[E("Hip thrust","Hip thrust","Glúteos",5,5,60,150),E("Curl con barra","Barbell curl","Bíceps",5,7,60,150),E("Peso muerto sumo","Sumo deadlift","Piernas",5,5,55,150),E("Press cerrado","Close-grip bench","Tríceps",5,5,50,150),E("Press de banca","Bench press","Pecho",5,5,60,150)],
+      "Fuerza total 3":[E("Curl con barra","Barbell curl","Bíceps",5,3,60,150),E("Prensa de piernas","Leg press","Piernas",5,5,55,150),E("Zancadas con barra","Barbell lunges","Piernas",5,7,55,150),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,5,55,150)],
+      "Día de peso muerto 3":[E("Remo con barra","Barbell row","Espalda",5,5,50,150),E("Fondos lastrados","Weighted dips","Tríceps",5,5,60,150),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,7,55,150),E("Sentadilla con barra","Back squat","Piernas",5,7,60,150)],
+      "Día de banca 3":[E("Sentadilla con barra","Back squat","Piernas",5,5,55,150),E("Peso muerto","Deadlift","Espalda/Piernas",5,5,60,150),E("Remo Pendlay","Pendlay row","Espalda",5,5,60,150),E("Press militar","Overhead press","Hombros",5,5,55,150),E("Zancadas con barra","Barbell lunges","Piernas",5,7,55,150)]
     },
-    { // 4
-      "Empuje pesado":[E("Press de banca","Bench press","Pecho",5,3,75,210),E("Press militar","Overhead press","Hombros",5,4,45,150),E("Press cerrado","Close-grip bench","Tríceps",4,6,55,120)],
-      "Tracción pesada":[E("Peso muerto","Deadlift","Espalda/Piernas",5,2,110,240),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,4,15,150),E("Remo con barra","Barbell row","Espalda",4,6,60,120)],
-      "Piernas pesadas":[E("Sentadilla con barra","Back squat","Piernas",5,3,100,240),E("Sentadilla frontal","Front squat","Cuádriceps",4,5,70,150),E("Hip thrust","Hip thrust","Glúteos",4,8,80,120)],
+    {
+      "Empuje 4":[E("Press banca inclinado","Incline bench","Pecho",5,3,80,210),E("Remo Pendlay","Pendlay row","Espalda",5,3,75,210),E("Press militar","Overhead press","Hombros",5,3,80,210)],
+      "Día de sentadilla 4":[E("Sentadilla frontal","Front squat","Cuádriceps",5,3,85,210),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,1,75,210),E("Remo Pendlay","Pendlay row","Espalda",5,3,85,210)],
+      "Fuerza total 4":[E("Curl con barra","Barbell curl","Bíceps",5,5,75,210),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,1,85,210),E("Press de banca","Bench press","Pecho",5,5,75,210),E("Sentadilla frontal","Front squat","Cuádriceps",5,1,80,210),E("Remo con barra","Barbell row","Espalda",5,3,80,210)],
+      "Fuerza-potencia 4":[E("Press militar","Overhead press","Hombros",5,5,80,210),E("Peso muerto rumano","Romanian deadlift","Femoral",5,5,85,210),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,5,80,210)],
+      "Día de peso muerto 4":[E("Remo Pendlay","Pendlay row","Espalda",5,3,80,210),E("Prensa de piernas","Leg press","Piernas",5,1,80,210),E("Sentadilla frontal","Front squat","Cuádriceps",5,3,80,210),E("Peso muerto rumano","Romanian deadlift","Femoral",5,1,80,210),E("Press banca inclinado","Incline bench","Pecho",5,1,85,210)],
+      "Lower 4":[E("Fondos lastrados","Weighted dips","Tríceps",5,3,80,210),E("Buenos días","Good mornings","Femoral",5,5,75,210),E("Remo Pendlay","Pendlay row","Espalda",5,3,80,210),E("Sentadilla frontal","Front squat","Cuádriceps",5,3,85,210),E("Press militar","Overhead press","Hombros",5,1,80,210)],
+      "Día de banca 4":[E("Remo con barra","Barbell row","Espalda",5,3,80,210),E("Peso muerto sumo","Sumo deadlift","Piernas",5,3,85,210),E("Peso muerto","Deadlift","Espalda/Piernas",5,1,85,210),E("Sentadilla frontal","Front squat","Cuádriceps",5,3,85,210)],
+      "Piernas 4":[E("Cargada de potencia","Power clean","Cuerpo completo",5,1,75,210),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,5,80,210),E("Buenos días","Good mornings","Femoral",5,3,75,210),E("Curl con barra","Barbell curl","Bíceps",5,1,80,210)],
+      "Posterior 4":[E("Remo con barra","Barbell row","Espalda",5,3,85,210),E("Prensa de piernas","Leg press","Piernas",5,5,80,210),E("Sentadilla frontal","Front squat","Cuádriceps",5,3,85,210)],
+      "Upper 4":[E("Peso muerto","Deadlift","Espalda/Piernas",5,3,75,210),E("Buenos días","Good mornings","Femoral",5,3,80,210),E("Hip thrust","Hip thrust","Glúteos",5,5,85,210),E("Press cerrado","Close-grip bench","Tríceps",5,3,85,210),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,1,85,210)],
+      "Anterior 4":[E("Dominadas lastradas","Weighted pull-ups","Espalda",5,1,85,210),E("Remo con barra","Barbell row","Espalda",5,1,85,210),E("Fondos lastrados","Weighted dips","Tríceps",5,5,75,210)],
+      "Tracción 4":[E("Cargada de potencia","Power clean","Cuerpo completo",5,1,80,210),E("Hip thrust","Hip thrust","Glúteos",5,3,80,210),E("Buenos días","Good mornings","Femoral",5,3,85,210),E("Curl con barra","Barbell curl","Bíceps",5,5,75,210)],
+      "Torso 4":[E("Fondos lastrados","Weighted dips","Tríceps",5,3,75,210),E("Press militar","Overhead press","Hombros",5,5,75,210),E("Press de banca","Bench press","Pecho",5,3,75,210)],
+      "Híbrido fuerza 4":[E("Peso muerto rumano","Romanian deadlift","Femoral",5,5,85,210),E("Peso muerto sumo","Sumo deadlift","Piernas",5,5,80,210),E("Buenos días","Good mornings","Femoral",5,5,80,210),E("Remo Pendlay","Pendlay row","Espalda",5,5,80,210),E("Remo con barra","Barbell row","Espalda",5,3,75,210)],
+      "Full Body fuerza 4":[E("Press cerrado","Close-grip bench","Tríceps",5,1,80,210),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,3,85,210),E("Cargada de potencia","Power clean","Cuerpo completo",5,3,85,210),E("Remo con barra","Barbell row","Espalda",5,5,80,210)]
     },
-    { // 5
-      "Sentadilla (élite)":[E("Sentadilla con barra","Back squat","Piernas",6,2,130,300),E("Sentadilla con pausa","Pause squat","Piernas",3,3,100,180),E("Prensa","Leg press","Piernas",3,8,200,120)],
-      "Banca (élite)":[E("Press de banca","Bench press","Pecho",6,2,100,300),E("Banca con tablas","Board press","Pecho",3,3,90,180),E("Press cerrado","Close-grip bench","Tríceps",3,6,70,120)],
-      "Peso muerto (élite)":[E("Peso muerto","Deadlift","Espalda/Piernas",6,1,150,300),E("Peso muerto déficit","Deficit deadlift","Espalda",3,3,120,210),E("Remo pesado","Heavy barbell row","Espalda",4,5,80,120)],
-    },
+    {
+      "Piernas 5":[E("Dominadas lastradas","Weighted pull-ups","Espalda",6,4,110,300),E("Buenos días","Good mornings","Femoral",6,4,105,300),E("Zancadas con barra","Barbell lunges","Piernas",6,2,110,300)],
+      "Día de peso muerto 5":[E("Curl con barra","Barbell curl","Bíceps",6,4,105,300),E("Peso muerto rumano","Romanian deadlift","Femoral",6,2,115,300),E("Cargada de potencia","Power clean","Cuerpo completo",6,2,105,300)],
+      "Empuje 5":[E("Remo con barra","Barbell row","Espalda",6,4,110,300),E("Dominadas lastradas","Weighted pull-ups","Espalda",6,4,105,300),E("Zancadas con barra","Barbell lunges","Piernas",6,1,110,300),E("Peso muerto","Deadlift","Espalda/Piernas",6,2,110,300),E("Prensa de piernas","Leg press","Piernas",6,1,115,300)],
+      "Día de sentadilla 5":[E("Peso muerto rumano","Romanian deadlift","Femoral",6,2,105,300),E("Curl con barra","Barbell curl","Bíceps",6,1,110,300),E("Press de banca","Bench press","Pecho",6,1,110,300)],
+      "Full Body fuerza 5":[E("Hip thrust","Hip thrust","Glúteos",6,4,110,300),E("Press cerrado","Close-grip bench","Tríceps",6,2,110,300),E("Peso muerto sumo","Sumo deadlift","Piernas",6,1,115,300),E("Press militar","Overhead press","Hombros",6,2,115,300)],
+      "Tracción 5":[E("Press militar","Overhead press","Hombros",6,2,105,300),E("Curl con barra","Barbell curl","Bíceps",6,4,110,300),E("Remo con barra","Barbell row","Espalda",6,2,105,300),E("Prensa de piernas","Leg press","Piernas",6,4,110,300)],
+      "Posterior 5":[E("Press cerrado","Close-grip bench","Tríceps",6,2,115,300),E("Remo con barra","Barbell row","Espalda",6,4,105,300),E("Curl con barra","Barbell curl","Bíceps",6,2,115,300),E("Remo Pendlay","Pendlay row","Espalda",6,2,110,300)],
+      "Torso 5":[E("Sentadilla con barra","Back squat","Piernas",6,1,115,300),E("Zancadas con barra","Barbell lunges","Piernas",6,2,110,300),E("Remo con barra","Barbell row","Espalda",6,2,110,300),E("Fondos lastrados","Weighted dips","Tríceps",6,2,110,300)],
+      "Híbrido fuerza 5":[E("Peso muerto rumano","Romanian deadlift","Femoral",6,1,110,300),E("Sentadilla frontal","Front squat","Cuádriceps",6,2,105,300),E("Remo Pendlay","Pendlay row","Espalda",6,2,110,300),E("Curl con barra","Barbell curl","Bíceps",6,4,110,300)],
+      "Fuerza-potencia 5":[E("Peso muerto sumo","Sumo deadlift","Piernas",6,2,110,300),E("Sentadilla búlgara","Bulgarian split squat","Piernas",6,2,115,300),E("Hip thrust","Hip thrust","Glúteos",6,2,110,300),E("Cargada de potencia","Power clean","Cuerpo completo",6,1,115,300)],
+      "Lower 5":[E("Peso muerto sumo","Sumo deadlift","Piernas",6,2,105,300),E("Press militar","Overhead press","Hombros",6,4,105,300),E("Zancadas con barra","Barbell lunges","Piernas",6,2,105,300)],
+      "Fuerza total 5":[E("Hip thrust","Hip thrust","Glúteos",6,2,115,300),E("Remo con barra","Barbell row","Espalda",6,1,110,300),E("Zancadas con barra","Barbell lunges","Piernas",6,2,105,300),E("Fondos lastrados","Weighted dips","Tríceps",6,4,110,300),E("Peso muerto rumano","Romanian deadlift","Femoral",6,4,105,300)],
+      "Anterior 5":[E("Sentadilla frontal","Front squat","Cuádriceps",6,1,105,300),E("Fondos lastrados","Weighted dips","Tríceps",6,2,110,300),E("Remo Pendlay","Pendlay row","Espalda",6,4,115,300),E("Buenos días","Good mornings","Femoral",6,2,115,300)],
+      "Día de banca 5":[E("Press cerrado","Close-grip bench","Tríceps",6,2,105,300),E("Peso muerto rumano","Romanian deadlift","Femoral",6,2,110,300),E("Buenos días","Good mornings","Femoral",6,4,115,300),E("Fondos lastrados","Weighted dips","Tríceps",6,2,110,300)],
+      "Upper 5":[E("Hip thrust","Hip thrust","Glúteos",6,1,115,300),E("Sentadilla búlgara","Bulgarian split squat","Piernas",6,2,110,300),E("Fondos lastrados","Weighted dips","Tríceps",6,1,115,300)]
+    }
   ],
   "Hipertrofia · Hypertrophy": [
-    { // 1
-      "Torso":[E("Press de pecho en máquina","Chest press machine","Pecho",3,12,20,60),E("Jalón al pecho","Lat pulldown","Espalda",3,12,25,60),E("Elevaciones laterales","Lateral raises","Hombros",3,15,5,45)],
-      "Pierna":[E("Prensa de piernas","Leg press","Piernas",3,12,60,75),E("Curl femoral","Leg curl","Femoral",3,12,25,60),E("Extensión de cuádriceps","Leg extension","Cuádriceps",3,15,25,60)],
+    {
+      "Espalda detalle":[E("Curl femoral","Leg curl","Femoral",3,12,15,60),E("Elevaciones laterales","Lateral raises","Hombros",3,12,15,60),E("Hip thrust","Hip thrust","Glúteos",3,10,15,60)],
+      "Glúteo/Femoral":[E("Remo en máquina","Seated row machine","Espalda",3,10,10,60),E("Curl femoral","Leg curl","Femoral",3,12,10,60),E("Pájaros","Reverse fly","Hombros",3,12,15,60),E("Pull-over","DB pullover","Espalda",3,12,10,60)],
+      "Pecho/Tríceps":[E("Pájaros","Reverse fly","Hombros",3,10,10,60),E("Aperturas","DB fly","Pecho",3,14,20,60),E("Remo en máquina","Seated row machine","Espalda",3,12,10,60),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",3,14,15,60)],
+      "Hombro/Brazo":[E("Face pull","Face pull","Hombros",3,14,10,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",3,10,20,60),E("Curl mancuernas","DB curl","Bíceps",3,14,20,60)],
+      "Pierna completa":[E("Prensa de piernas","Leg press","Piernas",3,10,15,60),E("Press francés","Skull crushers","Tríceps",3,12,10,60),E("Press pecho máquina","Chest press machine","Pecho",3,12,15,60)],
+      "Legs":[E("Jalón tríceps","Triceps pushdown","Tríceps",3,14,20,60),E("Gemelos sentado","Seated calf raise","Gemelos",3,10,10,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",3,12,20,60),E("Curl mancuernas","DB curl","Bíceps",3,14,15,60)],
+      "Espalda/Bíceps":[E("Curl martillo","Hammer curl","Bíceps",3,12,20,60),E("Press francés","Skull crushers","Tríceps",3,12,15,60),E("Jalón tríceps","Triceps pushdown","Tríceps",3,12,15,60),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",3,14,10,60),E("Jalón al pecho","Lat pulldown","Espalda",3,10,10,60)],
+      "Cuádriceps/Gemelo":[E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",3,12,10,60),E("Jalón al pecho","Lat pulldown","Espalda",3,12,10,60),E("Curl concentrado","Concentration curl","Bíceps",3,14,15,60)],
+      "Push":[E("Aperturas","DB fly","Pecho",3,12,15,60),E("Curl mancuernas","DB curl","Bíceps",3,14,15,60),E("Gemelos sentado","Seated calf raise","Gemelos",3,10,15,60),E("Curl concentrado","Concentration curl","Bíceps",3,12,10,60),E("Jalón al pecho","Lat pulldown","Espalda",3,12,15,60)],
+      "Torso volumen":[E("Curl femoral","Leg curl","Femoral",3,12,10,60),E("Gemelos sentado","Seated calf raise","Gemelos",3,12,15,60),E("Face pull","Face pull","Hombros",3,12,15,60),E("Sentadilla hack","Hack squat","Cuádriceps",3,12,10,60),E("Press inclinado mancuernas","Incline DB press","Pecho",3,12,15,60)],
+      "Hombros":[E("Press pecho máquina","Chest press machine","Pecho",3,12,20,60),E("Remo en máquina","Seated row machine","Espalda",3,14,20,60),E("Sentadilla hack","Hack squat","Cuádriceps",3,12,15,60),E("Press inclinado mancuernas","Incline DB press","Pecho",3,12,15,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",3,12,10,60)],
+      "Pecho detalle":[E("Remo en máquina","Seated row machine","Espalda",3,10,10,60),E("Pull-over","DB pullover","Espalda",3,12,20,60),E("Gemelos sentado","Seated calf raise","Gemelos",3,14,20,60)],
+      "Pecho/Espalda":[E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",3,12,20,60),E("Pájaros","Reverse fly","Hombros",3,10,15,60),E("Elevaciones laterales","Lateral raises","Hombros",3,14,15,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",3,10,15,60),E("Jalón al pecho","Lat pulldown","Espalda",3,14,10,60)],
+      "Brazos":[E("Elevaciones laterales","Lateral raises","Hombros",3,12,15,60),E("Curl mancuernas","DB curl","Bíceps",3,12,10,60),E("Remo en máquina","Seated row machine","Espalda",3,10,20,60)],
+      "Pull":[E("Pull-over","DB pullover","Espalda",3,12,10,60),E("Remo en máquina","Seated row machine","Espalda",3,14,10,60),E("Jalón tríceps","Triceps pushdown","Tríceps",3,14,10,60),E("Curl femoral","Leg curl","Femoral",3,14,10,60),E("Press hombros mancuernas","DB shoulder press","Hombros",3,12,20,60)]
     },
-    { // 2
-      "Pecho/Tríceps":[E("Press de banca con mancuernas","DB bench press","Pecho",4,12,16,60),E("Aperturas","DB fly","Pecho",3,15,8,45),E("Jalón de tríceps","Triceps pushdown","Tríceps",4,12,20,45)],
-      "Espalda/Bíceps":[E("Jalón al pecho","Lat pulldown","Espalda",4,12,30,60),E("Remo en máquina","Seated row machine","Espalda",4,12,30,60),E("Curl de bíceps","DB curl","Bíceps",4,12,10,45)],
-      "Pierna":[E("Sentadilla hack","Hack squat","Cuádriceps",4,12,50,75),E("Curl femoral","Leg curl","Femoral",4,12,25,60),E("Gemelos sentado","Seated calf raise","Gemelos",4,15,30,45)],
+    {
+      "Glúteo/Femoral 2":[E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",4,14,25,60),E("Jalón al pecho","Lat pulldown","Espalda",4,10,25,60),E("Press hombros mancuernas","DB shoulder press","Hombros",4,12,20,60)],
+      "Pierna completa 2":[E("Curl martillo","Hammer curl","Bíceps",4,10,20,60),E("Pull-over","DB pullover","Espalda",4,12,20,60),E("Press pecho máquina","Chest press machine","Pecho",4,12,20,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",4,10,20,60)],
+      "Pecho/Tríceps 2":[E("Elevaciones laterales","Lateral raises","Hombros",4,10,20,60),E("Pull-over","DB pullover","Espalda",4,14,25,60),E("Gemelos sentado","Seated calf raise","Gemelos",4,14,20,60),E("Remo en máquina","Seated row machine","Espalda",4,12,20,60)],
+      "Pecho/Espalda 2":[E("Press pecho máquina","Chest press machine","Pecho",4,12,15,60),E("Prensa de piernas","Leg press","Piernas",4,12,15,60),E("Press francés","Skull crushers","Tríceps",4,12,25,60),E("Sentadilla hack","Hack squat","Cuádriceps",4,14,15,60),E("Curl mancuernas","DB curl","Bíceps",4,10,20,60)],
+      "Cuádriceps/Gemelo 2":[E("Press pecho máquina","Chest press machine","Pecho",4,14,25,60),E("Sentadilla hack","Hack squat","Cuádriceps",4,10,25,60),E("Gemelos sentado","Seated calf raise","Gemelos",4,12,20,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",4,14,20,60)],
+      "Legs 2":[E("Press francés","Skull crushers","Tríceps",4,10,20,60),E("Jalón al pecho","Lat pulldown","Espalda",4,10,20,60),E("Curl martillo","Hammer curl","Bíceps",4,14,25,60)],
+      "Push 2":[E("Curl concentrado","Concentration curl","Bíceps",4,12,15,60),E("Curl mancuernas","DB curl","Bíceps",4,12,15,60),E("Jalón tríceps","Triceps pushdown","Tríceps",4,12,15,60),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",4,14,20,60)],
+      "Espalda detalle 2":[E("Face pull","Face pull","Hombros",4,10,20,60),E("Gemelos sentado","Seated calf raise","Gemelos",4,12,20,60),E("Remo en máquina","Seated row machine","Espalda",4,14,20,60),E("Curl martillo","Hammer curl","Bíceps",4,10,20,60)],
+      "Pull 2":[E("Sentadilla hack","Hack squat","Cuádriceps",4,10,25,60),E("Curl martillo","Hammer curl","Bíceps",4,12,15,60),E("Remo en máquina","Seated row machine","Espalda",4,12,20,60),E("Face pull","Face pull","Hombros",4,12,20,60),E("Extensión cuádriceps","Leg extension","Cuádriceps",4,12,25,60)],
+      "Hombro/Brazo 2":[E("Press hombros mancuernas","DB shoulder press","Hombros",4,10,15,60),E("Remo en máquina","Seated row machine","Espalda",4,12,20,60),E("Press pecho máquina","Chest press machine","Pecho",4,14,20,60),E("Curl mancuernas","DB curl","Bíceps",4,12,20,60)],
+      "Pecho detalle 2":[E("Press francés","Skull crushers","Tríceps",4,12,25,60),E("Aperturas","DB fly","Pecho",4,12,25,60),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",4,12,20,60),E("Curl concentrado","Concentration curl","Bíceps",4,12,25,60)],
+      "Brazos 2":[E("Curl concentrado","Concentration curl","Bíceps",4,14,20,60),E("Face pull","Face pull","Hombros",4,14,25,60),E("Hip thrust","Hip thrust","Glúteos",4,12,20,60),E("Press francés","Skull crushers","Tríceps",4,12,20,60)],
+      "Hombros 2":[E("Sentadilla hack","Hack squat","Cuádriceps",4,10,15,60),E("Prensa de piernas","Leg press","Piernas",4,12,15,60),E("Curl concentrado","Concentration curl","Bíceps",4,12,20,60)],
+      "Espalda/Bíceps 2":[E("Extensión cuádriceps","Leg extension","Cuádriceps",4,14,20,60),E("Remo en máquina","Seated row machine","Espalda",4,10,25,60),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",4,10,25,60),E("Press pecho máquina","Chest press machine","Pecho",4,12,20,60),E("Press hombros mancuernas","DB shoulder press","Hombros",4,14,15,60)],
+      "Torso volumen 2":[E("Press hombros mancuernas","DB shoulder press","Hombros",4,12,20,60),E("Press inclinado mancuernas","Incline DB press","Pecho",4,12,15,60),E("Curl martillo","Hammer curl","Bíceps",4,12,25,60),E("Jalón al pecho","Lat pulldown","Espalda",4,12,25,60)]
     },
-    { // 3
-      "Push":[E("Press inclinado con mancuernas","Incline DB press","Pecho",4,10,20,75),E("Press de hombros","DB shoulder press","Hombros",4,10,16,60),E("Elevaciones laterales","Lateral raises","Hombros",4,15,6,45),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",3,12,15,45)],
-      "Pull":[E("Dominadas","Pull-ups","Espalda",4,10,0,75),E("Remo con barra","Barbell row","Espalda",4,10,40,75),E("Face pull","Face pull","Hombros",4,15,15,45),E("Curl martillo","Hammer curl","Bíceps",4,12,12,45)],
-      "Legs":[E("Sentadilla con barra","Back squat","Piernas",4,10,50,90),E("Peso muerto rumano","Romanian deadlift","Femoral",4,10,45,75),E("Prensa","Leg press","Piernas",3,15,80,75),E("Gemelos","Calf raise","Gemelos",5,15,30,45)],
+    {
+      "Pierna completa 3":[E("Curl mancuernas","DB curl","Bíceps",4,12,33,75),E("Jalón al pecho","Lat pulldown","Espalda",4,8,23,75),E("Aperturas","DB fly","Pecho",4,12,23,75),E("Press hombros mancuernas","DB shoulder press","Hombros",4,10,28,75)],
+      "Hombros 3":[E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",4,10,33,75),E("Press inclinado mancuernas","Incline DB press","Pecho",4,10,23,75),E("Gemelos sentado","Seated calf raise","Gemelos",4,10,23,75),E("Curl concentrado","Concentration curl","Bíceps",4,8,33,75)],
+      "Brazos 3":[E("Aperturas","DB fly","Pecho",4,8,28,75),E("Sentadilla hack","Hack squat","Cuádriceps",4,8,28,75),E("Jalón tríceps","Triceps pushdown","Tríceps",4,10,23,75),E("Curl concentrado","Concentration curl","Bíceps",4,10,28,75),E("Pájaros","Reverse fly","Hombros",4,8,28,75)],
+      "Cuádriceps/Gemelo 3":[E("Sentadilla hack","Hack squat","Cuádriceps",4,12,28,75),E("Pull-over","DB pullover","Espalda",4,10,23,75),E("Face pull","Face pull","Hombros",4,12,23,75),E("Press francés","Skull crushers","Tríceps",4,10,28,75)],
+      "Espalda/Bíceps 3":[E("Elevaciones laterales","Lateral raises","Hombros",4,10,33,75),E("Aperturas","DB fly","Pecho",4,12,28,75),E("Curl martillo","Hammer curl","Bíceps",4,8,28,75)],
+      "Pecho/Tríceps 3":[E("Curl concentrado","Concentration curl","Bíceps",4,10,23,75),E("Aperturas","DB fly","Pecho",4,10,33,75),E("Sentadilla hack","Hack squat","Cuádriceps",4,12,33,75),E("Curl martillo","Hammer curl","Bíceps",4,12,28,75)],
+      "Pecho detalle 3":[E("Prensa de piernas","Leg press","Piernas",4,8,33,75),E("Curl concentrado","Concentration curl","Bíceps",4,8,33,75),E("Extensión cuádriceps","Leg extension","Cuádriceps",4,10,28,75),E("Pájaros","Reverse fly","Hombros",4,10,23,75)],
+      "Legs 3":[E("Curl martillo","Hammer curl","Bíceps",4,10,33,75),E("Face pull","Face pull","Hombros",4,12,28,75),E("Curl mancuernas","DB curl","Bíceps",4,12,28,75)],
+      "Pecho/Espalda 3":[E("Aperturas","DB fly","Pecho",4,8,23,75),E("Curl concentrado","Concentration curl","Bíceps",4,12,28,75),E("Gemelos sentado","Seated calf raise","Gemelos",4,10,23,75),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",4,10,33,75),E("Pájaros","Reverse fly","Hombros",4,8,28,75)],
+      "Hombro/Brazo 3":[E("Press hombros mancuernas","DB shoulder press","Hombros",4,10,33,75),E("Sentadilla hack","Hack squat","Cuádriceps",4,8,28,75),E("Curl concentrado","Concentration curl","Bíceps",4,12,28,75)],
+      "Espalda detalle 3":[E("Press francés","Skull crushers","Tríceps",4,10,33,75),E("Press pecho máquina","Chest press machine","Pecho",4,10,28,75),E("Hip thrust","Hip thrust","Glúteos",4,10,23,75),E("Remo en máquina","Seated row machine","Espalda",4,8,28,75)],
+      "Pull 3":[E("Extensión cuádriceps","Leg extension","Cuádriceps",4,10,33,75),E("Jalón tríceps","Triceps pushdown","Tríceps",4,10,28,75),E("Curl femoral","Leg curl","Femoral",4,12,28,75),E("Jalón al pecho","Lat pulldown","Espalda",4,8,28,75),E("Pájaros","Reverse fly","Hombros",4,8,33,75)],
+      "Push 3":[E("Press francés","Skull crushers","Tríceps",4,10,23,75),E("Press pecho máquina","Chest press machine","Pecho",4,10,28,75),E("Face pull","Face pull","Hombros",4,10,28,75),E("Curl martillo","Hammer curl","Bíceps",4,10,28,75)],
+      "Torso volumen 3":[E("Elevaciones laterales","Lateral raises","Hombros",4,12,23,75),E("Remo en máquina","Seated row machine","Espalda",4,10,28,75),E("Press hombros mancuernas","DB shoulder press","Hombros",4,12,28,75)],
+      "Glúteo/Femoral 3":[E("Press pecho máquina","Chest press machine","Pecho",4,12,33,75),E("Curl mancuernas","DB curl","Bíceps",4,12,23,75),E("Jalón tríceps","Triceps pushdown","Tríceps",4,10,28,75)]
     },
-    { // 4
-      "Push (vol)":[E("Press de banca","Bench press","Pecho",5,8,55,90),E("Press inclinado con mancuernas","Incline DB press","Pecho",4,10,24,75),E("Press de hombros","Overhead press","Hombros",4,10,35,75),E("Elevaciones laterales","Lateral raises","Hombros",5,15,8,45),E("Press francés","Skull crushers","Tríceps",4,12,20,60)],
-      "Pull (vol)":[E("Dominadas lastradas","Weighted pull-ups","Espalda",5,8,8,90),E("Remo Pendlay","Pendlay row","Espalda",4,10,50,75),E("Jalón al pecho","Lat pulldown","Espalda",4,12,40,60),E("Curl con barra","Barbell curl","Bíceps",4,12,25,60),E("Curl concentrado","Concentration curl","Bíceps",3,15,10,45)],
-      "Legs (vol)":[E("Sentadilla con barra","Back squat","Piernas",5,8,65,120),E("Peso muerto rumano","Romanian deadlift","Femoral",4,10,55,90),E("Zancadas","DB lunges","Piernas",4,12,18,75),E("Curl femoral","Leg curl","Femoral",4,15,28,60),E("Gemelos","Calf raise","Gemelos",5,18,35,45)],
+    {
+      "Hombros 4":[E("Jalón al pecho","Lat pulldown","Espalda",5,10,40,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,10,40,90),E("Remo en máquina","Seated row machine","Espalda",5,10,40,90)],
+      "Pecho/Espalda 4":[E("Press pecho máquina","Chest press machine","Pecho",5,10,40,90),E("Pájaros","Reverse fly","Hombros",5,10,35,90),E("Elevaciones laterales","Lateral raises","Hombros",5,10,40,90),E("Sentadilla hack","Hack squat","Cuádriceps",5,10,40,90)],
+      "Push 4":[E("Press inclinado mancuernas","Incline DB press","Pecho",5,10,40,90),E("Press pecho máquina","Chest press machine","Pecho",5,12,35,90),E("Aperturas","DB fly","Pecho",5,12,40,90)],
+      "Pecho detalle 4":[E("Prensa de piernas","Leg press","Piernas",5,10,45,90),E("Press hombros mancuernas","DB shoulder press","Hombros",5,8,35,90),E("Face pull","Face pull","Hombros",5,10,45,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,12,45,90)],
+      "Torso volumen 4":[E("Elevaciones laterales","Lateral raises","Hombros",5,12,40,90),E("Curl martillo","Hammer curl","Bíceps",5,10,35,90),E("Gemelos sentado","Seated calf raise","Gemelos",5,10,40,90),E("Remo en máquina","Seated row machine","Espalda",5,12,35,90),E("Curl concentrado","Concentration curl","Bíceps",5,10,45,90)],
+      "Hombro/Brazo 4":[E("Remo en máquina","Seated row machine","Espalda",5,12,45,90),E("Jalón al pecho","Lat pulldown","Espalda",5,10,40,90),E("Aperturas","DB fly","Pecho",5,10,40,90),E("Curl mancuernas","DB curl","Bíceps",5,10,40,90)],
+      "Espalda/Bíceps 4":[E("Extensión cuádriceps","Leg extension","Cuádriceps",5,8,45,90),E("Press francés","Skull crushers","Tríceps",5,12,40,90),E("Prensa de piernas","Leg press","Piernas",5,10,40,90),E("Curl mancuernas","DB curl","Bíceps",5,8,35,90),E("Press inclinado mancuernas","Incline DB press","Pecho",5,10,45,90)],
+      "Legs 4":[E("Curl mancuernas","DB curl","Bíceps",5,10,40,90),E("Curl femoral","Leg curl","Femoral",5,10,45,90),E("Press inclinado mancuernas","Incline DB press","Pecho",5,10,35,90),E("Jalón al pecho","Lat pulldown","Espalda",5,12,35,90),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,10,40,90)],
+      "Pecho/Tríceps 4":[E("Press pecho máquina","Chest press machine","Pecho",5,10,35,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,10,35,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,12,40,90),E("Press francés","Skull crushers","Tríceps",5,10,40,90)],
+      "Cuádriceps/Gemelo 4":[E("Elevaciones laterales","Lateral raises","Hombros",5,8,35,90),E("Gemelos sentado","Seated calf raise","Gemelos",5,8,40,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,10,45,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,12,40,90)],
+      "Pierna completa 4":[E("Curl martillo","Hammer curl","Bíceps",5,10,40,90),E("Gemelos sentado","Seated calf raise","Gemelos",5,12,40,90),E("Pull-over","DB pullover","Espalda",5,12,35,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,10,40,90)],
+      "Espalda detalle 4":[E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,8,45,90),E("Hip thrust","Hip thrust","Glúteos",5,10,40,90),E("Curl mancuernas","DB curl","Bíceps",5,8,45,90)],
+      "Glúteo/Femoral 4":[E("Extensión cuádriceps","Leg extension","Cuádriceps",5,10,40,90),E("Sentadilla hack","Hack squat","Cuádriceps",5,8,35,90),E("Gemelos sentado","Seated calf raise","Gemelos",5,10,35,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,12,40,90)],
+      "Pull 4":[E("Remo en máquina","Seated row machine","Espalda",5,12,35,90),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,10,40,90),E("Elevaciones laterales","Lateral raises","Hombros",5,10,45,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,12,40,90),E("Gemelos sentado","Seated calf raise","Gemelos",5,10,45,90)],
+      "Brazos 4":[E("Curl femoral","Leg curl","Femoral",5,10,45,90),E("Curl concentrado","Concentration curl","Bíceps",5,10,40,90),E("Face pull","Face pull","Hombros",5,10,40,90),E("Sentadilla hack","Hack squat","Cuádriceps",5,10,40,90)]
     },
-    { // 5
-      "Pecho/Espalda":[E("Press de banca","Bench press","Pecho",5,8,65,90),E("Press inclinado","Incline bench","Pecho",4,10,50,75),E("Dominadas lastradas","Weighted pull-ups","Espalda",5,8,12,90),E("Remo con barra","Barbell row","Espalda",4,10,55,75),E("Pull-over","DB pullover","Pecho/Espalda",3,15,20,60)],
-      "Hombro/Brazo":[E("Press militar","Overhead press","Hombros",5,8,40,90),E("Elevaciones laterales","Lateral raises","Hombros",6,15,9,45),E("Curl con barra","Barbell curl","Bíceps",5,10,30,60),E("Press cerrado","Close-grip bench","Tríceps",5,10,55,60),E("Curl martillo","Hammer curl","Bíceps",4,12,14,45)],
-      "Pierna completa":[E("Sentadilla con barra","Back squat","Piernas",5,8,80,120),E("Prensa","Leg press","Piernas",4,12,140,90),E("Peso muerto rumano","Romanian deadlift","Femoral",4,10,65,90),E("Extensión de cuádriceps","Leg extension","Cuádriceps",4,15,35,60),E("Gemelos","Calf raise","Gemelos",6,18,45,45)],
-    },
+    {
+      "Pierna completa 5":[E("Curl concentrado","Concentration curl","Bíceps",5,8,60,90),E("Remo en máquina","Seated row machine","Espalda",5,8,60,90),E("Curl mancuernas","DB curl","Bíceps",5,8,55,90),E("Aperturas","DB fly","Pecho",5,8,55,90),E("Press pecho máquina","Chest press machine","Pecho",5,8,50,90)],
+      "Pull 5":[E("Press hombros mancuernas","DB shoulder press","Hombros",5,8,55,90),E("Aperturas","DB fly","Pecho",5,6,50,90),E("Face pull","Face pull","Hombros",5,10,55,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,10,50,90)],
+      "Push 5":[E("Press inclinado mancuernas","Incline DB press","Pecho",5,10,60,90),E("Curl femoral","Leg curl","Femoral",5,8,55,90),E("Pull-over","DB pullover","Espalda",5,8,55,90),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,6,50,90)],
+      "Espalda/Bíceps 5":[E("Curl femoral","Leg curl","Femoral",5,8,50,90),E("Aperturas","DB fly","Pecho",5,10,60,90),E("Pull-over","DB pullover","Espalda",5,8,55,90),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,6,50,90)],
+      "Legs 5":[E("Hip thrust","Hip thrust","Glúteos",5,8,60,90),E("Gemelos sentado","Seated calf raise","Gemelos",5,10,55,90),E("Jalón al pecho","Lat pulldown","Espalda",5,10,55,90),E("Curl martillo","Hammer curl","Bíceps",5,8,50,90)],
+      "Cuádriceps/Gemelo 5":[E("Pull-over","DB pullover","Espalda",5,8,50,90),E("Press francés","Skull crushers","Tríceps",5,8,55,90),E("Sentadilla hack","Hack squat","Cuádriceps",5,8,55,90),E("Pájaros","Reverse fly","Hombros",5,10,60,90)],
+      "Pecho detalle 5":[E("Press pecho máquina","Chest press machine","Pecho",5,8,55,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,10,55,90),E("Face pull","Face pull","Hombros",5,8,50,90),E("Jalón al pecho","Lat pulldown","Espalda",5,8,60,90)],
+      "Torso volumen 5":[E("Press francés","Skull crushers","Tríceps",5,6,55,90),E("Pájaros","Reverse fly","Hombros",5,8,55,90),E("Curl martillo","Hammer curl","Bíceps",5,6,50,90),E("Curl mancuernas","DB curl","Bíceps",5,10,55,90)],
+      "Brazos 5":[E("Jalón tríceps","Triceps pushdown","Tríceps",5,6,55,90),E("Face pull","Face pull","Hombros",5,8,55,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,8,55,90),E("Curl mancuernas","DB curl","Bíceps",5,10,55,90)],
+      "Pecho/Tríceps 5":[E("Gemelos sentado","Seated calf raise","Gemelos",5,8,55,90),E("Curl concentrado","Concentration curl","Bíceps",5,6,60,90),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,8,50,90),E("Curl femoral","Leg curl","Femoral",5,6,50,90),E("Prensa de piernas","Leg press","Piernas",5,8,55,90)],
+      "Glúteo/Femoral 5":[E("Curl martillo","Hammer curl","Bíceps",5,8,60,90),E("Extensión cuádriceps","Leg extension","Cuádriceps",5,6,60,90),E("Press francés","Skull crushers","Tríceps",5,6,60,90),E("Jalón al pecho","Lat pulldown","Espalda",5,8,60,90)],
+      "Pecho/Espalda 5":[E("Hip thrust","Hip thrust","Glúteos",5,8,50,90),E("Aperturas","DB fly","Pecho",5,10,55,90),E("Curl femoral","Leg curl","Femoral",5,6,55,90),E("Press francés","Skull crushers","Tríceps",5,6,50,90),E("Face pull","Face pull","Hombros",5,10,55,90)],
+      "Hombros 5":[E("Curl femoral","Leg curl","Femoral",5,10,50,90),E("Aperturas","DB fly","Pecho",5,8,60,90),E("Press pecho máquina","Chest press machine","Pecho",5,8,55,90)],
+      "Hombro/Brazo 5":[E("Curl concentrado","Concentration curl","Bíceps",5,8,55,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,6,55,90),E("Press francés","Skull crushers","Tríceps",5,10,55,90),E("Press pecho máquina","Chest press machine","Pecho",5,8,50,90),E("Face pull","Face pull","Hombros",5,6,55,90)],
+      "Espalda detalle 5":[E("Face pull","Face pull","Hombros",5,8,60,90),E("Curl femoral","Leg curl","Femoral",5,8,55,90),E("Extensión sobre cabeza","Overhead triceps ext","Tríceps",5,8,55,90),E("Jalón tríceps","Triceps pushdown","Tríceps",5,6,50,90),E("Press hombros mancuernas","DB shoulder press","Hombros",5,10,50,90)]
+    }
   ],
   "Calistenia · Calisthenics": [
-    { // 1
-      "Full Body":[E("Flexiones inclinadas","Incline push-ups","Pecho",3,8,0,60),E("Remo invertido","Inverted row","Espalda",3,8,0,60),E("Sentadilla libre","Bodyweight squat","Piernas",3,12,0,60),E("Plancha","Plank","Core",3,20,0,45)],
+    {
+      "Legs/Core":[E("Flexiones diamante","Diamond push-ups","Tríceps",3,8,0,60),E("Pike push-ups","Pike push-ups","Hombros",3,8,0,60),E("L-sit","L-sit","Core",3,8,0,60),E("Dominadas arquero","Archer pull-ups","Espalda",3,8,0,60)],
+      "Skills":[E("Pike push-ups","Pike push-ups","Hombros",3,10,0,60),E("Pino contra pared","Wall handstand hold","Hombros",3,8,0,60),E("L-sit","L-sit","Core",3,8,0,60),E("Dominadas","Pull-ups","Espalda",3,6,0,60)],
+      "Tracción":[E("Toes to bar","Toes to bar","Core",3,10,0,60),E("Pino contra pared","Wall handstand hold","Hombros",3,6,0,60),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,8,0,60),E("Plancha","Plank","Core",3,10,0,60)],
+      "Dinámico":[E("Front lever tuck","Tuck front lever","Espalda/Core",3,10,0,60),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,8,0,60),E("Pike push-ups","Pike push-ups","Hombros",3,10,0,60),E("Dominadas arquero","Archer pull-ups","Espalda",3,8,0,60)],
+      "Pierna":[E("Dominadas arquero","Archer pull-ups","Espalda",3,6,0,60),E("Front lever tuck","Tuck front lever","Espalda/Core",3,10,0,60),E("Pike push-ups","Pike push-ups","Hombros",3,10,0,60),E("Sentadilla shrimp","Shrimp squat","Piernas",3,8,0,60)],
+      "Empuje":[E("Dominadas","Pull-ups","Espalda",3,6,0,60),E("Dominadas supinas","Chin-ups","Bíceps",3,10,0,60),E("Fondos en paralelas","Parallel dips","Tríceps",3,8,0,60),E("Remo invertido","Inverted row","Espalda",3,6,0,60),E("Toes to bar","Toes to bar","Core",3,8,0,60)],
+      "Tracción avanzada":[E("Dominadas supinas","Chin-ups","Bíceps",3,6,0,60),E("Sentadilla pistol","Pistol squat","Piernas",3,6,0,60),E("Pino contra pared","Wall handstand hold","Hombros",3,8,0,60)],
+      "Empuje avanzado":[E("Puente a una pierna","Single-leg glute bridge","Glúteos",3,6,0,60),E("Fondos en paralelas","Parallel dips","Tríceps",3,8,0,60),E("Remo invertido","Inverted row","Espalda",3,8,0,60),E("Dominadas arquero","Archer pull-ups","Espalda",3,6,0,60)],
+      "Core":[E("Dominadas","Pull-ups","Espalda",3,8,0,60),E("Front lever tuck","Tuck front lever","Espalda/Core",3,8,0,60),E("Dragon flag","Dragon flag","Core",3,8,0,60),E("Fondos en paralelas","Parallel dips","Tríceps",3,10,0,60),E("Sentadilla pistol","Pistol squat","Piernas",3,10,0,60)],
+      "Push":[E("Dominadas arquero","Archer pull-ups","Espalda",3,10,0,60),E("Dominadas supinas","Chin-ups","Bíceps",3,10,0,60),E("Muscle-up","Muscle-up","Cuerpo superior",3,6,0,60),E("L-sit","L-sit","Core",3,10,0,60)],
+      "Skills+Core":[E("Fondos en paralelas","Parallel dips","Tríceps",3,6,0,60),E("Muscle-up","Muscle-up","Cuerpo superior",3,8,0,60),E("Remo invertido","Inverted row","Espalda",3,8,0,60),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,6,0,60)],
+      "Estático":[E("Plancha","Plank","Core",3,8,0,60),E("Hollow hold","Hollow hold","Core",3,8,0,60),E("Sentadilla búlgara","Bulgarian split squat","Piernas",3,8,0,60),E("Dominadas arquero","Archer pull-ups","Espalda",3,8,0,60)],
+      "Pull":[E("Hollow hold","Hollow hold","Core",3,8,0,60),E("Dominadas","Pull-ups","Espalda",3,8,0,60),E("Puente a una pierna","Single-leg glute bridge","Glúteos",3,10,0,60),E("Plancha","Plank","Core",3,10,0,60),E("Toes to bar","Toes to bar","Core",3,10,0,60)],
+      "Híbrido":[E("Muscle-up","Muscle-up","Cuerpo superior",3,10,0,60),E("Flexiones en pino","Handstand push-ups","Hombros",3,8,0,60),E("Pike push-ups","Pike push-ups","Hombros",3,6,0,60),E("Plancha","Plank","Core",3,6,0,60)],
+      "Full Body":[E("Pino contra pared","Wall handstand hold","Hombros",3,10,0,60),E("Flexiones diamante","Diamond push-ups","Tríceps",3,8,0,60),E("Flexiones","Push-ups","Pecho",3,8,0,60)]
     },
-    { // 2
-      "Empuje":[E("Flexiones","Push-ups","Pecho",4,10,0,60),E("Fondos en banco","Bench dips","Tríceps",3,10,0,60),E("Pike push-ups","Pike push-ups","Hombros",3,8,0,75)],
-      "Tracción/Pierna":[E("Dominadas asistidas","Assisted pull-ups","Espalda",4,6,0,90),E("Remo invertido","Inverted row","Espalda",3,10,0,60),E("Zancadas","Lunges","Piernas",3,12,0,60),E("Puente de glúteo","Glute bridge","Glúteos",3,15,0,45)],
+    {
+      "Tracción 2":[E("Flexiones","Push-ups","Pecho",4,8,0,60),E("Plancha","Plank","Core",4,8,0,60),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,10,0,60)],
+      "Híbrido 2":[E("Flexiones","Push-ups","Pecho",4,12,0,60),E("L-sit","L-sit","Core",4,10,0,60),E("Front lever tuck","Tuck front lever","Espalda/Core",4,8,0,60),E("Pino contra pared","Wall handstand hold","Hombros",4,8,0,60)],
+      "Estático 2":[E("Dominadas","Pull-ups","Espalda",4,10,0,60),E("Fondos en paralelas","Parallel dips","Tríceps",4,10,0,60),E("Dragon flag","Dragon flag","Core",4,10,0,60),E("L-sit","L-sit","Core",4,12,0,60)],
+      "Empuje avanzado 2":[E("Muscle-up","Muscle-up","Cuerpo superior",4,10,0,60),E("Sentadilla pistol","Pistol squat","Piernas",4,10,0,60),E("Sentadilla shrimp","Shrimp squat","Piernas",4,10,0,60)],
+      "Skills+Core 2":[E("Toes to bar","Toes to bar","Core",4,12,0,60),E("Flexiones diamante","Diamond push-ups","Tríceps",4,12,0,60),E("Flexiones arquero","Archer push-ups","Pecho",4,12,0,60)],
+      "Skills 2":[E("Flexiones diamante","Diamond push-ups","Tríceps",4,8,0,60),E("Toes to bar","Toes to bar","Core",4,12,0,60),E("Flexiones","Push-ups","Pecho",4,12,0,60),E("Front lever tuck","Tuck front lever","Espalda/Core",4,10,0,60),E("Flexiones en pino","Handstand push-ups","Hombros",4,8,0,60)],
+      "Dinámico 2":[E("Dominadas","Pull-ups","Espalda",4,12,0,60),E("Fondos en paralelas","Parallel dips","Tríceps",4,10,0,60),E("Front lever tuck","Tuck front lever","Espalda/Core",4,8,0,60)],
+      "Empuje 2":[E("Pino contra pared","Wall handstand hold","Hombros",4,8,0,60),E("Dominadas supinas","Chin-ups","Bíceps",4,10,0,60),E("Plancha","Plank","Core",4,10,0,60)],
+      "Core 2":[E("Fondos en paralelas","Parallel dips","Tríceps",4,12,0,60),E("Hollow hold","Hollow hold","Core",4,8,0,60),E("Pike push-ups","Pike push-ups","Hombros",4,10,0,60)],
+      "Pierna 2":[E("Hollow hold","Hollow hold","Core",4,10,0,60),E("Dominadas","Pull-ups","Espalda",4,12,0,60),E("Sentadilla pistol","Pistol squat","Piernas",4,10,0,60),E("Pino contra pared","Wall handstand hold","Hombros",4,8,0,60)],
+      "Full Body 2":[E("Flexiones diamante","Diamond push-ups","Tríceps",4,8,0,60),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",4,10,0,60),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,12,0,60),E("Dominadas","Pull-ups","Espalda",4,10,0,60)],
+      "Push 2":[E("Toes to bar","Toes to bar","Core",4,12,0,60),E("Dominadas supinas","Chin-ups","Bíceps",4,10,0,60),E("Sentadilla shrimp","Shrimp squat","Piernas",4,10,0,60)],
+      "Legs/Core 2":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,8,0,60),E("Flexiones en pino","Handstand push-ups","Hombros",4,10,0,60),E("Pino contra pared","Wall handstand hold","Hombros",4,10,0,60),E("Hollow hold","Hollow hold","Core",4,8,0,60),E("Sentadilla pistol","Pistol squat","Piernas",4,8,0,60)],
+      "Tracción avanzada 2":[E("Pike push-ups","Pike push-ups","Hombros",4,10,0,60),E("Sentadilla pistol","Pistol squat","Piernas",4,12,0,60),E("Front lever tuck","Tuck front lever","Espalda/Core",4,10,0,60),E("Toes to bar","Toes to bar","Core",4,10,0,60)],
+      "Pull 2":[E("Flexiones arquero","Archer push-ups","Pecho",4,12,0,60),E("Flexiones","Push-ups","Pecho",4,10,0,60),E("Dominadas arquero","Archer pull-ups","Espalda",4,10,0,60)]
     },
-    { // 3
-      "Push":[E("Flexiones","Push-ups","Pecho",4,15,0,60),E("Fondos en paralelas","Parallel dips","Tríceps",4,8,0,75),E("Pike push-ups","Pike push-ups","Hombros",4,10,0,75),E("Flexiones diamante","Diamond push-ups","Tríceps",3,10,0,60)],
-      "Pull":[E("Dominadas","Pull-ups","Espalda",4,8,0,90),E("Dominadas supinas","Chin-ups","Bíceps",3,8,0,75),E("Remo invertido","Inverted row","Espalda",4,12,0,60),E("Elevación de rodillas colgado","Hanging knee raises","Core",3,12,0,60)],
-      "Legs/Core":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,12,0,75),E("Puente a una pierna","Single-leg glute bridge","Glúteos",3,12,0,60),E("L-sit (progresión)","Tuck L-sit","Core",4,15,0,60),E("Hollow hold","Hollow hold","Core",3,25,0,45)],
+    {
+      "Estático 3":[E("Sentadilla pistol","Pistol squat","Piernas",4,14,0,75),E("Flexiones","Push-ups","Pecho",4,10,0,75),E("Dominadas arquero","Archer pull-ups","Espalda",4,12,0,75),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,12,0,75)],
+      "Skills 3":[E("Flexiones en pino","Handstand push-ups","Hombros",4,12,0,75),E("Pike push-ups","Pike push-ups","Hombros",4,10,0,75),E("Dominadas supinas","Chin-ups","Bíceps",4,12,0,75),E("Dominadas arquero","Archer pull-ups","Espalda",4,14,0,75),E("Puente a una pierna","Single-leg glute bridge","Glúteos",4,12,0,75)],
+      "Full Body 3":[E("Dominadas arquero","Archer pull-ups","Espalda",4,12,0,75),E("Puente a una pierna","Single-leg glute bridge","Glúteos",4,14,0,75),E("Flexiones arquero","Archer push-ups","Pecho",4,12,0,75),E("Muscle-up","Muscle-up","Cuerpo superior",4,14,0,75),E("Dominadas supinas","Chin-ups","Bíceps",4,10,0,75)],
+      "Tracción avanzada 3":[E("Dominadas arquero","Archer pull-ups","Espalda",4,14,0,75),E("Flexiones","Push-ups","Pecho",4,12,0,75),E("Sentadilla pistol","Pistol squat","Piernas",4,14,0,75),E("Remo invertido","Inverted row","Espalda",4,12,0,75)],
+      "Empuje 3":[E("Toes to bar","Toes to bar","Core",4,12,0,75),E("Dragon flag","Dragon flag","Core",4,14,0,75),E("Pike push-ups","Pike push-ups","Hombros",4,12,0,75),E("Dominadas arquero","Archer pull-ups","Espalda",4,12,0,75),E("Remo invertido","Inverted row","Espalda",4,14,0,75)],
+      "Skills+Core 3":[E("Dominadas arquero","Archer pull-ups","Espalda",4,12,0,75),E("Front lever tuck","Tuck front lever","Espalda/Core",4,12,0,75),E("Toes to bar","Toes to bar","Core",4,14,0,75),E("Puente a una pierna","Single-leg glute bridge","Glúteos",4,12,0,75)],
+      "Push 3":[E("Muscle-up","Muscle-up","Cuerpo superior",4,12,0,75),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",4,10,0,75),E("Hollow hold","Hollow hold","Core",4,14,0,75),E("Fondos en paralelas","Parallel dips","Tríceps",4,12,0,75),E("Plancha","Plank","Core",4,14,0,75)],
+      "Empuje avanzado 3":[E("Front lever tuck","Tuck front lever","Espalda/Core",4,14,0,75),E("Flexiones arquero","Archer push-ups","Pecho",4,12,0,75),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,12,0,75),E("Pino contra pared","Wall handstand hold","Hombros",4,12,0,75)],
+      "Pierna 3":[E("Pino contra pared","Wall handstand hold","Hombros",4,14,0,75),E("Pike push-ups","Pike push-ups","Hombros",4,10,0,75),E("Front lever tuck","Tuck front lever","Espalda/Core",4,14,0,75),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,14,0,75)],
+      "Core 3":[E("Plancha","Plank","Core",4,12,0,75),E("L-sit","L-sit","Core",4,10,0,75),E("Front lever tuck","Tuck front lever","Espalda/Core",4,10,0,75),E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,12,0,75),E("Flexiones diamante","Diamond push-ups","Tríceps",4,12,0,75)],
+      "Tracción 3":[E("Toes to bar","Toes to bar","Core",4,14,0,75),E("Dragon flag","Dragon flag","Core",4,12,0,75),E("Flexiones diamante","Diamond push-ups","Tríceps",4,14,0,75),E("Hollow hold","Hollow hold","Core",4,10,0,75)],
+      "Dinámico 3":[E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",4,12,0,75),E("Dominadas supinas","Chin-ups","Bíceps",4,14,0,75),E("Dominadas","Pull-ups","Espalda",4,12,0,75)],
+      "Híbrido 3":[E("Sentadilla shrimp","Shrimp squat","Piernas",4,12,0,75),E("Pino contra pared","Wall handstand hold","Hombros",4,12,0,75),E("Hollow hold","Hollow hold","Core",4,10,0,75),E("Front lever tuck","Tuck front lever","Espalda/Core",4,14,0,75),E("L-sit","L-sit","Core",4,10,0,75)],
+      "Legs/Core 3":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",4,12,0,75),E("Flexiones arquero","Archer push-ups","Pecho",4,12,0,75),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",4,12,0,75),E("Pike push-ups","Pike push-ups","Hombros",4,14,0,75)],
+      "Pull 3":[E("L-sit","L-sit","Core",4,14,0,75),E("Puente a una pierna","Single-leg glute bridge","Glúteos",4,14,0,75),E("Muscle-up","Muscle-up","Cuerpo superior",4,12,0,75),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",4,10,0,75)]
     },
-    { // 4
-      "Push":[E("Flexiones arquero","Archer push-ups","Pecho",4,8,0,75),E("Fondos en paralelas","Parallel dips","Tríceps",5,10,0,90),E("Pike push-ups elevadas","Elevated pike push-ups","Hombros",4,10,0,90),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",3,8,0,90)],
-      "Pull":[E("Dominadas","Pull-ups","Espalda",5,10,0,90),E("Dominadas arquero","Archer pull-ups","Espalda",3,5,0,90),E("Remo invertido pies elevados","Feet-elevated inverted row","Espalda",4,12,0,75),E("Toes to bar","Toes to bar","Core",4,8,0,75)],
-      "Legs/Skills":[E("Sentadilla pistol asistida","Assisted pistol squat","Piernas",4,8,0,90),E("Sentadilla búlgara con salto","Jumping split squat","Piernas",3,10,0,75),E("Pino contra pared","Wall handstand hold","Hombros",4,30,0,90),E("Dragon flag (progresión)","Tuck dragon flag","Core",3,8,0,75)],
+    {
+      "Full Body 4":[E("Plancha","Plank","Core",5,10,0,90),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,8,0,90),E("Sentadilla shrimp","Shrimp squat","Piernas",5,8,0,90),E("Dominadas","Pull-ups","Espalda",5,10,0,90)],
+      "Skills+Core 4":[E("Flexiones","Push-ups","Pecho",5,10,0,90),E("Dragon flag","Dragon flag","Core",5,10,0,90),E("Fondos en paralelas","Parallel dips","Tríceps",5,6,0,90),E("Sentadilla shrimp","Shrimp squat","Piernas",5,8,0,90),E("Hollow hold","Hollow hold","Core",5,8,0,90)],
+      "Legs/Core 4":[E("Front lever tuck","Tuck front lever","Espalda/Core",5,8,0,90),E("Flexiones arquero","Archer push-ups","Pecho",5,8,0,90),E("Hollow hold","Hollow hold","Core",5,8,0,90),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,8,0,90)],
+      "Híbrido 4":[E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,8,0,90),E("Dominadas supinas","Chin-ups","Bíceps",5,10,0,90),E("Pino contra pared","Wall handstand hold","Hombros",5,10,0,90),E("Puente a una pierna","Single-leg glute bridge","Glúteos",5,6,0,90),E("L-sit","L-sit","Core",5,8,0,90)],
+      "Tracción 4":[E("Sentadilla shrimp","Shrimp squat","Piernas",5,8,0,90),E("Dragon flag","Dragon flag","Core",5,6,0,90),E("Flexiones en pino","Handstand push-ups","Hombros",5,8,0,90),E("Pino contra pared","Wall handstand hold","Hombros",5,8,0,90)],
+      "Core 4":[E("Dominadas","Pull-ups","Espalda",5,8,0,90),E("Dominadas arquero","Archer pull-ups","Espalda",5,8,0,90),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,8,0,90)],
+      "Pierna 4":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,10,0,90),E("Dragon flag","Dragon flag","Core",5,8,0,90),E("Pike push-ups","Pike push-ups","Hombros",5,10,0,90),E("Hollow hold","Hollow hold","Core",5,8,0,90),E("Sentadilla pistol","Pistol squat","Piernas",5,8,0,90)],
+      "Empuje avanzado 4":[E("Dominadas arquero","Archer pull-ups","Espalda",5,6,0,90),E("Pike push-ups","Pike push-ups","Hombros",5,8,0,90),E("Flexiones en pino","Handstand push-ups","Hombros",5,6,0,90),E("Remo invertido","Inverted row","Espalda",5,10,0,90),E("Sentadilla shrimp","Shrimp squat","Piernas",5,8,0,90)],
+      "Empuje 4":[E("Sentadilla pistol","Pistol squat","Piernas",5,10,0,90),E("Plancha","Plank","Core",5,10,0,90),E("L-sit","L-sit","Core",5,10,0,90),E("Toes to bar","Toes to bar","Core",5,10,0,90)],
+      "Dinámico 4":[E("Puente a una pierna","Single-leg glute bridge","Glúteos",5,8,0,90),E("Flexiones en pino","Handstand push-ups","Hombros",5,8,0,90),E("Flexiones arquero","Archer push-ups","Pecho",5,6,0,90),E("Hollow hold","Hollow hold","Core",5,8,0,90),E("Flexiones","Push-ups","Pecho",5,8,0,90)],
+      "Pull 4":[E("Flexiones en pino","Handstand push-ups","Hombros",5,6,0,90),E("Sentadilla shrimp","Shrimp squat","Piernas",5,6,0,90),E("Hollow hold","Hollow hold","Core",5,8,0,90),E("Puente a una pierna","Single-leg glute bridge","Glúteos",5,8,0,90)],
+      "Tracción avanzada 4":[E("Sentadilla shrimp","Shrimp squat","Piernas",5,10,0,90),E("Plancha","Plank","Core",5,6,0,90),E("Fondos en paralelas","Parallel dips","Tríceps",5,8,0,90)],
+      "Estático 4":[E("Flexiones diamante","Diamond push-ups","Tríceps",5,6,0,90),E("Sentadilla shrimp","Shrimp squat","Piernas",5,10,0,90),E("Dominadas supinas","Chin-ups","Bíceps",5,6,0,90),E("Muscle-up","Muscle-up","Cuerpo superior",5,8,0,90)],
+      "Push 4":[E("Hollow hold","Hollow hold","Core",5,10,0,90),E("Front lever tuck","Tuck front lever","Espalda/Core",5,8,0,90),E("Muscle-up","Muscle-up","Cuerpo superior",5,8,0,90),E("Dragon flag","Dragon flag","Core",5,8,0,90)],
+      "Skills 4":[E("Flexiones diamante","Diamond push-ups","Tríceps",5,8,0,90),E("Hollow hold","Hollow hold","Core",5,8,0,90),E("Muscle-up","Muscle-up","Cuerpo superior",5,8,0,90),E("Plancha","Plank","Core",5,8,0,90)]
     },
-    { // 5
-      "Push (élite)":[E("Flexiones a una mano (prog)","One-arm push-up progression","Pecho",5,5,0,120),E("Fondos coreanos","Korean dips","Tríceps",4,8,0,120),E("Flexiones en pino","Handstand push-ups","Hombros",5,5,0,120),E("Planche tuck","Tuck planche hold","Hombros",4,15,0,120)],
-      "Pull (élite)":[E("Muscle-up","Muscle-up","Espalda/Tríceps",5,4,0,150),E("Dominadas a una mano (prog)","One-arm pull-up progression","Espalda",4,3,0,150),E("Front lever (tuck)","Tuck front lever","Espalda/Core",5,10,0,120),E("Limpiaparabrisas","Windshield wipers","Oblicuos",4,8,0,90)],
-      "Legs/Skills (élite)":[E("Sentadilla pistol","Pistol squat","Piernas",5,8,0,120),E("Sentadilla shrimp","Shrimp squat","Piernas",4,6,0,120),E("Pino libre","Freestanding handstand","Hombros",5,30,0,120),E("Bandera humana (prog)","Human flag progression","Cuerpo",4,10,0,120)],
-    },
+    {
+      "Full Body 5":[E("Dominadas","Pull-ups","Espalda",5,6,0,120),E("Pino contra pared","Wall handstand hold","Hombros",5,6,0,120),E("Sentadilla pistol","Pistol squat","Piernas",5,8,0,120),E("Puente a una pierna","Single-leg glute bridge","Glúteos",5,8,0,120)],
+      "Empuje 5":[E("Flexiones arquero","Archer push-ups","Pecho",5,6,0,120),E("Toes to bar","Toes to bar","Core",5,8,0,120),E("Sentadilla pistol","Pistol squat","Piernas",5,8,0,120),E("L-sit","L-sit","Core",5,6,0,120),E("Dominadas supinas","Chin-ups","Bíceps",5,4,0,120)],
+      "Core 5":[E("Sentadilla shrimp","Shrimp squat","Piernas",5,6,0,120),E("Toes to bar","Toes to bar","Core",5,4,0,120),E("Pino contra pared","Wall handstand hold","Hombros",5,8,0,120)],
+      "Estático 5":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,6,0,120),E("Fondos en paralelas","Parallel dips","Tríceps",5,6,0,120),E("Puente a una pierna","Single-leg glute bridge","Glúteos",5,6,0,120),E("Dominadas supinas","Chin-ups","Bíceps",5,6,0,120)],
+      "Dinámico 5":[E("Remo invertido","Inverted row","Espalda",5,8,0,120),E("Pino contra pared","Wall handstand hold","Hombros",5,4,0,120),E("Flexiones diamante","Diamond push-ups","Tríceps",5,4,0,120),E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,6,0,120),E("Toes to bar","Toes to bar","Core",5,8,0,120)],
+      "Tracción avanzada 5":[E("Flexiones","Push-ups","Pecho",5,6,0,120),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,6,0,120),E("Fondos en paralelas","Parallel dips","Tríceps",5,6,0,120),E("Front lever tuck","Tuck front lever","Espalda/Core",5,4,0,120),E("Pike push-ups","Pike push-ups","Hombros",5,6,0,120)],
+      "Push 5":[E("Flexiones arquero","Archer push-ups","Pecho",5,6,0,120),E("Muscle-up","Muscle-up","Cuerpo superior",5,4,0,120),E("Pino contra pared","Wall handstand hold","Hombros",5,8,0,120),E("Toes to bar","Toes to bar","Core",5,6,0,120)],
+      "Tracción 5":[E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,4,0,120),E("Toes to bar","Toes to bar","Core",5,4,0,120),E("Flexiones arquero","Archer push-ups","Pecho",5,6,0,120),E("Front lever tuck","Tuck front lever","Espalda/Core",5,8,0,120)],
+      "Legs/Core 5":[E("Pike push-ups","Pike push-ups","Hombros",5,8,0,120),E("Hollow hold","Hollow hold","Core",5,4,0,120),E("Dominadas","Pull-ups","Espalda",5,4,0,120)],
+      "Pull 5":[E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,8,0,120),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,4,0,120),E("Front lever tuck","Tuck front lever","Espalda/Core",5,6,0,120),E("Pike push-ups","Pike push-ups","Hombros",5,8,0,120)],
+      "Empuje avanzado 5":[E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,6,0,120),E("Remo invertido","Inverted row","Espalda",5,6,0,120),E("Muscle-up","Muscle-up","Cuerpo superior",5,8,0,120)],
+      "Pierna 5":[E("Toes to bar","Toes to bar","Core",5,4,0,120),E("Pino contra pared","Wall handstand hold","Hombros",5,6,0,120),E("Pike push-ups","Pike push-ups","Hombros",5,8,0,120),E("Flexiones arquero","Archer push-ups","Pecho",5,6,0,120)],
+      "Híbrido 5":[E("Toes to bar","Toes to bar","Core",5,8,0,120),E("Pike push-ups","Pike push-ups","Hombros",5,6,0,120),E("Sentadilla búlgara","Bulgarian split squat","Piernas",5,4,0,120),E("Dragon flag","Dragon flag","Core",5,4,0,120)],
+      "Skills+Core 5":[E("Pseudo-planche push-ups","Pseudo planche push-ups","Pecho/Hombros",5,8,0,120),E("Hollow hold","Hollow hold","Core",5,6,0,120),E("Sentadilla pistol","Pistol squat","Piernas",5,6,0,120),E("Muscle-up","Muscle-up","Cuerpo superior",5,6,0,120)],
+      "Skills 5":[E("Toes to bar","Toes to bar","Core",5,6,0,120),E("Flexiones arquero","Archer push-ups","Pecho",5,4,0,120),E("Dominadas","Pull-ups","Espalda",5,6,0,120),E("Plancha","Plank","Core",5,6,0,120)]
+    }
   ],
-  "Resistencia muscular · Muscular endurance": [
-    { // 1
-      "Circuito A":[E("Sentadilla libre","Bodyweight squat","Piernas",2,15,0,30),E("Flexiones de rodillas","Knee push-ups","Pecho",2,12,0,30),E("Plancha","Plank","Core",2,20,0,30),E("Jumping jacks","Jumping jacks","Cardio",2,30,0,30)],
+  "Resistencia · Endurance": [
+    {
+      "Circuito C":[E("Plancha","Plank","Core",2,17,0,30),E("Mountain climbers","Mountain climbers","Cardio",2,17,0,30),E("Puente de glúteo","Glute bridge","Glúteos",2,15,0,30)],
+      "Total":[E("Dominadas","Pull-ups","Espalda",2,13,0,30),E("Zancadas","Walking lunges","Piernas",2,13,0,30),E("Sentadilla libre","Air squat","Piernas",2,15,0,30),E("Sentadilla goblet","Goblet squat","Piernas",2,15,0,30)],
+      "Fuerza-resistencia":[E("Flexiones","Push-ups","Pecho",2,17,0,30),E("Sentadilla con salto","Jump squat","Piernas",2,17,0,30),E("Sentadilla goblet","Goblet squat","Piernas",2,17,0,30)],
+      "Circuito B":[E("Elevación de piernas","Leg raises","Core",2,13,0,30),E("Puente de glúteo","Glute bridge","Glúteos",2,15,0,30),E("Wall balls","Wall balls","Cuerpo",2,13,0,30)],
+      "Mixto":[E("Puente de glúteo","Glute bridge","Glúteos",2,13,0,30),E("Mountain climbers","Mountain climbers","Cardio",2,15,0,30),E("Sentadilla con salto","Jump squat","Piernas",2,17,0,30),E("Sentadilla goblet","Goblet squat","Piernas",2,15,0,30)],
+      "Tren inferior":[E("Swing con mancuerna","DB swing","Glúteos",2,13,0,30),E("Zancadas","Walking lunges","Piernas",2,17,0,30),E("Remo con mancuerna","DB row","Espalda",2,13,0,30)],
+      "Chipper":[E("Burpees","Burpees","Cuerpo completo",2,15,0,30),E("Remo invertido","Inverted row","Espalda",2,13,0,30),E("Sentadilla libre","Air squat","Piernas",2,15,0,30),E("Plancha","Plank","Core",2,17,0,30)],
+      "Tren superior":[E("Fondos","Dips","Tríceps",2,15,0,30),E("Elevación de piernas","Leg raises","Core",2,15,0,30),E("Wall balls","Wall balls","Cuerpo",2,15,0,30),E("Zancadas","Walking lunges","Piernas",2,13,0,30)],
+      "Circuito A":[E("Mountain climbers","Mountain climbers","Cardio",2,13,0,30),E("Remo con mancuerna","DB row","Espalda",2,15,0,30),E("Wall balls","Wall balls","Cuerpo",2,13,0,30)],
+      "Core/Cardio":[E("Box jumps","Box jumps","Piernas",2,15,0,30),E("Fondos","Dips","Tríceps",2,15,0,30),E("Plancha","Plank","Core",2,15,0,30),E("Sentadilla libre","Air squat","Piernas",2,15,0,30),E("Swing con mancuerna","DB swing","Glúteos",2,13,0,30)],
+      "Metabólico":[E("Swing con mancuerna","DB swing","Glúteos",2,13,0,30),E("Fondos","Dips","Tríceps",2,13,0,30),E("Sentadilla libre","Air squat","Piernas",2,15,0,30)],
+      "AMRAP":[E("Dominadas","Pull-ups","Espalda",2,15,0,30),E("Plancha","Plank","Core",2,15,0,30),E("Sentadilla con salto","Jump squat","Piernas",2,13,0,30)],
+      "Híbrido":[E("Swing con mancuerna","DB swing","Glúteos",2,15,0,30),E("Mountain climbers","Mountain climbers","Cardio",2,15,0,30),E("Elevación de piernas","Leg raises","Core",2,13,0,30),E("Thruster mancuernas","DB thruster","Cuerpo",2,15,0,30),E("Plancha","Plank","Core",2,13,0,30)],
+      "Full Body vol":[E("Burpees","Burpees","Cuerpo completo",2,17,0,30),E("Swing con mancuerna","DB swing","Glúteos",2,13,0,30),E("Flexiones","Push-ups","Pecho",2,17,0,30)],
+      "Density":[E("Sentadilla goblet","Goblet squat","Piernas",2,17,0,30),E("Mountain climbers","Mountain climbers","Cardio",2,13,0,30),E("Zancadas","Walking lunges","Piernas",2,15,0,30),E("Wall balls","Wall balls","Cuerpo",2,15,0,30)]
     },
-    { // 2
-      "Circuito A":[E("Sentadilla libre","Bodyweight squat","Piernas",3,20,0,30),E("Flexiones","Push-ups","Pecho",3,12,0,30),E("Zancadas","Lunges","Piernas",3,16,0,30),E("Mountain climbers","Mountain climbers","Cardio",3,30,0,30)],
-      "Circuito B":[E("Remo invertido","Inverted row","Espalda",3,12,0,30),E("Puente de glúteo","Glute bridge","Glúteos",3,20,0,30),E("Plancha lateral","Side plank",  "Core",3,20,0,30),E("Burpees","Burpees","Cuerpo completo",3,10,0,45)],
+    {
+      "Density 2":[E("Sentadilla libre","Air squat","Piernas",3,16,0,30),E("Swing con mancuerna","DB swing","Glúteos",3,18,0,30),E("Plancha","Plank","Core",3,16,0,30),E("Mountain climbers","Mountain climbers","Cardio",3,20,0,30),E("Remo con mancuerna","DB row","Espalda",3,18,0,30)],
+      "Circuito C 2":[E("Thruster mancuernas","DB thruster","Cuerpo",3,20,0,30),E("Fondos","Dips","Tríceps",3,20,0,30),E("Swing con mancuerna","DB swing","Glúteos",3,16,0,30)],
+      "Circuito A 2":[E("Wall balls","Wall balls","Cuerpo",3,18,0,30),E("Zancadas","Walking lunges","Piernas",3,20,0,30),E("Flexiones","Push-ups","Pecho",3,18,0,30),E("Box jumps","Box jumps","Piernas",3,20,0,30)],
+      "Metabólico 2":[E("Remo invertido","Inverted row","Espalda",3,20,0,30),E("Fondos","Dips","Tríceps",3,16,0,30),E("Puente de glúteo","Glute bridge","Glúteos",3,16,0,30)],
+      "Circuito B 2":[E("Puente de glúteo","Glute bridge","Glúteos",3,18,0,30),E("Swing con mancuerna","DB swing","Glúteos",3,20,0,30),E("Sentadilla goblet","Goblet squat","Piernas",3,18,0,30),E("Elevación de piernas","Leg raises","Core",3,18,0,30),E("Remo con mancuerna","DB row","Espalda",3,20,0,30)],
+      "Tren inferior 2":[E("Swing con mancuerna","DB swing","Glúteos",3,16,0,30),E("Zancadas","Walking lunges","Piernas",3,18,0,30),E("Thruster mancuernas","DB thruster","Cuerpo",3,16,0,30),E("Fondos","Dips","Tríceps",3,18,0,30)],
+      "Tren superior 2":[E("Box jumps","Box jumps","Piernas",3,18,0,30),E("Mountain climbers","Mountain climbers","Cardio",3,18,0,30),E("Remo con mancuerna","DB row","Espalda",3,20,0,30),E("Flexiones","Push-ups","Pecho",3,18,0,30),E("Wall balls","Wall balls","Cuerpo",3,20,0,30)],
+      "Fuerza-resistencia 2":[E("Remo invertido","Inverted row","Espalda",3,18,0,30),E("Zancadas","Walking lunges","Piernas",3,16,0,30),E("Burpees","Burpees","Cuerpo completo",3,18,0,30),E("Sentadilla con salto","Jump squat","Piernas",3,18,0,30)],
+      "Chipper 2":[E("Zancadas","Walking lunges","Piernas",3,16,0,30),E("Swing con mancuerna","DB swing","Glúteos",3,18,0,30),E("Plancha","Plank","Core",3,18,0,30),E("Thruster mancuernas","DB thruster","Cuerpo",3,18,0,30)],
+      "AMRAP 2":[E("Sentadilla con salto","Jump squat","Piernas",3,16,0,30),E("Box jumps","Box jumps","Piernas",3,20,0,30),E("Swing con mancuerna","DB swing","Glúteos",3,16,0,30)],
+      "Total 2":[E("Remo invertido","Inverted row","Espalda",3,18,0,30),E("Sentadilla libre","Air squat","Piernas",3,18,0,30),E("Flexiones","Push-ups","Pecho",3,18,0,30),E("Remo con mancuerna","DB row","Espalda",3,20,0,30)],
+      "Híbrido 2":[E("Zancadas","Walking lunges","Piernas",3,16,0,30),E("Wall balls","Wall balls","Cuerpo",3,18,0,30),E("Elevación de piernas","Leg raises","Core",3,20,0,30),E("Sentadilla libre","Air squat","Piernas",3,18,0,30)],
+      "Mixto 2":[E("Mountain climbers","Mountain climbers","Cardio",3,20,0,30),E("Remo invertido","Inverted row","Espalda",3,16,0,30),E("Flexiones","Push-ups","Pecho",3,18,0,30)],
+      "Full Body vol 2":[E("Sentadilla con salto","Jump squat","Piernas",3,20,0,30),E("Dominadas","Pull-ups","Espalda",3,18,0,30),E("Sentadilla libre","Air squat","Piernas",3,18,0,30),E("Thruster mancuernas","DB thruster","Cuerpo",3,18,0,30),E("Mountain climbers","Mountain climbers","Cardio",3,18,0,30)],
+      "Core/Cardio 2":[E("Wall balls","Wall balls","Cuerpo",3,18,0,30),E("Box jumps","Box jumps","Piernas",3,18,0,30),E("Puente de glúteo","Glute bridge","Glúteos",3,20,0,30),E("Sentadilla libre","Air squat","Piernas",3,20,0,30)]
     },
-    { // 3
-      "AMRAP 20'":[E("Sentadilla libre","Air squat","Piernas",5,20,0,20),E("Flexiones","Push-ups","Pecho",5,15,0,20),E("Remo invertido","Inverted row","Espalda",5,12,0,20),E("Burpees","Burpees","Cuerpo completo",5,12,0,30)],
-      "Core/Cardio":[E("Mountain climbers","Mountain climbers","Cardio",4,40,0,30),E("Elevación de piernas","Leg raises","Core",4,15,0,30),E("Plancha","Plank","Core",4,40,0,30),E("Skipping","High knees","Cardio",4,40,0,30)],
+    {
+      "Total 3":[E("Plancha","Plank","Core",4,20,15,30),E("Dominadas","Pull-ups","Espalda",4,20,10,30),E("Fondos","Dips","Tríceps",4,18,10,30),E("Burpees","Burpees","Cuerpo completo",4,20,5,30),E("Sentadilla goblet","Goblet squat","Piernas",4,20,5,30)],
+      "Tren superior 3":[E("Fondos","Dips","Tríceps",4,20,10,30),E("Plancha","Plank","Core",4,20,5,30),E("Swing con mancuerna","DB swing","Glúteos",4,20,15,30),E("Zancadas","Walking lunges","Piernas",4,20,10,30),E("Flexiones","Push-ups","Pecho",4,20,10,30)],
+      "Mixto 3":[E("Plancha","Plank","Core",4,20,10,30),E("Sentadilla libre","Air squat","Piernas",4,22,10,30),E("Elevación de piernas","Leg raises","Core",4,20,15,30),E("Sentadilla goblet","Goblet squat","Piernas",4,18,5,30)],
+      "Fuerza-resistencia 3":[E("Swing con mancuerna","DB swing","Glúteos",4,22,5,30),E("Elevación de piernas","Leg raises","Core",4,20,10,30),E("Sentadilla libre","Air squat","Piernas",4,20,10,30)],
+      "Full Body vol 3":[E("Mountain climbers","Mountain climbers","Cardio",4,20,5,30),E("Flexiones","Push-ups","Pecho",4,20,5,30),E("Sentadilla libre","Air squat","Piernas",4,20,15,30),E("Zancadas","Walking lunges","Piernas",4,18,10,30)],
+      "Tren inferior 3":[E("Mountain climbers","Mountain climbers","Cardio",4,22,15,30),E("Puente de glúteo","Glute bridge","Glúteos",4,20,10,30),E("Burpees","Burpees","Cuerpo completo",4,20,10,30),E("Plancha","Plank","Core",4,20,15,30)],
+      "AMRAP 3":[E("Sentadilla goblet","Goblet squat","Piernas",4,18,15,30),E("Puente de glúteo","Glute bridge","Glúteos",4,18,10,30),E("Burpees","Burpees","Cuerpo completo",4,20,10,30),E("Plancha","Plank","Core",4,18,15,30)],
+      "Circuito C 3":[E("Mountain climbers","Mountain climbers","Cardio",4,20,10,30),E("Zancadas","Walking lunges","Piernas",4,18,10,30),E("Swing con mancuerna","DB swing","Glúteos",4,22,5,30),E("Burpees","Burpees","Cuerpo completo",4,20,10,30)],
+      "Metabólico 3":[E("Zancadas","Walking lunges","Piernas",4,18,5,30),E("Plancha","Plank","Core",4,18,15,30),E("Wall balls","Wall balls","Cuerpo",4,22,15,30),E("Sentadilla con salto","Jump squat","Piernas",4,20,15,30)],
+      "Core/Cardio 3":[E("Sentadilla con salto","Jump squat","Piernas",4,22,10,30),E("Plancha","Plank","Core",4,20,15,30),E("Elevación de piernas","Leg raises","Core",4,18,5,30),E("Flexiones","Push-ups","Pecho",4,20,5,30),E("Remo con mancuerna","DB row","Espalda",4,20,10,30)],
+      "Circuito B 3":[E("Zancadas","Walking lunges","Piernas",4,22,10,30),E("Mountain climbers","Mountain climbers","Cardio",4,18,5,30),E("Burpees","Burpees","Cuerpo completo",4,20,15,30)],
+      "Circuito A 3":[E("Remo con mancuerna","DB row","Espalda",4,20,5,30),E("Burpees","Burpees","Cuerpo completo",4,18,10,30),E("Elevación de piernas","Leg raises","Core",4,20,10,30)],
+      "Chipper 3":[E("Elevación de piernas","Leg raises","Core",4,18,5,30),E("Wall balls","Wall balls","Cuerpo",4,22,15,30),E("Sentadilla goblet","Goblet squat","Piernas",4,20,5,30),E("Puente de glúteo","Glute bridge","Glúteos",4,20,5,30),E("Remo invertido","Inverted row","Espalda",4,22,5,30)],
+      "Density 3":[E("Dominadas","Pull-ups","Espalda",4,20,10,30),E("Thruster mancuernas","DB thruster","Cuerpo",4,20,5,30),E("Remo invertido","Inverted row","Espalda",4,22,5,30),E("Sentadilla libre","Air squat","Piernas",4,20,15,30)],
+      "Híbrido 3":[E("Dominadas","Pull-ups","Espalda",4,22,10,30),E("Wall balls","Wall balls","Cuerpo",4,20,15,30),E("Zancadas","Walking lunges","Piernas",4,20,10,30),E("Mountain climbers","Mountain climbers","Cardio",4,22,5,30),E("Fondos","Dips","Tríceps",4,20,15,30)]
     },
-    { // 4
-      "Circuito metabólico":[E("Thruster con mancuernas","DB thruster","Cuerpo",5,15,12,30),E("Burpees","Burpees","Cuerpo completo",5,15,0,30),E("Swing con mancuerna","DB swing","Glúteos",5,20,16,30),E("Mountain climbers","Mountain climbers","Cardio",5,40,0,30)],
-      "Fuerza-resistencia":[E("Sentadilla goblet","Goblet squat","Piernas",4,20,16,45),E("Flexiones","Push-ups","Pecho",4,20,0,45),E("Remo con mancuerna","DB row","Espalda",4,15,14,45),E("Zancadas","Walking lunges","Piernas",4,24,0,45)],
+    {
+      "Híbrido 4":[E("Sentadilla con salto","Jump squat","Piernas",5,22,16,40),E("Fondos","Dips","Tríceps",5,22,16,40),E("Remo con mancuerna","DB row","Espalda",5,18,21,40)],
+      "Metabólico 4":[E("Fondos","Dips","Tríceps",5,18,21,40),E("Elevación de piernas","Leg raises","Core",5,20,16,40),E("Puente de glúteo","Glute bridge","Glúteos",5,20,16,40)],
+      "Tren superior 4":[E("Flexiones","Push-ups","Pecho",5,22,16,40),E("Remo con mancuerna","DB row","Espalda",5,20,16,40),E("Zancadas","Walking lunges","Piernas",5,20,11,40),E("Mountain climbers","Mountain climbers","Cardio",5,18,21,40)],
+      "Mixto 4":[E("Elevación de piernas","Leg raises","Core",5,18,21,40),E("Mountain climbers","Mountain climbers","Cardio",5,18,21,40),E("Wall balls","Wall balls","Cuerpo",5,20,16,40),E("Dominadas","Pull-ups","Espalda",5,18,11,40),E("Swing con mancuerna","DB swing","Glúteos",5,18,16,40)],
+      "Density 4":[E("Remo con mancuerna","DB row","Espalda",5,22,21,40),E("Wall balls","Wall balls","Cuerpo",5,18,16,40),E("Sentadilla con salto","Jump squat","Piernas",5,20,21,40),E("Mountain climbers","Mountain climbers","Cardio",5,20,21,40)],
+      "Fuerza-resistencia 4":[E("Sentadilla con salto","Jump squat","Piernas",5,18,21,40),E("Mountain climbers","Mountain climbers","Cardio",5,20,16,40),E("Swing con mancuerna","DB swing","Glúteos",5,18,16,40)],
+      "Tren inferior 4":[E("Sentadilla goblet","Goblet squat","Piernas",5,18,16,40),E("Wall balls","Wall balls","Cuerpo",5,20,16,40),E("Dominadas","Pull-ups","Espalda",5,22,16,40),E("Remo con mancuerna","DB row","Espalda",5,20,21,40)],
+      "Circuito B 4":[E("Thruster mancuernas","DB thruster","Cuerpo",5,22,21,40),E("Box jumps","Box jumps","Piernas",5,20,11,40),E("Elevación de piernas","Leg raises","Core",5,20,11,40)],
+      "Circuito C 4":[E("Fondos","Dips","Tríceps",5,18,16,40),E("Sentadilla con salto","Jump squat","Piernas",5,20,16,40),E("Puente de glúteo","Glute bridge","Glúteos",5,18,16,40),E("Elevación de piernas","Leg raises","Core",5,18,21,40)],
+      "Circuito A 4":[E("Plancha","Plank","Core",5,20,21,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,22,11,40),E("Wall balls","Wall balls","Cuerpo",5,18,16,40)],
+      "Full Body vol 4":[E("Dominadas","Pull-ups","Espalda",5,22,16,40),E("Box jumps","Box jumps","Piernas",5,20,16,40),E("Burpees","Burpees","Cuerpo completo",5,20,11,40),E("Remo con mancuerna","DB row","Espalda",5,20,11,40)],
+      "Total 4":[E("Flexiones","Push-ups","Pecho",5,20,16,40),E("Burpees","Burpees","Cuerpo completo",5,20,21,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,18,11,40),E("Remo con mancuerna","DB row","Espalda",5,22,16,40),E("Remo invertido","Inverted row","Espalda",5,20,11,40)],
+      "AMRAP 4":[E("Wall balls","Wall balls","Cuerpo",5,22,16,40),E("Sentadilla goblet","Goblet squat","Piernas",5,22,16,40),E("Elevación de piernas","Leg raises","Core",5,20,21,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,20,21,40)],
+      "Core/Cardio 4":[E("Sentadilla libre","Air squat","Piernas",5,20,16,40),E("Fondos","Dips","Tríceps",5,18,21,40),E("Plancha","Plank","Core",5,18,16,40)],
+      "Chipper 4":[E("Mountain climbers","Mountain climbers","Cardio",5,20,16,40),E("Wall balls","Wall balls","Cuerpo",5,20,16,40),E("Fondos","Dips","Tríceps",5,18,21,40),E("Elevación de piernas","Leg raises","Core",5,20,16,40)]
     },
-    { // 5
-      "HIIT/Híbrido":[E("Thruster","Thruster","Cuerpo",6,15,20,20),E("Burpees con salto","Burpee box jump","Cuerpo completo",6,12,0,30),E("Swing pesado","Heavy KB swing","Glúteos",6,20,24,30),E("Sprint en el lugar","High knees sprint","Cardio",6,30,0,20)],
-      "Resistencia de fuerza":[E("Sentadilla con barra","Back squat","Piernas",5,20,40,60),E("Press de banca","Bench press","Pecho",5,20,30,60),E("Remo con barra","Barbell row","Espalda",5,20,35,60),E("Peso muerto rumano","RDL","Femoral",5,20,45,60)],
-    },
+    {
+      "Circuito C 5":[E("Plancha","Plank","Core",5,25,20,40),E("Fondos","Dips","Tríceps",5,23,25,40),E("Sentadilla goblet","Goblet squat","Piernas",5,25,20,40),E("Remo con mancuerna","DB row","Espalda",5,25,20,40),E("Zancadas","Walking lunges","Piernas",5,23,20,40)],
+      "Full Body vol 5":[E("Swing con mancuerna","DB swing","Glúteos",5,25,20,40),E("Sentadilla goblet","Goblet squat","Piernas",5,25,20,40),E("Remo con mancuerna","DB row","Espalda",5,27,15,40),E("Sentadilla con salto","Jump squat","Piernas",5,27,15,40)],
+      "Híbrido 5":[E("Dominadas","Pull-ups","Espalda",5,27,20,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,27,15,40),E("Remo invertido","Inverted row","Espalda",5,25,20,40)],
+      "Circuito B 5":[E("Mountain climbers","Mountain climbers","Cardio",5,25,20,40),E("Remo con mancuerna","DB row","Espalda",5,23,25,40),E("Box jumps","Box jumps","Piernas",5,25,20,40),E("Zancadas","Walking lunges","Piernas",5,25,15,40)],
+      "Total 5":[E("Box jumps","Box jumps","Piernas",5,25,20,40),E("Wall balls","Wall balls","Cuerpo",5,27,15,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,25,25,40)],
+      "Fuerza-resistencia 5":[E("Sentadilla con salto","Jump squat","Piernas",5,23,20,40),E("Remo con mancuerna","DB row","Espalda",5,25,15,40),E("Dominadas","Pull-ups","Espalda",5,25,20,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,23,15,40),E("Sentadilla libre","Air squat","Piernas",5,25,20,40)],
+      "AMRAP 5":[E("Sentadilla goblet","Goblet squat","Piernas",5,25,20,40),E("Puente de glúteo","Glute bridge","Glúteos",5,23,15,40),E("Remo invertido","Inverted row","Espalda",5,25,20,40),E("Thruster mancuernas","DB thruster","Cuerpo",5,27,20,40)],
+      "Density 5":[E("Puente de glúteo","Glute bridge","Glúteos",5,25,20,40),E("Mountain climbers","Mountain climbers","Cardio",5,27,15,40),E("Dominadas","Pull-ups","Espalda",5,25,20,40),E("Burpees","Burpees","Cuerpo completo",5,25,20,40),E("Sentadilla con salto","Jump squat","Piernas",5,23,20,40)],
+      "Metabólico 5":[E("Plancha","Plank","Core",5,25,15,40),E("Flexiones","Push-ups","Pecho",5,23,15,40),E("Sentadilla con salto","Jump squat","Piernas",5,23,15,40)],
+      "Mixto 5":[E("Remo con mancuerna","DB row","Espalda",5,23,20,40),E("Box jumps","Box jumps","Piernas",5,27,20,40),E("Sentadilla con salto","Jump squat","Piernas",5,25,15,40)],
+      "Core/Cardio 5":[E("Remo con mancuerna","DB row","Espalda",5,25,25,40),E("Remo invertido","Inverted row","Espalda",5,23,15,40),E("Wall balls","Wall balls","Cuerpo",5,25,15,40),E("Sentadilla goblet","Goblet squat","Piernas",5,23,25,40)],
+      "Chipper 5":[E("Thruster mancuernas","DB thruster","Cuerpo",5,27,20,40),E("Wall balls","Wall balls","Cuerpo",5,25,15,40),E("Elevación de piernas","Leg raises","Core",5,27,20,40),E("Burpees","Burpees","Cuerpo completo",5,27,20,40)],
+      "Tren inferior 5":[E("Sentadilla libre","Air squat","Piernas",5,23,25,40),E("Elevación de piernas","Leg raises","Core",5,25,15,40),E("Zancadas","Walking lunges","Piernas",5,23,15,40),E("Box jumps","Box jumps","Piernas",5,25,20,40)],
+      "Circuito A 5":[E("Sentadilla goblet","Goblet squat","Piernas",5,25,15,40),E("Wall balls","Wall balls","Cuerpo",5,25,20,40),E("Box jumps","Box jumps","Piernas",5,25,25,40),E("Sentadilla libre","Air squat","Piernas",5,23,15,40),E("Flexiones","Push-ups","Pecho",5,23,15,40)],
+      "Tren superior 5":[E("Burpees","Burpees","Cuerpo completo",5,27,20,40),E("Mountain climbers","Mountain climbers","Cardio",5,23,20,40),E("Plancha","Plank","Core",5,25,20,40),E("Box jumps","Box jumps","Piernas",5,23,25,40)]
+    }
   ],
+  "Intervalos · Intervals": [
+    {
+      "Escalera":[E("Mountain climbers","Mountain climbers","Cardio",6,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",6,30,0,60),E("Rodillas altas","High knees","Cardio",6,30,0,60),E("Salto largo","Broad jumps","Piernas",6,30,0,60),E("Tuck jumps","Tuck jumps","Piernas",6,30,0,60)],
+      "Pliometría":[E("Sprint en subida","Hill sprint","Cardio",6,30,0,60),E("Bounding","Bounding","Piernas",6,30,0,60),E("Mountain climbers","Mountain climbers","Cardio",6,30,0,60)],
+      "Plyo box":[E("Salto en profundidad","Depth jumps","Piernas",6,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",6,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",6,30,0,60)],
+      "Sprint corto":[E("Saltos de cuerda","Jump rope","Cardio",6,30,0,60),E("Saltos al cajón","Box jumps","Piernas",6,30,0,60),E("Sprint","Sprint","Cardio",6,30,0,60)],
+      "Sprint clásico":[E("Saltos al cajón","Box jumps","Piernas",6,30,0,60),E("Sentadilla con salto","Jump squat","Piernas",6,30,0,60),E("Mountain climbers","Mountain climbers","Cardio",6,30,0,60),E("Sprint 400m","Sprint 400m","Cardio",6,30,0,60)],
+      "Saltos":[E("Skipping lateral","Lateral skips","Cardio",6,30,0,60),E("Bounding","Bounding","Piernas",6,30,0,60),E("Tuck jumps","Tuck jumps","Piernas",6,30,0,60),E("Salto largo","Broad jumps","Piernas",6,30,0,60),E("Sprint en subida","Hill sprint","Cardio",6,30,0,60)],
+      "Doble salto":[E("Sprint","Sprint","Cardio",6,30,0,60),E("Rodillas altas","High knees","Cardio",6,30,0,60),E("Sentadilla con salto","Jump squat","Piernas",6,30,0,60)],
+      "Pirámide":[E("Bounding","Bounding","Piernas",6,30,0,60),E("Rodillas altas","High knees","Cardio",6,30,0,60),E("Sprint 200m","Sprint 200m","Cardio",6,30,0,60),E("Trote recuperación","Recovery jog","Cardio",6,30,0,60),E("Saltos al cajón","Box jumps","Piernas",6,30,0,60)],
+      "Sprint colina":[E("Saltos al cajón","Box jumps","Piernas",6,30,0,60),E("Saltos de cuerda","Jump rope","Cardio",6,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",6,30,0,60),E("Sentadilla con salto","Jump squat","Piernas",6,30,0,60)],
+      "Sprint pista":[E("Plancha","Plank","Core",6,30,0,60),E("Salto largo","Broad jumps","Piernas",6,30,0,60),E("Mountain climbers","Mountain climbers","Cardio",6,30,0,60),E("Skipping lateral","Lateral skips","Cardio",6,30,0,60)],
+      "Patinador":[E("Saltos de patinador","Skater jumps","Cardio",6,30,0,60),E("Trote recuperación","Recovery jog","Cardio",6,30,0,60),E("Mountain climbers","Mountain climbers","Cardio",6,30,0,60)],
+      "Recuperación activa":[E("Bounding","Bounding","Piernas",6,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",6,30,0,60),E("Saltos al cajón","Box jumps","Piernas",6,30,0,60)],
+      "Cuerda y skipping":[E("Bounding","Bounding","Piernas",6,30,0,60),E("Sprint","Sprint","Cardio",6,30,0,60),E("Sprint 400m","Sprint 400m","Cardio",6,30,0,60)],
+      "Mixto sprint+core":[E("Salto en profundidad","Depth jumps","Piernas",6,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",6,30,0,60),E("Plancha","Plank","Core",6,30,0,60),E("Sprint","Sprint","Cardio",6,30,0,60),E("Sprint 200m","Sprint 200m","Cardio",6,30,0,60)],
+      "Sprint largo":[E("Sentadilla con salto","Jump squat","Piernas",6,30,0,60),E("Plancha","Plank","Core",6,30,0,60),E("Talones al glúteo","Butt kicks","Cardio",6,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",6,30,0,60)]
+    },
+    {
+      "Pirámide 2":[E("Sprint","Sprint","Cardio",8,40,0,40),E("Saltos al cajón","Box jumps","Piernas",8,40,0,40),E("Tuck jumps","Tuck jumps","Piernas",8,40,0,40),E("Salto doble","Double unders","Cardio",8,40,0,40)],
+      "Cuerda y skipping 2":[E("Sprint 400m","Sprint 400m","Cardio",8,40,0,40),E("Sprint 100m","Sprint 100m","Cardio",8,40,0,40),E("Rodillas altas","High knees","Cardio",8,40,0,40),E("Bounding","Bounding","Piernas",8,40,0,40)],
+      "Plyo box 2":[E("Salto en profundidad","Depth jumps","Piernas",8,40,0,40),E("Sprint 400m","Sprint 400m","Cardio",8,40,0,40),E("Saltos de cuerda","Jump rope","Cardio",8,40,0,40),E("Talones al glúteo","Butt kicks","Cardio",8,40,0,40)],
+      "Sprint pista 2":[E("Sprint 400m","Sprint 400m","Cardio",8,40,0,40),E("Salto largo","Broad jumps","Piernas",8,40,0,40),E("Talones al glúteo","Butt kicks","Cardio",8,40,0,40),E("Saltos de patinador","Skater jumps","Cardio",8,40,0,40)],
+      "Sprint colina 2":[E("Saltos al cajón","Box jumps","Piernas",8,40,0,40),E("Sprint 400m","Sprint 400m","Cardio",8,40,0,40),E("Salto en profundidad","Depth jumps","Piernas",8,40,0,40),E("Sprint 100m","Sprint 100m","Cardio",8,40,0,40)],
+      "Sprint largo 2":[E("Saltos de patinador","Skater jumps","Cardio",8,40,0,40),E("Trote recuperación","Recovery jog","Cardio",8,40,0,40),E("Sentadilla con salto","Jump squat","Piernas",8,40,0,40)],
+      "Sprint corto 2":[E("Bounding","Bounding","Piernas",8,40,0,40),E("Sprint","Sprint","Cardio",8,40,0,40),E("Sentadilla con salto","Jump squat","Piernas",8,40,0,40),E("Sprint 100m","Sprint 100m","Cardio",8,40,0,40)],
+      "Doble salto 2":[E("Mountain climbers","Mountain climbers","Cardio",8,40,0,40),E("Bounding","Bounding","Piernas",8,40,0,40),E("Sentadilla con salto","Jump squat","Piernas",8,40,0,40),E("Rodillas altas","High knees","Cardio",8,40,0,40),E("Plancha","Plank","Core",8,40,0,40)],
+      "Escalera 2":[E("Sprint 400m","Sprint 400m","Cardio",8,40,0,40),E("Salto largo","Broad jumps","Piernas",8,40,0,40),E("Saltos al cajón","Box jumps","Piernas",8,40,0,40),E("Sentadilla con salto","Jump squat","Piernas",8,40,0,40)],
+      "Patinador 2":[E("Salto en profundidad","Depth jumps","Piernas",8,40,0,40),E("Skipping lateral","Lateral skips","Cardio",8,40,0,40),E("Saltos de cuerda","Jump rope","Cardio",8,40,0,40),E("Salto largo","Broad jumps","Piernas",8,40,0,40),E("Saltos al cajón","Box jumps","Piernas",8,40,0,40)],
+      "Mixto sprint+core 2":[E("Saltos de patinador","Skater jumps","Cardio",8,40,0,40),E("Sprint en subida","Hill sprint","Cardio",8,40,0,40),E("Mountain climbers","Mountain climbers","Cardio",8,40,0,40),E("Salto en profundidad","Depth jumps","Piernas",8,40,0,40)],
+      "Pliometría 2":[E("Plancha","Plank","Core",8,40,0,40),E("Saltos al cajón","Box jumps","Piernas",8,40,0,40),E("Trote recuperación","Recovery jog","Cardio",8,40,0,40),E("Talones al glúteo","Butt kicks","Cardio",8,40,0,40)],
+      "Sprint clásico 2":[E("Talones al glúteo","Butt kicks","Cardio",8,40,0,40),E("Salto doble","Double unders","Cardio",8,40,0,40),E("Tuck jumps","Tuck jumps","Piernas",8,40,0,40),E("Sprint en subida","Hill sprint","Cardio",8,40,0,40)],
+      "Recuperación activa 2":[E("Sentadilla con salto","Jump squat","Piernas",8,40,0,40),E("Plancha","Plank","Core",8,40,0,40),E("Saltos al cajón","Box jumps","Piernas",8,40,0,40),E("Sprint 400m","Sprint 400m","Cardio",8,40,0,40)],
+      "Saltos 2":[E("Plancha","Plank","Core",8,40,0,40),E("Bounding","Bounding","Piernas",8,40,0,40),E("Salto en profundidad","Depth jumps","Piernas",8,40,0,40),E("Salto doble","Double unders","Cardio",8,40,0,40)]
+    },
+    {
+      "Sprint colina 3":[E("Saltos de cuerda","Jump rope","Cardio",8,30,0,90),E("Sprint en subida","Hill sprint","Cardio",8,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,90),E("Salto doble","Double unders","Cardio",8,30,0,90)],
+      "Cuerda y skipping 3":[E("Plancha","Plank","Core",8,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,90),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,90),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,90)],
+      "Pliometría 3":[E("Trote recuperación","Recovery jog","Cardio",8,30,0,90),E("Plancha","Plank","Core",8,30,0,90),E("Skipping lateral","Lateral skips","Cardio",8,30,0,90)],
+      "Mixto sprint+core 3":[E("Skipping lateral","Lateral skips","Cardio",8,30,0,90),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,90),E("Salto doble","Double unders","Cardio",8,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,90),E("Salto largo","Broad jumps","Piernas",8,30,0,90)],
+      "Saltos 3":[E("Salto en profundidad","Depth jumps","Piernas",8,30,0,90),E("Saltos al cajón","Box jumps","Piernas",8,30,0,90),E("Plancha","Plank","Core",8,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,90),E("Sprint","Sprint","Cardio",8,30,0,90)],
+      "Doble salto 3":[E("Talones al glúteo","Butt kicks","Cardio",8,30,0,90),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,90),E("Skipping lateral","Lateral skips","Cardio",8,30,0,90),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,90)],
+      "Sprint corto 3":[E("Talones al glúteo","Butt kicks","Cardio",8,30,0,90),E("Salto doble","Double unders","Cardio",8,30,0,90),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,90),E("Rodillas altas","High knees","Cardio",8,30,0,90)],
+      "Plyo box 3":[E("Rodillas altas","High knees","Cardio",8,30,0,90),E("Trote recuperación","Recovery jog","Cardio",8,30,0,90),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,90)],
+      "Sprint pista 3":[E("Salto largo","Broad jumps","Piernas",8,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,90),E("Salto en profundidad","Depth jumps","Piernas",8,30,0,90)],
+      "Pirámide 3":[E("Plancha","Plank","Core",8,30,0,90),E("Saltos de cuerda","Jump rope","Cardio",8,30,0,90),E("Sprint en subida","Hill sprint","Cardio",8,30,0,90),E("Rodillas altas","High knees","Cardio",8,30,0,90)],
+      "Escalera 3":[E("Sprint","Sprint","Cardio",8,30,0,90),E("Saltos al cajón","Box jumps","Piernas",8,30,0,90),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,90),E("Sprint en subida","Hill sprint","Cardio",8,30,0,90)],
+      "Sprint clásico 3":[E("Sprint en subida","Hill sprint","Cardio",8,30,0,90),E("Saltos al cajón","Box jumps","Piernas",8,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,90)],
+      "Sprint largo 3":[E("Bounding","Bounding","Piernas",8,30,0,90),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,90),E("Plancha","Plank","Core",8,30,0,90),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,90)],
+      "Patinador 3":[E("Saltos al cajón","Box jumps","Piernas",8,30,0,90),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,90),E("Skipping lateral","Lateral skips","Cardio",8,30,0,90)],
+      "Recuperación activa 3":[E("Sentadilla con salto","Jump squat","Piernas",8,30,0,90),E("Sprint 200m","Sprint 200m","Cardio",8,30,0,90),E("Trote recuperación","Recovery jog","Cardio",8,30,0,90),E("Rodillas altas","High knees","Cardio",8,30,0,90)]
+    },
+    {
+      "Mixto sprint+core 4":[E("Plancha","Plank","Core",8,30,0,60),E("Sprint","Sprint","Cardio",8,30,0,60),E("Sprint 400m","Sprint 400m","Cardio",8,30,0,60),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,60)],
+      "Sprint clásico 4":[E("Trote recuperación","Recovery jog","Cardio",8,30,0,60),E("Skipping lateral","Lateral skips","Cardio",8,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,60),E("Saltos al cajón","Box jumps","Piernas",8,30,0,60)],
+      "Doble salto 4":[E("Sprint 400m","Sprint 400m","Cardio",8,30,0,60),E("Salto largo","Broad jumps","Piernas",8,30,0,60),E("Saltos de cuerda","Jump rope","Cardio",8,30,0,60),E("Salto doble","Double unders","Cardio",8,30,0,60),E("Sprint","Sprint","Cardio",8,30,0,60)],
+      "Cuerda y skipping 4":[E("Sentadilla con salto","Jump squat","Piernas",8,30,0,60),E("Trote recuperación","Recovery jog","Cardio",8,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,60),E("Bounding","Bounding","Piernas",8,30,0,60)],
+      "Sprint pista 4":[E("Salto doble","Double unders","Cardio",8,30,0,60),E("Talones al glúteo","Butt kicks","Cardio",8,30,0,60),E("Saltos al cajón","Box jumps","Piernas",8,30,0,60)],
+      "Sprint colina 4":[E("Sprint 400m","Sprint 400m","Cardio",8,30,0,60),E("Rodillas altas","High knees","Cardio",8,30,0,60),E("Plancha","Plank","Core",8,30,0,60)],
+      "Sprint corto 4":[E("Sprint 200m","Sprint 200m","Cardio",8,30,0,60),E("Talones al glúteo","Butt kicks","Cardio",8,30,0,60),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,60)],
+      "Plyo box 4":[E("Sprint 400m","Sprint 400m","Cardio",8,30,0,60),E("Talones al glúteo","Butt kicks","Cardio",8,30,0,60),E("Plancha","Plank","Core",8,30,0,60),E("Salto en profundidad","Depth jumps","Piernas",8,30,0,60),E("Sprint 200m","Sprint 200m","Cardio",8,30,0,60)],
+      "Pliometría 4":[E("Sprint","Sprint","Cardio",8,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,60),E("Saltos al cajón","Box jumps","Piernas",8,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,60)],
+      "Saltos 4":[E("Sprint 200m","Sprint 200m","Cardio",8,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,60),E("Rodillas altas","High knees","Cardio",8,30,0,60)],
+      "Pirámide 4":[E("Plancha","Plank","Core",8,30,0,60),E("Sprint 200m","Sprint 200m","Cardio",8,30,0,60),E("Skipping lateral","Lateral skips","Cardio",8,30,0,60),E("Saltos de cuerda","Jump rope","Cardio",8,30,0,60)],
+      "Recuperación activa 4":[E("Salto largo","Broad jumps","Piernas",8,30,0,60),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,60),E("Trote recuperación","Recovery jog","Cardio",8,30,0,60),E("Salto en profundidad","Depth jumps","Piernas",8,30,0,60),E("Saltos al cajón","Box jumps","Piernas",8,30,0,60)],
+      "Patinador 4":[E("Salto largo","Broad jumps","Piernas",8,30,0,60),E("Sprint 400m","Sprint 400m","Cardio",8,30,0,60),E("Plancha","Plank","Core",8,30,0,60)],
+      "Escalera 4":[E("Trote recuperación","Recovery jog","Cardio",8,30,0,60),E("Sprint 200m","Sprint 200m","Cardio",8,30,0,60),E("Sprint 100m","Sprint 100m","Cardio",8,30,0,60)],
+      "Sprint largo 4":[E("Tuck jumps","Tuck jumps","Piernas",8,30,0,60),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,60),E("Sprint 400m","Sprint 400m","Cardio",8,30,0,60)]
+    },
+    {
+      "Patinador 5":[E("Salto largo","Broad jumps","Piernas",10,30,0,90),E("Plancha","Plank","Core",10,30,0,90),E("Salto doble","Double unders","Cardio",10,30,0,90),E("Sprint en subida","Hill sprint","Cardio",10,30,0,90)],
+      "Sprint colina 5":[E("Tuck jumps","Tuck jumps","Piernas",10,30,0,90),E("Sprint","Sprint","Cardio",10,30,0,90),E("Plancha","Plank","Core",10,30,0,90),E("Sprint en subida","Hill sprint","Cardio",10,30,0,90)],
+      "Escalera 5":[E("Sprint 100m","Sprint 100m","Cardio",10,30,0,90),E("Sprint","Sprint","Cardio",10,30,0,90),E("Salto largo","Broad jumps","Piernas",10,30,0,90)],
+      "Saltos 5":[E("Salto doble","Double unders","Cardio",10,30,0,90),E("Talones al glúteo","Butt kicks","Cardio",10,30,0,90),E("Tuck jumps","Tuck jumps","Piernas",10,30,0,90)],
+      "Sprint clásico 5":[E("Salto en profundidad","Depth jumps","Piernas",10,30,0,90),E("Sentadilla con salto","Jump squat","Piernas",10,30,0,90),E("Sprint en subida","Hill sprint","Cardio",10,30,0,90),E("Rodillas altas","High knees","Cardio",10,30,0,90)],
+      "Sprint largo 5":[E("Skipping lateral","Lateral skips","Cardio",10,30,0,90),E("Saltos de cuerda","Jump rope","Cardio",10,30,0,90),E("Talones al glúteo","Butt kicks","Cardio",10,30,0,90),E("Sprint 400m","Sprint 400m","Cardio",10,30,0,90)],
+      "Pliometría 5":[E("Mountain climbers","Mountain climbers","Cardio",10,30,0,90),E("Sprint 100m","Sprint 100m","Cardio",10,30,0,90),E("Plancha","Plank","Core",10,30,0,90),E("Saltos de patinador","Skater jumps","Cardio",10,30,0,90)],
+      "Mixto sprint+core 5":[E("Salto doble","Double unders","Cardio",10,30,0,90),E("Sprint 200m","Sprint 200m","Cardio",10,30,0,90),E("Saltos de cuerda","Jump rope","Cardio",10,30,0,90)],
+      "Sprint pista 5":[E("Talones al glúteo","Butt kicks","Cardio",10,30,0,90),E("Mountain climbers","Mountain climbers","Cardio",10,30,0,90),E("Bounding","Bounding","Piernas",10,30,0,90)],
+      "Pirámide 5":[E("Tuck jumps","Tuck jumps","Piernas",10,30,0,90),E("Sprint en subida","Hill sprint","Cardio",10,30,0,90),E("Skipping lateral","Lateral skips","Cardio",10,30,0,90),E("Sprint 400m","Sprint 400m","Cardio",10,30,0,90)],
+      "Sprint corto 5":[E("Trote recuperación","Recovery jog","Cardio",10,30,0,90),E("Sprint 200m","Sprint 200m","Cardio",10,30,0,90),E("Talones al glúteo","Butt kicks","Cardio",10,30,0,90),E("Saltos al cajón","Box jumps","Piernas",10,30,0,90)],
+      "Recuperación activa 5":[E("Saltos de patinador","Skater jumps","Cardio",10,30,0,90),E("Saltos al cajón","Box jumps","Piernas",10,30,0,90),E("Salto doble","Double unders","Cardio",10,30,0,90),E("Sprint en subida","Hill sprint","Cardio",10,30,0,90),E("Tuck jumps","Tuck jumps","Piernas",10,30,0,90)],
+      "Doble salto 5":[E("Salto en profundidad","Depth jumps","Piernas",10,30,0,90),E("Rodillas altas","High knees","Cardio",10,30,0,90),E("Sprint","Sprint","Cardio",10,30,0,90),E("Saltos al cajón","Box jumps","Piernas",10,30,0,90)],
+      "Plyo box 5":[E("Skipping lateral","Lateral skips","Cardio",10,30,0,90),E("Salto en profundidad","Depth jumps","Piernas",10,30,0,90),E("Saltos de cuerda","Jump rope","Cardio",10,30,0,90),E("Tuck jumps","Tuck jumps","Piernas",10,30,0,90)],
+      "Cuerda y skipping 5":[E("Saltos al cajón","Box jumps","Piernas",10,30,0,90),E("Bounding","Bounding","Piernas",10,30,0,90),E("Saltos de patinador","Skater jumps","Cardio",10,30,0,90),E("Plancha","Plank","Core",10,30,0,90)]
+    }
+  ],
+  "HIIT · HIIT": [
+    {
+      "Gauntlet":[E("Burpees","Burpees","Cuerpo completo",8,20,0,10),E("Tuck jumps","Tuck jumps","Piernas",8,20,0,10),E("Dominadas","Pull-ups","Espalda",8,20,0,10)],
+      "Tabata":[E("Flexiones","Push-ups","Pecho",8,20,0,10),E("Escaladores cruzados","Cross-body climbers","Cardio",8,20,0,10),E("Burpee box jump","Burpee box jump","Cuerpo completo",8,20,0,10),E("Flexiones explosivas","Clap push-ups","Pecho",8,20,0,10),E("Plancha con toques","Plank shoulder taps","Core",8,20,0,10)],
+      "HIIT 45/15":[E("Slam ball","Ball slams","Cuerpo",8,20,0,10),E("Swing con mancuerna","KB swing","Glúteos",8,20,0,10),E("Jumping jacks","Jumping jacks","Cardio",8,20,0,10),E("Thruster","Thruster","Cuerpo",8,20,0,10)],
+      "Cuerpo completo":[E("Saltos de patinador","Skater jumps","Cardio",8,20,0,10),E("Tuck jumps","Tuck jumps","Piernas",8,20,0,10),E("Flexiones","Push-ups","Pecho",8,20,0,10),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,20,0,10)],
+      "HIIT burpees":[E("Slam ball","Ball slams","Cuerpo",8,20,0,10),E("Tuck jumps","Tuck jumps","Piernas",8,20,0,10),E("Burpees","Burpees","Cuerpo completo",8,20,0,10),E("Jumping jacks","Jumping jacks","Cardio",8,20,0,10),E("Mountain climbers","Mountain climbers","Cardio",8,20,0,10)],
+      "HIIT saltos":[E("Saltos de patinador","Skater jumps","Cardio",8,20,0,10),E("Mountain climbers","Mountain climbers","Cardio",8,20,0,10),E("Flexiones","Push-ups","Pecho",8,20,0,10),E("Zancadas con salto","Jumping lunges","Piernas",8,20,0,10)],
+      "AMRAP":[E("Slam ball","Ball slams","Cuerpo",8,20,0,10),E("Burpee box jump","Burpee box jump","Cuerpo completo",8,20,0,10),E("Jumping jacks","Jumping jacks","Cardio",8,20,0,10),E("Plancha con toques","Plank shoulder taps","Core",8,20,0,10),E("Sprint en el lugar","Sprint in place","Cardio",8,20,0,10)],
+      "Tabata combinado":[E("Flexiones explosivas","Clap push-ups","Pecho",8,20,0,10),E("Slam ball","Ball slams","Cuerpo",8,20,0,10),E("Jumping jacks","Jumping jacks","Cardio",8,20,0,10)],
+      "HIIT 30/30":[E("Escaladores cruzados","Cross-body climbers","Cardio",8,20,0,10),E("Tuck jumps","Tuck jumps","Piernas",8,20,0,10),E("Slam ball","Ball slams","Cuerpo",8,20,0,10)],
+      "HIIT 40/20":[E("Plancha con toques","Plank shoulder taps","Core",8,20,0,10),E("Saltos de patinador","Skater jumps","Cardio",8,20,0,10),E("Burpee box jump","Burpee box jump","Cuerpo completo",8,20,0,10),E("Sprint en el lugar","Sprint in place","Cardio",8,20,0,10),E("Wall balls","Wall balls","Cuerpo",8,20,0,10)],
+      "Tabata x4":[E("Tuck jumps","Tuck jumps","Piernas",8,20,0,10),E("Flexiones explosivas","Clap push-ups","Pecho",8,20,0,10),E("Flexiones","Push-ups","Pecho",8,20,0,10)],
+      "Death by":[E("Swing con mancuerna","KB swing","Glúteos",8,20,0,10),E("Dominadas","Pull-ups","Espalda",8,20,0,10),E("Slam ball","Ball slams","Cuerpo",8,20,0,10),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,20,0,10)],
+      "HIIT 50/10":[E("Swing con mancuerna","KB swing","Glúteos",8,20,0,10),E("Jumping jacks","Jumping jacks","Cardio",8,20,0,10),E("Tuck jumps","Tuck jumps","Piernas",8,20,0,10),E("Dominadas","Pull-ups","Espalda",8,20,0,10)],
+      "Full body HIIT":[E("Slam ball","Ball slams","Cuerpo",8,20,0,10),E("Plancha con toques","Plank shoulder taps","Core",8,20,0,10),E("Flexiones","Push-ups","Pecho",8,20,0,10),E("Burpees","Burpees","Cuerpo completo",8,20,0,10)],
+      "EMOM":[E("Saltos de patinador","Skater jumps","Cardio",8,20,0,10),E("Mountain climbers","Mountain climbers","Cardio",8,20,0,10),E("Jumping jacks","Jumping jacks","Cardio",8,20,0,10),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,20,0,10)]
+    },
+    {
+      "AMRAP 2":[E("Plancha con toques","Plank shoulder taps","Core",8,30,0,30),E("Dominadas","Pull-ups","Espalda",8,30,0,30),E("Flexiones","Push-ups","Pecho",8,30,0,30)],
+      "Gauntlet 2":[E("Flexiones","Push-ups","Pecho",8,30,0,30),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,30),E("Saltos al cajón","Box jumps","Piernas",8,30,0,30),E("Burpees","Burpees","Cuerpo completo",8,30,0,30)],
+      "HIIT burpees 2":[E("Burpee box jump","Burpee box jump","Cuerpo completo",8,30,0,30),E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,30),E("Flexiones","Push-ups","Pecho",8,30,0,30)],
+      "HIIT 40/20 2":[E("Flexiones","Push-ups","Pecho",8,30,0,30),E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30),E("Burpee box jump","Burpee box jump","Cuerpo completo",8,30,0,30)],
+      "Tabata 2":[E("Flexiones explosivas","Clap push-ups","Pecho",8,30,0,30),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,30),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,30),E("Swing con mancuerna","KB swing","Glúteos",8,30,0,30)],
+      "Death by 2":[E("Thruster","Thruster","Cuerpo",8,30,0,30),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,30,0,30),E("Escaladores cruzados","Cross-body climbers","Cardio",8,30,0,30)],
+      "Full body HIIT 2":[E("Dominadas","Pull-ups","Espalda",8,30,0,30),E("Plancha con toques","Plank shoulder taps","Core",8,30,0,30),E("Flexiones","Push-ups","Pecho",8,30,0,30),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,30),E("Jumping jacks","Jumping jacks","Cardio",8,30,0,30)],
+      "EMOM 2":[E("Dominadas","Pull-ups","Espalda",8,30,0,30),E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,30),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,30),E("Flexiones explosivas","Clap push-ups","Pecho",8,30,0,30)],
+      "Tabata combinado 2":[E("Wall balls","Wall balls","Cuerpo",8,30,0,30),E("Saltos de patinador","Skater jumps","Cardio",8,30,0,30),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,30,0,30),E("Jumping jacks","Jumping jacks","Cardio",8,30,0,30)],
+      "Cuerpo completo 2":[E("Swing con mancuerna","KB swing","Glúteos",8,30,0,30),E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,30),E("Burpees","Burpees","Cuerpo completo",8,30,0,30),E("Escaladores cruzados","Cross-body climbers","Cardio",8,30,0,30)],
+      "HIIT 30/30 2":[E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,30),E("Mountain climbers","Mountain climbers","Cardio",8,30,0,30),E("Plancha con toques","Plank shoulder taps","Core",8,30,0,30),E("Burpee box jump","Burpee box jump","Cuerpo completo",8,30,0,30)],
+      "HIIT 45/15 2":[E("Burpee lateral","Lateral burpee","Cuerpo completo",8,30,0,30),E("Plancha con toques","Plank shoulder taps","Core",8,30,0,30),E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30)],
+      "HIIT 50/10 2":[E("Saltos al cajón","Box jumps","Piernas",8,30,0,30),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,30),E("Dominadas","Pull-ups","Espalda",8,30,0,30)],
+      "HIIT saltos 2":[E("Burpee box jump","Burpee box jump","Cuerpo completo",8,30,0,30),E("Tuck jumps","Tuck jumps","Piernas",8,30,0,30),E("Saltos al cajón","Box jumps","Piernas",8,30,0,30),E("Jumping jacks","Jumping jacks","Cardio",8,30,0,30)],
+      "Tabata x4 2":[E("Swing con mancuerna","KB swing","Glúteos",8,30,0,30),E("Slam ball","Ball slams","Cuerpo",8,30,0,30),E("Sentadilla con salto","Jump squat","Piernas",8,30,0,30),E("Saltos al cajón","Box jumps","Piernas",8,30,0,30),E("Zancadas con salto","Jumping lunges","Piernas",8,30,0,30)]
+    },
+    {
+      "EMOM 3":[E("Swing con mancuerna","KB swing","Glúteos",6,40,0,20),E("Escaladores cruzados","Cross-body climbers","Cardio",6,40,0,20),E("Wall balls","Wall balls","Cuerpo",6,40,0,20)],
+      "HIIT burpees 3":[E("Slam ball","Ball slams","Cuerpo",6,40,0,20),E("Sentadilla con salto","Jump squat","Piernas",6,40,0,20),E("Zancadas con salto","Jumping lunges","Piernas",6,40,0,20),E("Saltos al cajón","Box jumps","Piernas",6,40,0,20),E("Flexiones explosivas","Clap push-ups","Pecho",6,40,0,20)],
+      "Cuerpo completo 3":[E("Sprint en el lugar","Sprint in place","Cardio",6,40,0,20),E("Saltos al cajón","Box jumps","Piernas",6,40,0,20),E("Slam ball","Ball slams","Cuerpo",6,40,0,20),E("Flexiones explosivas","Clap push-ups","Pecho",6,40,0,20)],
+      "Tabata combinado 3":[E("Escaladores cruzados","Cross-body climbers","Cardio",6,40,0,20),E("Saltos al cajón","Box jumps","Piernas",6,40,0,20),E("Sprint en el lugar","Sprint in place","Cardio",6,40,0,20),E("Plancha con toques","Plank shoulder taps","Core",6,40,0,20),E("Mountain climbers","Mountain climbers","Cardio",6,40,0,20)],
+      "Tabata 3":[E("Sprint en el lugar","Sprint in place","Cardio",6,40,0,20),E("Dominadas","Pull-ups","Espalda",6,40,0,20),E("Plancha con toques","Plank shoulder taps","Core",6,40,0,20),E("Flexiones explosivas","Clap push-ups","Pecho",6,40,0,20)],
+      "HIIT saltos 3":[E("Flexiones","Push-ups","Pecho",6,40,0,20),E("Slam ball","Ball slams","Cuerpo",6,40,0,20),E("Swing con mancuerna","KB swing","Glúteos",6,40,0,20),E("Zancadas con salto","Jumping lunges","Piernas",6,40,0,20)],
+      "HIIT 30/30 3":[E("Jumping jacks","Jumping jacks","Cardio",6,40,0,20),E("Saltos de patinador","Skater jumps","Cardio",6,40,0,20),E("Mountain climbers","Mountain climbers","Cardio",6,40,0,20)],
+      "AMRAP 3":[E("Escaladores cruzados","Cross-body climbers","Cardio",6,40,0,20),E("Tuck jumps","Tuck jumps","Piernas",6,40,0,20),E("Swing con mancuerna","KB swing","Glúteos",6,40,0,20)],
+      "Tabata x4 3":[E("Sprint en el lugar","Sprint in place","Cardio",6,40,0,20),E("Burpee box jump","Burpee box jump","Cuerpo completo",6,40,0,20),E("Mountain climbers","Mountain climbers","Cardio",6,40,0,20),E("Swing con mancuerna","KB swing","Glúteos",6,40,0,20)],
+      "Gauntlet 3":[E("Burpee lateral","Lateral burpee","Cuerpo completo",6,40,0,20),E("Zancadas con salto","Jumping lunges","Piernas",6,40,0,20),E("Plancha con toques","Plank shoulder taps","Core",6,40,0,20)],
+      "HIIT 40/20 3":[E("Burpee lateral","Lateral burpee","Cuerpo completo",6,40,0,20),E("Dominadas","Pull-ups","Espalda",6,40,0,20),E("Flexiones explosivas","Clap push-ups","Pecho",6,40,0,20),E("Jumping jacks","Jumping jacks","Cardio",6,40,0,20),E("Slam ball","Ball slams","Cuerpo",6,40,0,20)],
+      "HIIT 45/15 3":[E("Dominadas","Pull-ups","Espalda",6,40,0,20),E("Burpee box jump","Burpee box jump","Cuerpo completo",6,40,0,20),E("Swing con mancuerna","KB swing","Glúteos",6,40,0,20)],
+      "Full body HIIT 3":[E("Dominadas","Pull-ups","Espalda",6,40,0,20),E("Tuck jumps","Tuck jumps","Piernas",6,40,0,20),E("Thruster","Thruster","Cuerpo",6,40,0,20),E("Burpee box jump","Burpee box jump","Cuerpo completo",6,40,0,20),E("Mountain climbers","Mountain climbers","Cardio",6,40,0,20)],
+      "Death by 3":[E("Saltos de patinador","Skater jumps","Cardio",6,40,0,20),E("Burpees","Burpees","Cuerpo completo",6,40,0,20),E("Escaladores cruzados","Cross-body climbers","Cardio",6,40,0,20),E("Tuck jumps","Tuck jumps","Piernas",6,40,0,20),E("Thruster","Thruster","Cuerpo",6,40,0,20)],
+      "HIIT 50/10 3":[E("Burpee box jump","Burpee box jump","Cuerpo completo",6,40,0,20),E("Tuck jumps","Tuck jumps","Piernas",6,40,0,20),E("Flexiones","Push-ups","Pecho",6,40,0,20),E("Jumping jacks","Jumping jacks","Cardio",6,40,0,20)]
+    },
+    {
+      "AMRAP 4":[E("Flexiones","Push-ups","Pecho",8,45,0,15),E("Escaladores cruzados","Cross-body climbers","Cardio",8,45,0,15),E("Tuck jumps","Tuck jumps","Piernas",8,45,0,15),E("Burpees","Burpees","Cuerpo completo",8,45,0,15),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,45,0,15)],
+      "HIIT 40/20 4":[E("Sprint en el lugar","Sprint in place","Cardio",8,45,0,15),E("Thruster","Thruster","Cuerpo",8,45,0,15),E("Dominadas","Pull-ups","Espalda",8,45,0,15)],
+      "HIIT 50/10 4":[E("Slam ball","Ball slams","Cuerpo",8,45,0,15),E("Flexiones explosivas","Clap push-ups","Pecho",8,45,0,15),E("Jumping jacks","Jumping jacks","Cardio",8,45,0,15),E("Escaladores cruzados","Cross-body climbers","Cardio",8,45,0,15)],
+      "Full body HIIT 4":[E("Swing con mancuerna","KB swing","Glúteos",8,45,0,15),E("Flexiones","Push-ups","Pecho",8,45,0,15),E("Burpees","Burpees","Cuerpo completo",8,45,0,15),E("Flexiones explosivas","Clap push-ups","Pecho",8,45,0,15),E("Mountain climbers","Mountain climbers","Cardio",8,45,0,15)],
+      "Gauntlet 4":[E("Tuck jumps","Tuck jumps","Piernas",8,45,0,15),E("Sentadilla con salto","Jump squat","Piernas",8,45,0,15),E("Sprint en el lugar","Sprint in place","Cardio",8,45,0,15),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,45,0,15),E("Thruster","Thruster","Cuerpo",8,45,0,15)],
+      "Death by 4":[E("Sentadilla con salto","Jump squat","Piernas",8,45,0,15),E("Tuck jumps","Tuck jumps","Piernas",8,45,0,15),E("Flexiones explosivas","Clap push-ups","Pecho",8,45,0,15),E("Sprint en el lugar","Sprint in place","Cardio",8,45,0,15)],
+      "Tabata x4 4":[E("Swing con mancuerna","KB swing","Glúteos",8,45,0,15),E("Flexiones","Push-ups","Pecho",8,45,0,15),E("Plancha con toques","Plank shoulder taps","Core",8,45,0,15),E("Jumping jacks","Jumping jacks","Cardio",8,45,0,15),E("Wall balls","Wall balls","Cuerpo",8,45,0,15)],
+      "Cuerpo completo 4":[E("Saltos de patinador","Skater jumps","Cardio",8,45,0,15),E("Flexiones","Push-ups","Pecho",8,45,0,15),E("Burpees","Burpees","Cuerpo completo",8,45,0,15),E("Plancha con toques","Plank shoulder taps","Core",8,45,0,15),E("Sentadilla con salto","Jump squat","Piernas",8,45,0,15)],
+      "HIIT burpees 4":[E("Burpee lateral","Lateral burpee","Cuerpo completo",8,45,0,15),E("Swing con mancuerna","KB swing","Glúteos",8,45,0,15),E("Jumping jacks","Jumping jacks","Cardio",8,45,0,15),E("Sprint en el lugar","Sprint in place","Cardio",8,45,0,15)],
+      "HIIT 45/15 4":[E("Saltos al cajón","Box jumps","Piernas",8,45,0,15),E("Slam ball","Ball slams","Cuerpo",8,45,0,15),E("Tuck jumps","Tuck jumps","Piernas",8,45,0,15),E("Burpees","Burpees","Cuerpo completo",8,45,0,15)],
+      "EMOM 4":[E("Jumping jacks","Jumping jacks","Cardio",8,45,0,15),E("Thruster","Thruster","Cuerpo",8,45,0,15),E("Burpee lateral","Lateral burpee","Cuerpo completo",8,45,0,15),E("Swing con mancuerna","KB swing","Glúteos",8,45,0,15)],
+      "Tabata 4":[E("Burpee lateral","Lateral burpee","Cuerpo completo",8,45,0,15),E("Sprint en el lugar","Sprint in place","Cardio",8,45,0,15),E("Mountain climbers","Mountain climbers","Cardio",8,45,0,15),E("Plancha con toques","Plank shoulder taps","Core",8,45,0,15)],
+      "HIIT saltos 4":[E("Slam ball","Ball slams","Cuerpo",8,45,0,15),E("Escaladores cruzados","Cross-body climbers","Cardio",8,45,0,15),E("Flexiones explosivas","Clap push-ups","Pecho",8,45,0,15),E("Mountain climbers","Mountain climbers","Cardio",8,45,0,15)],
+      "HIIT 30/30 4":[E("Plancha con toques","Plank shoulder taps","Core",8,45,0,15),E("Escaladores cruzados","Cross-body climbers","Cardio",8,45,0,15),E("Jumping jacks","Jumping jacks","Cardio",8,45,0,15),E("Sprint en el lugar","Sprint in place","Cardio",8,45,0,15)],
+      "Tabata combinado 4":[E("Escaladores cruzados","Cross-body climbers","Cardio",8,45,0,15),E("Jumping jacks","Jumping jacks","Cardio",8,45,0,15),E("Dominadas","Pull-ups","Espalda",8,45,0,15),E("Flexiones","Push-ups","Pecho",8,45,0,15)]
+    },
+    {
+      "HIIT 45/15 5":[E("Plancha con toques","Plank shoulder taps","Core",10,50,0,10),E("Flexiones","Push-ups","Pecho",10,50,0,10),E("Flexiones explosivas","Clap push-ups","Pecho",10,50,0,10),E("Dominadas","Pull-ups","Espalda",10,50,0,10)],
+      "HIIT burpees 5":[E("Tuck jumps","Tuck jumps","Piernas",10,50,0,10),E("Flexiones explosivas","Clap push-ups","Pecho",10,50,0,10),E("Swing con mancuerna","KB swing","Glúteos",10,50,0,10),E("Jumping jacks","Jumping jacks","Cardio",10,50,0,10)],
+      "Tabata x4 5":[E("Burpee box jump","Burpee box jump","Cuerpo completo",10,50,0,10),E("Tuck jumps","Tuck jumps","Piernas",10,50,0,10),E("Saltos al cajón","Box jumps","Piernas",10,50,0,10),E("Plancha con toques","Plank shoulder taps","Core",10,50,0,10)],
+      "Full body HIIT 5":[E("Tuck jumps","Tuck jumps","Piernas",10,50,0,10),E("Slam ball","Ball slams","Cuerpo",10,50,0,10),E("Swing con mancuerna","KB swing","Glúteos",10,50,0,10)],
+      "AMRAP 5":[E("Saltos de patinador","Skater jumps","Cardio",10,50,0,10),E("Sentadilla con salto","Jump squat","Piernas",10,50,0,10),E("Tuck jumps","Tuck jumps","Piernas",10,50,0,10),E("Dominadas","Pull-ups","Espalda",10,50,0,10)],
+      "Tabata 5":[E("Burpees","Burpees","Cuerpo completo",10,50,0,10),E("Dominadas","Pull-ups","Espalda",10,50,0,10),E("Escaladores cruzados","Cross-body climbers","Cardio",10,50,0,10),E("Swing con mancuerna","KB swing","Glúteos",10,50,0,10)],
+      "HIIT 50/10 5":[E("Wall balls","Wall balls","Cuerpo",10,50,0,10),E("Slam ball","Ball slams","Cuerpo",10,50,0,10),E("Flexiones explosivas","Clap push-ups","Pecho",10,50,0,10)],
+      "Death by 5":[E("Sprint en el lugar","Sprint in place","Cardio",10,50,0,10),E("Flexiones explosivas","Clap push-ups","Pecho",10,50,0,10),E("Jumping jacks","Jumping jacks","Cardio",10,50,0,10),E("Flexiones","Push-ups","Pecho",10,50,0,10)],
+      "Gauntlet 5":[E("Dominadas","Pull-ups","Espalda",10,50,0,10),E("Wall balls","Wall balls","Cuerpo",10,50,0,10),E("Slam ball","Ball slams","Cuerpo",10,50,0,10),E("Mountain climbers","Mountain climbers","Cardio",10,50,0,10),E("Plancha con toques","Plank shoulder taps","Core",10,50,0,10)],
+      "HIIT saltos 5":[E("Escaladores cruzados","Cross-body climbers","Cardio",10,50,0,10),E("Saltos al cajón","Box jumps","Piernas",10,50,0,10),E("Slam ball","Ball slams","Cuerpo",10,50,0,10),E("Sprint en el lugar","Sprint in place","Cardio",10,50,0,10),E("Swing con mancuerna","KB swing","Glúteos",10,50,0,10)],
+      "HIIT 40/20 5":[E("Saltos de patinador","Skater jumps","Cardio",10,50,0,10),E("Mountain climbers","Mountain climbers","Cardio",10,50,0,10),E("Zancadas con salto","Jumping lunges","Piernas",10,50,0,10),E("Jumping jacks","Jumping jacks","Cardio",10,50,0,10)],
+      "HIIT 30/30 5":[E("Flexiones explosivas","Clap push-ups","Pecho",10,50,0,10),E("Jumping jacks","Jumping jacks","Cardio",10,50,0,10),E("Sprint en el lugar","Sprint in place","Cardio",10,50,0,10)],
+      "EMOM 5":[E("Swing con mancuerna","KB swing","Glúteos",10,50,0,10),E("Escaladores cruzados","Cross-body climbers","Cardio",10,50,0,10),E("Zancadas con salto","Jumping lunges","Piernas",10,50,0,10),E("Sprint en el lugar","Sprint in place","Cardio",10,50,0,10),E("Plancha con toques","Plank shoulder taps","Core",10,50,0,10)],
+      "Tabata combinado 5":[E("Mountain climbers","Mountain climbers","Cardio",10,50,0,10),E("Saltos al cajón","Box jumps","Piernas",10,50,0,10),E("Plancha con toques","Plank shoulder taps","Core",10,50,0,10)],
+      "Cuerpo completo 5":[E("Tuck jumps","Tuck jumps","Piernas",10,50,0,10),E("Sprint en el lugar","Sprint in place","Cardio",10,50,0,10),E("Wall balls","Wall balls","Cuerpo",10,50,0,10),E("Plancha con toques","Plank shoulder taps","Core",10,50,0,10)]
+    }
+  ],
+  "Cardio · Cardio": [
+    {
+      "Bici moderada":[E("Escaladora","Stair climber","Cardio",1,900,0,0),E("Carrera de fondo","Long run","Cardio",1,900,0,0)],
+      "Cuerda":[E("Carrera de fondo","Long run","Cardio",1,900,0,0)],
+      "Resistencia":[E("Remo continuo","Steady rowing","Cardio",1,900,0,0)],
+      "Tempo":[E("Marcha en cinta","Treadmill walk","Cardio",1,900,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,900,0,0),E("Carrera variable","Fartlek run","Cardio",1,900,0,0)],
+      "Remo":[E("Carrera continua","Steady run","Cardio",1,900,0,0)],
+      "Mixto":[E("Trote ligero","Easy jog","Cardio",1,900,0,0),E("Carrera de fondo","Long run","Cardio",1,900,0,0)],
+      "Escaladora":[E("Carrera ritmo medio","Tempo run","Cardio",1,900,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,900,0,0),E("Natación","Swimming","Cardio",1,900,0,0)],
+      "Fartlek":[E("Caminata rápida","Brisk walk","Cardio",1,900,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,900,0,0),E("Carrera variable","Fartlek run","Cardio",1,900,0,0)],
+      "Trote suave":[E("Carrera de fondo","Long run","Cardio",1,900,0,0)],
+      "Bici larga":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,900,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,900,0,0),E("Escaladora","Stair climber","Cardio",1,900,0,0)],
+      "Carrera continua":[E("Marcha en cinta","Treadmill walk","Cardio",1,900,0,0),E("Trote ligero","Easy jog","Cardio",1,900,0,0)],
+      "Elíptica":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,900,0,0),E("Carrera variable","Fartlek run","Cardio",1,900,0,0)],
+      "Cross-training":[E("Elíptica","Elliptical","Cardio",1,900,0,0),E("Caminata rápida","Brisk walk","Cardio",1,900,0,0)],
+      "Sesión larga":[E("Elíptica","Elliptical","Cardio",1,900,0,0)],
+      "Carrera larga":[E("Bicicleta","Cycling","Cardio",1,900,0,0)]
+    },
+    {
+      "Carrera continua 2":[E("Elíptica","Elliptical","Cardio",1,1500,0,0),E("Bicicleta","Cycling","Cardio",1,1500,0,0),E("Carrera variable","Fartlek run","Cardio",1,1500,0,0)],
+      "Cuerda 2":[E("Saltos de cuerda","Jump rope","Cardio",1,1500,0,0),E("Natación","Swimming","Cardio",1,1500,0,0)],
+      "Tempo 2":[E("Escaladora","Stair climber","Cardio",1,1500,0,0)],
+      "Carrera larga 2":[E("Remo continuo","Steady rowing","Cardio",1,1500,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,1500,0,0),E("Bicicleta","Cycling","Cardio",1,1500,0,0)],
+      "Remo 2":[E("Caminata rápida","Brisk walk","Cardio",1,1500,0,0)],
+      "Cross-training 2":[E("Caminata rápida","Brisk walk","Cardio",1,1500,0,0)],
+      "Mixto 2":[E("Elíptica","Elliptical","Cardio",1,1500,0,0)],
+      "Bici moderada 2":[E("Escaladora","Stair climber","Cardio",1,1500,0,0)],
+      "Fartlek 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,1500,0,0)],
+      "Sesión larga 2":[E("Bicicleta","Cycling","Cardio",1,1500,0,0)],
+      "Trote suave 2":[E("Trote ligero","Easy jog","Cardio",1,1500,0,0)],
+      "Bici larga 2":[E("Marcha en cinta","Treadmill walk","Cardio",1,1500,0,0)],
+      "Resistencia 2":[E("Remo continuo","Steady rowing","Cardio",1,1500,0,0),E("Carrera continua","Steady run","Cardio",1,1500,0,0)],
+      "Elíptica 2":[E("Saltos de cuerda","Jump rope","Cardio",1,1500,0,0)],
+      "Escaladora 2":[E("Remo continuo","Steady rowing","Cardio",1,1500,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,1500,0,0)]
+    },
+    {
+      "Bici moderada 3":[E("Remo continuo","Steady rowing","Cardio",1,2100,0,0)],
+      "Carrera continua 3":[E("Carrera continua","Steady run","Cardio",1,2100,0,0)],
+      "Remo 3":[E("Elíptica","Elliptical","Cardio",1,2100,0,0)],
+      "Tempo 3":[E("Natación","Swimming","Cardio",1,2100,0,0)],
+      "Escaladora 3":[E("Natación","Swimming","Cardio",1,2100,0,0)],
+      "Cross-training 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0),E("Natación","Swimming","Cardio",1,2100,0,0)],
+      "Cuerda 3":[E("Marcha en cinta","Treadmill walk","Cardio",1,2100,0,0),E("Carrera variable","Fartlek run","Cardio",1,2100,0,0),E("Remo continuo","Steady rowing","Cardio",1,2100,0,0)],
+      "Mixto 3":[E("Caminata rápida","Brisk walk","Cardio",1,2100,0,0),E("Escaladora","Stair climber","Cardio",1,2100,0,0)],
+      "Bici larga 3":[E("Caminata rápida","Brisk walk","Cardio",1,2100,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,2100,0,0),E("Natación","Swimming","Cardio",1,2100,0,0)],
+      "Resistencia 3":[E("Elíptica","Elliptical","Cardio",1,2100,0,0),E("Escaladora","Stair climber","Cardio",1,2100,0,0)],
+      "Fartlek 3":[E("Bicicleta","Cycling","Cardio",1,2100,0,0),E("Remo continuo","Steady rowing","Cardio",1,2100,0,0),E("Elíptica","Elliptical","Cardio",1,2100,0,0)],
+      "Elíptica 3":[E("Carrera variable","Fartlek run","Cardio",1,2100,0,0),E("Carrera de fondo","Long run","Cardio",1,2100,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0)],
+      "Carrera larga 3":[E("Carrera ritmo medio","Tempo run","Cardio",1,2100,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,2100,0,0),E("Trote ligero","Easy jog","Cardio",1,2100,0,0)],
+      "Sesión larga 3":[E("Carrera variable","Fartlek run","Cardio",1,2100,0,0),E("Carrera de fondo","Long run","Cardio",1,2100,0,0)],
+      "Trote suave 3":[E("Carrera variable","Fartlek run","Cardio",1,2100,0,0),E("Caminata rápida","Brisk walk","Cardio",1,2100,0,0)]
+    },
+    {
+      "Escaladora 4":[E("Saltos de cuerda","Jump rope","Cardio",1,3000,0,0),E("Carrera variable","Fartlek run","Cardio",1,3000,0,0)],
+      "Elíptica 4":[E("Carrera ritmo medio","Tempo run","Cardio",1,3000,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,3000,0,0),E("Carrera continua","Steady run","Cardio",1,3000,0,0)],
+      "Trote suave 4":[E("Carrera de fondo","Long run","Cardio",1,3000,0,0),E("Carrera ritmo medio","Tempo run","Cardio",1,3000,0,0),E("Bicicleta","Cycling","Cardio",1,3000,0,0)],
+      "Bici larga 4":[E("Bicicleta","Cycling","Cardio",1,3000,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,3000,0,0),E("Carrera ritmo medio","Tempo run","Cardio",1,3000,0,0)],
+      "Tempo 4":[E("Escaladora","Stair climber","Cardio",1,3000,0,0)],
+      "Mixto 4":[E("Natación","Swimming","Cardio",1,3000,0,0),E("Bicicleta","Cycling","Cardio",1,3000,0,0)],
+      "Cuerda 4":[E("Carrera variable","Fartlek run","Cardio",1,3000,0,0)],
+      "Remo 4":[E("Bicicleta","Cycling","Cardio",1,3000,0,0)],
+      "Sesión larga 4":[E("Remo continuo","Steady rowing","Cardio",1,3000,0,0)],
+      "Bici moderada 4":[E("Saltos de cuerda","Jump rope","Cardio",1,3000,0,0),E("Escaladora","Stair climber","Cardio",1,3000,0,0),E("Elíptica","Elliptical","Cardio",1,3000,0,0)],
+      "Fartlek 4":[E("Carrera variable","Fartlek run","Cardio",1,3000,0,0)],
+      "Cross-training 4":[E("Saltos de cuerda","Jump rope","Cardio",1,3000,0,0),E("Carrera variable","Fartlek run","Cardio",1,3000,0,0),E("Bicicleta","Cycling","Cardio",1,3000,0,0)],
+      "Resistencia 4":[E("Natación","Swimming","Cardio",1,3000,0,0)],
+      "Carrera continua 4":[E("Caminata rápida","Brisk walk","Cardio",1,3000,0,0)],
+      "Carrera larga 4":[E("Carrera variable","Fartlek run","Cardio",1,3000,0,0)]
+    },
+    {
+      "Cuerda 5":[E("Trote ligero","Easy jog","Cardio",1,3600,0,0)],
+      "Cross-training 5":[E("Carrera variable","Fartlek run","Cardio",1,3600,0,0)],
+      "Bici larga 5":[E("Escaladora","Stair climber","Cardio",1,3600,0,0)],
+      "Bici moderada 5":[E("Escaladora","Stair climber","Cardio",1,3600,0,0),E("Carrera continua","Steady run","Cardio",1,3600,0,0)],
+      "Sesión larga 5":[E("Trote ligero","Easy jog","Cardio",1,3600,0,0)],
+      "Carrera continua 5":[E("Carrera continua","Steady run","Cardio",1,3600,0,0)],
+      "Fartlek 5":[E("Carrera ritmo medio","Tempo run","Cardio",1,3600,0,0),E("Carrera de fondo","Long run","Cardio",1,3600,0,0)],
+      "Tempo 5":[E("Carrera variable","Fartlek run","Cardio",1,3600,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,3600,0,0)],
+      "Resistencia 5":[E("Carrera de fondo","Long run","Cardio",1,3600,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,3600,0,0)],
+      "Carrera larga 5":[E("Carrera de fondo","Long run","Cardio",1,3600,0,0)],
+      "Mixto 5":[E("Natación","Swimming","Cardio",1,3600,0,0)],
+      "Elíptica 5":[E("Carrera continua","Steady run","Cardio",1,3600,0,0)],
+      "Remo 5":[E("Saltos de cuerda","Jump rope","Cardio",1,3600,0,0)],
+      "Escaladora 5":[E("Trote ligero","Easy jog","Cardio",1,3600,0,0),E("Remo continuo","Steady rowing","Cardio",1,3600,0,0)],
+      "Trote suave 5":[E("Caminata rápida","Brisk walk","Cardio",1,3600,0,0),E("Carrera ritmo medio","Tempo run","Cardio",1,3600,0,0)]
+    }
+  ]
 };
 
-/* Modal plantillas */
+
+
+/* Modal plantillas — navegación en 3 pasos: tipo → nivel → circuito */
 const tplModal = document.getElementById("tplModal");
 const tplTabs = document.getElementById("tplTabs");
 const tplBody = document.getElementById("tplBody");
-let tplType = Object.keys(TEMPLATES)[0];
-document.getElementById("tplBtn").onclick = ()=>{ renderTplTabs(); renderTplBody(); tplModal.classList.add("show"); };
+let tplStep = "type";   // "type" | "level" | "circuit"
+let tplType = null;
+let tplLevel = null;
+
+document.getElementById("tplBtn").onclick = ()=>{ tplStep="type"; tplType=null; tplLevel=null; renderTpl(); tplModal.classList.add("show"); };
 document.getElementById("tplClose").onclick = ()=> tplModal.classList.remove("show");
 tplModal.onclick = e=>{ if(e.target===tplModal) tplModal.classList.remove("show"); };
-function renderTplTabs(){
+
+function renderTpl(){
+  // Breadcrumb / botón volver en las pestañas
   tplTabs.innerHTML = "";
-  Object.keys(TEMPLATES).forEach(t=>{
-    const b = document.createElement("button");
-    b.className = "lib-tab" + (t===tplType?" active":"");
-    b.textContent = t;
-    b.onclick = ()=>{ tplType=t; renderTplTabs(); renderTplBody(); };
-    tplTabs.appendChild(b);
-  });
-}
-function renderTplBody(){
+  if(tplStep !== "type"){
+    const back = document.createElement("button");
+    back.className = "lib-tab active";
+    back.textContent = "‹ Volver";
+    back.onclick = ()=>{
+      if(tplStep==="circuit"){ tplStep="level"; tplLevel=null; }
+      else if(tplStep==="level"){ tplStep="type"; tplType=null; }
+      renderTpl();
+    };
+    tplTabs.appendChild(back);
+    const crumb = document.createElement("span");
+    crumb.className = "tpl-crumb";
+    crumb.textContent = (tplType||"") + (tplLevel!==null ? "  ›  "+TPL_DIFFS[tplLevel] : "");
+    tplTabs.appendChild(crumb);
+  }
+
   tplBody.innerHTML = "";
-  TEMPLATES[tplType].forEach((tpl, di)=>{
-    const totalEx = Object.values(tpl).reduce((a,d)=>a+d.length,0);
-    const dayNames = Object.keys(tpl);
-    const card = document.createElement("div");
-    card.className = "quote-card";
-    card.innerHTML = `
-      <div class="text" style="font-style:normal;font-weight:bold">${TPL_DIFFS[di]}</div>
-      <span class="src">${dayNames.length} día(s) · ${totalEx} ejercicios — ${dayNames.join(", ")}</span>
-      <div class="quote-actions">
-        <button class="q-use">➕ Agregar a mis días · Add</button>
-        <button class="q-del" style="border-color:var(--accent-2);color:var(--accent-2)">♻ Reemplazar todo · Replace</button>
-      </div>`;
-    card.querySelector(".q-use").onclick = ()=>{
-      pushUndo();
-      Object.entries(tpl).forEach(([dname, exs])=>{
-        let name = dname, n=2;
-        while(data[name]) name = `${dname} (${n++})`;
+
+  // PASO 1: elegir tipo de entrenamiento
+  if(tplStep === "type"){
+    const intro = document.createElement("div");
+    intro.className = "tpl-step-title";
+    intro.textContent = "Elegí el tipo de entrenamiento";
+    tplBody.appendChild(intro);
+    Object.keys(TEMPLATES).forEach(t=>{
+      const totalCirc = TEMPLATES[t].reduce((a,lvl)=>a+Object.keys(lvl).length,0);
+      const card = document.createElement("button");
+      card.className = "tpl-pick";
+      card.innerHTML = `<span class="tpl-pick-name">${t}</span><span class="tpl-pick-sub">${totalCirc} circuitos · 5 niveles</span>`;
+      card.onclick = ()=>{ tplType=t; tplStep="level"; renderTpl(); };
+      tplBody.appendChild(card);
+    });
+    return;
+  }
+
+  // PASO 2: elegir nivel de dificultad
+  if(tplStep === "level"){
+    const intro = document.createElement("div");
+    intro.className = "tpl-step-title";
+    intro.textContent = "Elegí el nivel de dificultad";
+    tplBody.appendChild(intro);
+    TEMPLATES[tplType].forEach((lvlObj, li)=>{
+      const n = Object.keys(lvlObj).length;
+      const card = document.createElement("button");
+      card.className = "tpl-pick lvl-"+(li+1);
+      card.innerHTML = `<span class="tpl-pick-name">${TPL_DIFFS[li]}</span><span class="tpl-pick-sub">${n} circuitos para elegir</span>`;
+      card.onclick = ()=>{ tplLevel=li; tplStep="circuit"; renderTpl(); };
+      tplBody.appendChild(card);
+    });
+    return;
+  }
+
+  // PASO 3: elegir circuito concreto
+  if(tplStep === "circuit"){
+    const intro = document.createElement("div");
+    intro.className = "tpl-step-title";
+    intro.textContent = "Elegí un circuito";
+    tplBody.appendChild(intro);
+    const lvlObj = TEMPLATES[tplType][tplLevel];
+    Object.entries(lvlObj).forEach(([cname, exs])=>{
+      const card = document.createElement("div");
+      card.className = "quote-card";
+      const preview = exs.slice(0,3).map(e=>e.es).join(", ") + (exs.length>3 ? "…" : "");
+      card.innerHTML = `
+        <div class="text" style="font-style:normal;font-weight:bold">${cname}</div>
+        <span class="src">${exs.length} ejercicios — ${preview}</span>
+        <div class="quote-actions">
+          <button class="q-use">➕ Agregar como día · Add</button>
+          <button class="q-del" style="border-color:var(--accent-2);color:var(--accent-2)">♻ Reemplazar todo</button>
+        </div>`;
+      card.querySelector(".q-use").onclick = ()=>{
+        pushUndo();
+        let name = cname, n=2;
+        while(data[name]) name = `${cname} (${n++})`;
         data[name] = structuredClone(exs);
-      });
-      save(); renderDays(); renderList();
-      tplModal.classList.remove("show");
-      alert("Plantilla agregada a tus días · Template added");
-    };
-    card.querySelector(".q-del").onclick = ()=>{
-      if(!confirm("Esto reemplaza TODOS tus días por la plantilla. ¿Seguir?")) return;
-      pushUndo();
-      data = structuredClone(tpl);
-      currentDay = Object.keys(data)[0];
-      save(); renderDays(); renderList();
-      tplModal.classList.remove("show");
-    };
-    tplBody.appendChild(card);
-  });
+        currentDay = name;
+        save(); renderDays(); renderList();
+        tplModal.classList.remove("show");
+        alert(`"${cname}" agregado como día nuevo · Added`);
+      };
+      card.querySelector(".q-del").onclick = ()=>{
+        if(!confirm("Esto reemplaza TODOS tus días por este circuito. ¿Seguir?")) return;
+        pushUndo();
+        data = { [cname]: structuredClone(exs) };
+        currentDay = cname;
+        save(); renderDays(); renderList();
+        tplModal.classList.remove("show");
+      };
+      tplBody.appendChild(card);
+    });
+    return;
+  }
 }
 
 /* ---------- Cronómetro de sesión ---------- */
@@ -2214,6 +2856,149 @@ function parseExerciseCell(text){
   if(!name) name = "Ejercicio";
   return E(name, "", "", sets, reps, weight, rest);
 }
+
+/* ============================================================
+   TEMPORIZADOR DE INTERVALOS / INTERVAL TIMER
+   Fases: preparación → (trabajo → descanso) × rondas → descanso entre sets
+   ============================================================ */
+const IV_PRESETS = [
+  {name:"Tabata", prep:10, work:20, rest:10, rounds:8, sets:1, setRest:60},
+  {name:"HIIT 40/20", prep:10, work:40, rest:20, rounds:8, sets:1, setRest:60},
+  {name:"HIIT 30/30", prep:10, work:30, rest:30, rounds:10, sets:1, setRest:60},
+  {name:"HIIT 45/15", prep:10, work:45, rest:15, rounds:8, sets:1, setRest:60},
+  {name:"EMOM 10'", prep:5, work:60, rest:0, rounds:10, sets:1, setRest:0},
+  {name:"Sprint 30/90", prep:10, work:30, rest:90, rounds:8, sets:1, setRest:0},
+  {name:"Cardio 60/60", prep:10, work:60, rest:60, rounds:6, sets:1, setRest:0},
+];
+
+const intervalModal = document.getElementById("intervalModal");
+const ivRun = document.getElementById("ivRun");
+const ivIds = ["ivPrep","ivWork","ivRest","ivRounds","ivSets","ivSetRest"];
+
+document.getElementById("intervalBtn").onclick = ()=>{
+  renderIvPresets();
+  updateIvTotal();
+  intervalModal.classList.add("show");
+};
+document.getElementById("intervalClose").onclick = ()=> intervalModal.classList.remove("show");
+intervalModal.onclick = e=>{ if(e.target===intervalModal) intervalModal.classList.remove("show"); };
+ivIds.forEach(id=> document.getElementById(id).oninput = updateIvTotal);
+
+function renderIvPresets(){
+  const box = document.getElementById("ivPresets");
+  box.innerHTML = "";
+  IV_PRESETS.forEach(p=>{
+    const b = document.createElement("button");
+    b.className = "iv-preset";
+    b.textContent = p.name;
+    b.onclick = ()=>{
+      document.getElementById("ivPrep").value = p.prep;
+      document.getElementById("ivWork").value = p.work;
+      document.getElementById("ivRest").value = p.rest;
+      document.getElementById("ivRounds").value = p.rounds;
+      document.getElementById("ivSets").value = p.sets;
+      document.getElementById("ivSetRest").value = p.setRest;
+      updateIvTotal();
+    };
+    box.appendChild(b);
+  });
+}
+function ivConfig(){
+  return {
+    prep:+document.getElementById("ivPrep").value||0,
+    work:+document.getElementById("ivWork").value||0,
+    rest:+document.getElementById("ivRest").value||0,
+    rounds:Math.max(1,+document.getElementById("ivRounds").value||1),
+    sets:Math.max(1,+document.getElementById("ivSets").value||1),
+    setRest:+document.getElementById("ivSetRest").value||0,
+  };
+}
+function updateIvTotal(){
+  const c = ivConfig();
+  const perSet = c.work*c.rounds + c.rest*c.rounds;
+  let total = c.prep + perSet*c.sets + c.setRest*(c.sets-1);
+  const m = Math.floor(total/60), s = total%60;
+  document.getElementById("ivTotal").textContent = `Duración total ≈ ${m}m ${s}s`;
+}
+
+// Construir la secuencia de fases
+function buildIvPhases(c){
+  const phases = [];
+  if(c.prep>0) phases.push({type:"prep", label:"Preparación · Get ready", secs:c.prep});
+  for(let set=1; set<=c.sets; set++){
+    for(let r=1; r<=c.rounds; r++){
+      if(c.work>0) phases.push({type:"work", label:"💪 Trabajo · Work", secs:c.work, round:r, set:set});
+      if(c.rest>0 && r<c.rounds) phases.push({type:"rest", label:"😮‍💨 Descanso · Rest", secs:c.rest, round:r, set:set});
+      else if(c.rest>0 && r===c.rounds && set<c.sets){ /* el descanso de ronda final se omite si hay setRest */ }
+      else if(c.rest>0 && r===c.rounds && set===c.sets){ /* fin, sin descanso final */ }
+    }
+    if(set<c.sets && c.setRest>0) phases.push({type:"setrest", label:"🛑 Descanso entre sets · Set rest", secs:c.setRest, set:set});
+  }
+  return phases;
+}
+
+let ivPhases = [], ivIdx = 0, ivLeft = 0, ivInt = null, ivPaused = false, ivConf = null;
+document.getElementById("ivStart").onclick = ()=>{
+  ivConf = ivConfig();
+  ivPhases = buildIvPhases(ivConf);
+  if(!ivPhases.length){ alert("Configurá al menos trabajo y rondas."); return; }
+  ivIdx = 0; ivPaused = false;
+  intervalModal.classList.remove("show");
+  ivRun.classList.add("show");
+  startIvPhase();
+};
+function startIvPhase(){
+  clearInterval(ivInt);
+  const ph = ivPhases[ivIdx];
+  ivLeft = ph.secs;
+  ivRun.className = "iv-run show phase-" + ph.type;
+  document.getElementById("ivPhase").textContent = ph.label;
+  // info de ronda/set
+  let info = "";
+  if(ph.round){ info = `Ronda ${ph.round} / ${ivConf.rounds}`; if(ivConf.sets>1) info += ` · Set ${ph.set} / ${ivConf.sets}`; }
+  else if(ph.type==="setrest"){ info = `Fin del set ${ph.set} / ${ivConf.sets}`; }
+  else { info = "¡Prepárate!"; }
+  document.getElementById("ivInfo").textContent = info;
+  // próximo
+  const next = ivPhases[ivIdx+1];
+  document.getElementById("ivNext").textContent = next ? `Sigue: ${next.label.replace(/^[^A-Za-zÁ-ú]+/,"")}` : "Última fase";
+  renderIvClock();
+  ivInt = setInterval(ivTick, 1000);
+}
+function ivTick(){
+  if(ivPaused) return;
+  ivLeft--;
+  if(ivLeft<=3 && ivLeft>0) beep(660);    // cuenta regresiva
+  renderIvClock();
+  if(ivLeft<=0){
+    beep(990);
+    ivIdx++;
+    if(ivIdx>=ivPhases.length){ ivFinish(); return; }
+    startIvPhase();
+  }
+}
+function renderIvClock(){
+  const m = String(Math.floor(Math.max(ivLeft,0)/60)).padStart(2,"0");
+  const s = String(Math.max(ivLeft,0)%60).padStart(2,"0");
+  document.getElementById("ivClock").textContent = `${m}:${s}`;
+}
+function ivFinish(){
+  clearInterval(ivInt);
+  ivRun.className = "iv-run show phase-done";
+  document.getElementById("ivPhase").textContent = "✅ ¡Completado!";
+  document.getElementById("ivClock").textContent = "00:00";
+  document.getElementById("ivInfo").textContent = "Buen trabajo · Well done";
+  document.getElementById("ivNext").textContent = "";
+  beep(1320);
+}
+document.getElementById("ivPause").onclick = function(){
+  ivPaused = !ivPaused;
+  this.textContent = ivPaused ? "▶ Reanudar" : "⏸ Pausar";
+};
+document.getElementById("ivStop").onclick = ()=>{
+  clearInterval(ivInt);
+  ivRun.classList.remove("show");
+};
 
 /* ---------- Init ---------- */
 renderWorkoutList();
