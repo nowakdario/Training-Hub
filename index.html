@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Training Hub 🔴⚪</title>
+<title>Entrenamiento de Fuerza · El Rojo 🔴⚪</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-js-style/1.2.0/xlsx.bundle.js"></script>
 <style>
   /* ========================================================
@@ -280,6 +280,8 @@
     cursor:pointer;font-size:1.05rem;flex:0 0 auto;
   }
   .info:hover{transform:scale(1.15)}
+  .swap{border:none;background:transparent;cursor:pointer;font-size:1rem;flex:0 0 auto}
+  .swap:hover{transform:scale(1.15) rotate(90deg);transition:transform .2s}
 
   footer.app{text-align:center;font-size:.78rem;opacity:.85;padding:10px 0 30px;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:10px}
   .bg-pick{
@@ -368,6 +370,7 @@
     border-radius:8px;width:36px;height:36px;font-size:1.2rem;cursor:pointer;flex:0 0 auto;
   }
   .lib-empty{text-align:center;opacity:.6;padding:20px;font-size:.9rem}
+  .lib-replace-banner{background:rgba(209,10,20,0.1);border:1px solid var(--violet);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:.85rem;color:var(--violet-deep)}
 
   /* Casilla de pausa personalizada */
   .rest-custom{
@@ -1058,6 +1061,7 @@ function makeCard(ex, idx){
       <button class="move-up" title="Subir · Move up" ${idx===0?"disabled":""}>▲</button>
       <button class="move-down" title="Bajar · Move down" ${idx===data[currentDay].length-1?"disabled":""}>▼</button>
     </div>
+    <button class="swap" title="Cambiar ejercicio · Replace">🔄</button>
     <button class="info" title="Ver técnica · How-to">ℹ️</button>
     <button class="del" title="Eliminar · Delete">🗑</button>
   `;
@@ -1065,6 +1069,7 @@ function makeCard(ex, idx){
   head.querySelector(".es").onblur = e=>{ ex.es=e.target.textContent.trim(); save(); };
   head.querySelector(".en").onblur = e=>{ ex.en=e.target.textContent.trim(); save(); };
   head.querySelector(".muscle").onblur = e=>{ ex.muscle=e.target.textContent.trim(); save(); };
+  head.querySelector(".swap").onclick = ()=> openLibraryToReplace(idx);
   head.querySelector(".move-up").onclick = ()=>{
     if(idx===0) return;
     pushUndo();
@@ -1353,15 +1358,25 @@ const libTabs = document.getElementById("libTabs");
 const libBody = document.getElementById("libBody");
 const libSearch = document.getElementById("libSearch");
 let libCategory = Object.keys(LIBRARY)[0];
+let libReplaceIdx = null; // si no es null, estamos reemplazando ese índice
 
 document.getElementById("browseLib").onclick = ()=>{
+  libReplaceIdx = null;
   libSearch.value = "";
   libModal.classList.add("show");
   renderLibTabs();
   renderLibBody();
 };
-document.getElementById("libClose").onclick = ()=> libModal.classList.remove("show");
-libModal.onclick = e=>{ if(e.target===libModal) libModal.classList.remove("show"); };
+// Abrir biblioteca en modo reemplazo de un ejercicio existente
+function openLibraryToReplace(idx){
+  libReplaceIdx = idx;
+  libSearch.value = "";
+  libModal.classList.add("show");
+  renderLibTabs();
+  renderLibBody();
+}
+document.getElementById("libClose").onclick = ()=> { libReplaceIdx = null; libModal.classList.remove("show"); };
+libModal.onclick = e=>{ if(e.target===libModal){ libReplaceIdx = null; libModal.classList.remove("show"); } };
 libSearch.oninput = ()=> renderLibBody();
 
 function renderLibTabs(){
@@ -1378,9 +1393,16 @@ function renderLibTabs(){
 function renderLibBody(){
   const q = libSearch.value.trim().toLowerCase();
   libBody.innerHTML = "";
+  // Aviso de modo reemplazo
+  if(libReplaceIdx !== null){
+    const cur = data[currentDay][libReplaceIdx];
+    const banner = document.createElement("div");
+    banner.className = "lib-replace-banner";
+    banner.innerHTML = `🔄 Reemplazando: <b>${cur ? cur.es : ""}</b> — elegí el nuevo ejercicio`;
+    libBody.appendChild(banner);
+  }
   let items;
   if(q){
-    // Buscar en todas las categorías
     items = [];
     Object.entries(LIBRARY).forEach(([cat,list])=>{
       list.forEach(ex=>{
@@ -1391,21 +1413,44 @@ function renderLibBody(){
     items = LIBRARY[libCategory].map(ex=>({...ex, cat:libCategory}));
   }
   if(!items.length){
-    libBody.innerHTML = '<div class="lib-empty">Sin resultados · No results</div>';
+    const e = document.createElement("div");
+    e.className = "lib-empty";
+    e.textContent = "Sin resultados · No results";
+    libBody.appendChild(e);
     return;
   }
   items.forEach(ex=>{
     const row = document.createElement("div");
     row.className = "lib-item";
+    const replacing = libReplaceIdx !== null;
     row.innerHTML = `
       <div class="info">
         <div class="es">${ex.es}</div>
         <div class="en">${ex.en} · ${ex.muscle}</div>
       </div>
-      <button class="add-btn" title="Añadir · Add">＋</button>
+      <button class="add-btn" title="${replacing?'Reemplazar · Replace':'Añadir · Add'}">${replacing?'🔄':'＋'}</button>
     `;
     row.querySelector(".add-btn").onclick = ()=>{
       pushUndo();
+      if(libReplaceIdx !== null){
+        // Reemplazar conservando posición; preguntar si mantener config
+        const old = data[currentDay][libReplaceIdx] || {};
+        const keep = confirm("¿Mantener las series, reps, peso y descanso actuales?\nAceptar = sí · Cancelar = usar valores nuevos");
+        data[currentDay][libReplaceIdx] = {
+          es:ex.es, en:ex.en, muscle:ex.muscle,
+          sets: keep ? (old.sets ?? 3) : 3,
+          reps: keep ? (old.reps ?? 10) : 10,
+          weight: keep ? (old.weight ?? 0) : 0,
+          rest: keep ? (old.rest ?? 60) : 60,
+          setsDone:[], done:false,
+          customRest: keep ? (old.customRest||false) : false,
+          notes: keep ? (old.notes||"") : ""
+        };
+        libReplaceIdx = null;
+        save(); renderList();
+        libModal.classList.remove("show");
+        return;
+      }
       data[currentDay].push({
         es:ex.es, en:ex.en, muscle:ex.muscle,
         sets:3, reps:10, weight:0, rest:60, setsDone:[], done:false,
