@@ -255,6 +255,10 @@
   .rounds-control .rc-label small{font-weight:400;opacity:.6;font-family:var(--font-body);font-size:.7rem}
   .rounds-control .rc-stepper{display:flex;align-items:center;gap:14px}
   .rounds-control .rc-val{font-size:1.4rem;font-weight:800;min-width:28px;text-align:center;color:var(--ink)}
+  .install-btn{margin:12px auto 0;display:block;border:none;border-radius:12px;padding:12px 22px;cursor:pointer;
+    font-family:var(--font-head);font-weight:700;letter-spacing:.5px;font-size:1rem;color:#fff;
+    background:linear-gradient(135deg,var(--violet),var(--violet-deep));box-shadow:var(--shadow)}
+  .install-btn:hover{transform:translateY(-1px)}
   .start-circuit-btn{width:100%;border:none;border-radius:14px;padding:16px;margin-bottom:16px;cursor:pointer;
     font-family:var(--font-head);font-size:1.2rem;font-weight:700;letter-spacing:1px;color:#fff;
     background:linear-gradient(135deg,var(--violet),var(--violet-deep));box-shadow:var(--shadow)}
@@ -323,9 +327,12 @@
   .card.done .check{background:var(--ok);border-color:var(--ok);animation:pop .35s ease}
   .card.done .check::after{content:"✓"}
   @keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.35)}100%{transform:scale(1)}}
-  .titles{flex:1;min-width:0}
-  .titles .es{font-weight:700;font-size:1.05rem;font-family:var(--font-head);letter-spacing:.3px}
-  .titles .en{font-size:.85rem;opacity:.7;font-style:italic}
+  .titles{flex:1;min-width:0;padding:2px 0}
+  .titles .es{font-weight:700;font-size:1.05rem;font-family:var(--font-head);letter-spacing:.3px;
+    word-break:break-word;overflow-wrap:anywhere;line-height:1.3}
+  .titles .en{font-size:.85rem;opacity:.7;font-style:italic;word-break:break-word;overflow-wrap:anywhere}
+  .titles .es:focus,.titles .en:focus{outline:none}
+  .titles [contenteditable]{cursor:text}
   .muscle{
     font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;
     background:var(--violet);color:var(--cream);padding:3px 8px;border-radius:6px;
@@ -425,11 +432,11 @@
     border:none;background:transparent;color:var(--accent-2);
     cursor:pointer;font-size:1.1rem;flex:0 0 auto;
   }
-  .info{
+  button.info{
     border:none;background:transparent;
     cursor:pointer;font-size:1.05rem;flex:0 0 auto;
   }
-  .info:hover{transform:scale(1.15)}
+  button.info:hover{transform:scale(1.15)}
   .swap{border:none;background:transparent;cursor:pointer;font-size:1rem;flex:0 0 auto}
   .swap:hover{transform:scale(1.15) rotate(90deg);transition:transform .2s}
 
@@ -483,7 +490,7 @@
     background:var(--cream);color:var(--ink);width:100%;max-width:560px;
     max-height:85vh;border-radius:18px 18px 0 0;
     display:flex;flex-direction:column;box-shadow:var(--shadow);
-    animation:slideUp .25s ease;
+    animation:slideUp .25s ease;overflow:hidden;
   }
   @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
   .modal-head{
@@ -499,6 +506,7 @@
     margin:12px 16px 6px;padding:10px 12px;border-radius:10px;
     border:2px solid var(--line);font-size:.95rem;
     background:var(--card-bg);color:var(--ink);
+    width:auto;
   }
   .lib-tabs{display:flex;gap:6px;padding:6px 16px;flex-wrap:wrap}
   .lib-tab{
@@ -507,15 +515,23 @@
     cursor:pointer;white-space:nowrap;flex:0 0 auto;line-height:1.2;
   }
   .lib-tab.active{background:var(--violet);color:var(--cream)}
-  .lib-body{overflow-y:auto;padding:8px 16px 18px;flex:1}
+  .lib-body{overflow-y:auto;overflow-x:hidden;padding:8px 16px 18px;flex:1}
   .lib-item{
     display:flex;align-items:center;gap:10px;color:var(--ink);
     padding:10px 12px;border:1px solid var(--line);border-radius:10px;
-    margin-bottom:8px;background:var(--card-bg);
+    margin-bottom:8px;background:var(--card-bg);text-align:left;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    transform-origin:left center;
   }
-  .lib-item .info{flex:1;min-width:0}
-  .lib-item .info .es{font-weight:bold;font-size:.95rem}
-  .lib-item .info .en{font-size:.8rem;opacity:.65;font-style:italic}
+  .lib-item:hover{
+    transform:scale(1.02);
+    border-color:var(--violet);
+    box-shadow:var(--shadow);
+    z-index:2;
+  }
+  .lib-item .info{flex:1 1 auto;min-width:0}
+  .lib-item .info .es{font-weight:bold;font-size:.95rem;word-break:break-word;overflow-wrap:anywhere;text-indent:0;margin:0}
+  .lib-item .info .en{font-size:.8rem;opacity:.65;font-style:italic;word-break:break-word;overflow-wrap:anywhere;text-indent:0;margin:0}
   .lib-item .add-btn{
     border:none;background:var(--accent);color:#fff;font-weight:bold;
     border-radius:8px;width:36px;height:36px;font-size:1.2rem;cursor:pointer;flex:0 0 auto;
@@ -697,6 +713,7 @@
     </div>
     <input type="file" id="bgInput" accept="image/*" hidden>
     <div class="dedication" id="dedication" contenteditable="true" data-placeholder="Escribí acá tu frase…">Escribí acá tu frase…</div>
+    <button id="installBtn" class="install-btn" style="display:none">📲 Instalar app · Install app</button>
     <div style="margin-top:8px" id="dataSavedTxt">Los datos se guardan en tu dispositivo</div>
     <div class="credit">by Darío Nowak</div>
   </footer>
@@ -773,7 +790,7 @@
       <strong id="libTitleEl">📚 Biblioteca · Library</strong>
       <button class="modal-close" id="libClose">✕</button>
     </div>
-    <input type="text" id="libSearch" class="lib-search" placeholder="Buscar ejercicio · Search…" id="libSearchInput">
+    <input type="text" id="libSearchInput" class="lib-search" placeholder="Buscar ejercicio · Search…">
     <div class="lib-tabs" id="libTabs"></div>
     <div class="lib-body" id="libBody"></div>
   </div>
@@ -1078,7 +1095,10 @@ const LIBRARY = {
     {es:"Sprawl", en:"Sprawl", muscle:"Cuerpo completo"},
     {es:"Bear crawl", en:"Bear crawl", muscle:"Cuerpo completo"},
     {es:"Saltos al cajón", en:"Box jumps", muscle:"Piernas (potencia)"},
-    {es:"Skipping / rodillas altas", en:"High knees", muscle:"Cardio"},
+    {es:"Skipping / rodillas altas (high skipping)", en:"High knees (high skipping)", muscle:"Cardio"},
+    {es:"Burpee sin flexión", en:"No push-up burpee", muscle:"Cuerpo completo"},
+    {es:"Jumping jacks (saltos de tijera)", en:"Jumping jacks", muscle:"Cardio"},
+    {es:"Abdominal bicicleta con disco (pase entre piernas)", en:"Bicycle crunch with plate pass", muscle:"Core/Oblicuos"},
   ],
   "Bicicleta fija · Stationary bike": [
     {es:"Bici fija — ritmo constante", en:"Stationary bike — steady pace", muscle:"Cardio"},
@@ -1220,12 +1240,28 @@ function propagateConfig(){
 
 /* ---------- Render días ---------- */
 const daysEl = document.getElementById("days");
+const DAY_MAP = [
+  {es:"Lunes", en:"Mon", abbr:["lun","mon"]},
+  {es:"Martes", en:"Tue", abbr:["mar","tue"]},
+  {es:"Miércoles", en:"Wed", abbr:["miérc","mierc","miércoles","miercoles","wed"]},
+  {es:"Jueves", en:"Thu", abbr:["jue","thu"]},
+  {es:"Viernes", en:"Fri", abbr:["vie","fri"]},
+  {es:"Sábado", en:"Sat", abbr:["sáb","sab","sábado","sabado","sat"]},
+  {es:"Domingo", en:"Sun", abbr:["dom","sun"]},
+];
 function dayLabel(day){
-  // Si el día tiene formato bilingüe "ES · EN", mostrar el lado del idioma activo
-  if(typeof day==="string" && day.includes(" · ")){
+  if(typeof day!=="string") return day;
+  // Formato bilingüe "ES · EN"
+  if(day.includes(" · ")){
     const parts = day.split(" · ");
-    if(parts.length===2) return lang==="en" ? parts[1] : parts[0];
+    if(parts.length===2) return lang==="en" ? parts[1].trim() : parts[0].trim();
   }
+  // Día guardado solo en un idioma: intentar mapear
+  const norm = day.trim().toLowerCase();
+  const hit = DAY_MAP.find(d=>
+    norm===d.es.toLowerCase() || norm===d.en.toLowerCase() || d.abbr.includes(norm)
+  );
+  if(hit) return lang==="en" ? hit.en : hit.es;
   return day;
 }
 function renderDays(){
@@ -1242,7 +1278,7 @@ function renderDays(){
       else{ currentDay = day; renderDays(); renderList(); }
     };
     wrap.appendChild(b);
-    if(multiple){
+    {
       const x = document.createElement("button");
       x.className = "day-x";
       x.textContent = "🗑";
@@ -1256,15 +1292,15 @@ function renderDays(){
   const sel = document.createElement("select");
   sel.className = "day-btn day-add-select";
   sel.innerHTML = `
-    <option value="">＋ Agregar día · Add day</option>
-    <option value="Lunes · Mon">Lunes · Mon</option>
-    <option value="Martes · Tue">Martes · Tue</option>
-    <option value="Miérc · Wed">Miérc · Wed</option>
-    <option value="Jueves · Thu">Jueves · Thu</option>
-    <option value="Viernes · Fri">Viernes · Fri</option>
-    <option value="Sábado · Sat">Sábado · Sat</option>
-    <option value="Domingo · Sun">Domingo · Sun</option>
-    <option value="__custom__">✏️ Personalizado · Custom…</option>
+    <option value="">${LL("＋ Agregar día","＋ Add day")}</option>
+    <option value="Lunes · Mon">${dayLabel("Lunes · Mon")}</option>
+    <option value="Martes · Tue">${dayLabel("Martes · Tue")}</option>
+    <option value="Miérc · Wed">${dayLabel("Miérc · Wed")}</option>
+    <option value="Jueves · Thu">${dayLabel("Jueves · Thu")}</option>
+    <option value="Viernes · Fri">${dayLabel("Viernes · Fri")}</option>
+    <option value="Sábado · Sat">${dayLabel("Sábado · Sat")}</option>
+    <option value="Domingo · Sun">${dayLabel("Domingo · Sun")}</option>
+    <option value="__custom__">${LL("✏️ Personalizado…","✏️ Custom…")}</option>
   `;
   sel.onchange = ()=>{
     const v = sel.value;
@@ -1315,11 +1351,21 @@ function addDay(){
 }
 
 function deleteDayNamed(day){
-  if(Object.keys(data).length <= 1){ alert("Tiene que quedar al menos un día · Keep at least one day"); return; }
-  if(!confirm(`¿Borrar el día "${day}" y sus ejercicios? · Delete this day?`)) return;
+  const isLast = Object.keys(data).length <= 1;
+  const msg = isLast
+    ? LL(`¿Borrar el día "${day}"? Se vaciará y quedará un día nuevo en blanco.`, `Delete "${day}"? It will be cleared and replaced by a blank day.`)
+    : LL(`¿Borrar el día "${day}" y sus ejercicios?`, `Delete "${day}" and its exercises?`);
+  if(!confirm(msg)) return;
   pushUndo();
   delete data[day];
-  if(currentDay===day) currentDay = Object.keys(data)[0];
+  if(isLast){
+    // recrear un día vacío para no dejar la app sin días
+    const fresh = LL("Día 1","Day 1");
+    data[fresh] = [];
+    currentDay = fresh;
+  } else if(currentDay===day){
+    currentDay = Object.keys(data)[0];
+  }
   save(); renderDays(); renderList();
 }
 
@@ -1391,24 +1437,39 @@ function renderList(){
 // Opciones del dropdown del mix: todos los ejercicios de la biblioteca
 function mixAllExercises(){
   const out = [];
-  Object.values(LIBRARY).forEach(list=> list.forEach(e=> out.push(e)));
-  // quitar duplicados por nombre es
-  const seen = new Set(); const uniq = [];
-  out.forEach(e=>{ const k=e.es+"|"+e.en; if(!seen.has(k)){ seen.add(k); uniq.push(e); } });
-  return uniq;
+  Object.entries(LIBRARY).forEach(([cat,list])=> list.forEach(e=> out.push({...e, _cat:cat})));
+  return out;
+}
+function mixCatShort(cat){
+  // toma el lado del idioma activo del nombre de categoría "ES · EN"
+  if(!cat) return "";
+  const parts = cat.split(" · ");
+  return (lang==="en" && parts[1]) ? parts[1] : parts[0];
 }
 function mixLabel(e){ return lang==="en" ? (e.en||e.es) : (e.es||e.en); }
 function mixOptions(currentLabel){
-  const exs = mixAllExercises().sort((a,b)=> mixLabel(a).localeCompare(mixLabel(b)));
+  const exs = mixAllExercises();
+  // contar cuántas veces aparece cada nombre para saber si hay que desambiguar
+  const counts = {};
+  exs.forEach(e=>{ const l=mixLabel(e); counts[l]=(counts[l]||0)+1; });
+  // construir lista única (label + categoría si está repetido)
+  const seen = new Set();
+  const items = [];
+  exs.forEach(e=>{
+    const base = mixLabel(e);
+    const key = base + "|" + e._cat;
+    if(seen.has(key)) return; seen.add(key);
+    const display = counts[base]>1 ? `${base} (${mixCatShort(e._cat)})` : base;
+    items.push({value: base, display});
+  });
+  items.sort((a,b)=> a.display.localeCompare(b.display));
   let html = `<option value="">${lang==="en"?"— pick exercise —":"— elegí ejercicio —"}</option>`;
   let matched = false;
-  exs.forEach(e=>{
-    const lbl = mixLabel(e);
-    const sel = (lbl===currentLabel) ? " selected" : "";
+  items.forEach(it=>{
+    const sel = (it.value===currentLabel) ? " selected" : "";
     if(sel) matched = true;
-    html += `<option value="${lbl.replace(/"/g,'&quot;')}"${sel}>${lbl}</option>`;
+    html += `<option value="${it.value.replace(/"/g,'&quot;')}"${sel}>${it.display}</option>`;
   });
-  // si el actual no está en la biblioteca (custom), lo mostramos seleccionado
   if(currentLabel && !matched){
     html = `<option value="${currentLabel.replace(/"/g,'&quot;')}" selected>${currentLabel}</option>` + html;
   }
@@ -1777,27 +1838,85 @@ document.getElementById("addEx").onclick = ()=>{
 
 /* ---------- Frases motivacionales ---------- */
 const MOTIV = [
-  {text:"It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward.", src:"Rocky Balboa (Rocky Balboa, 2006)"},
-  {text:"You miss 100% of the shots you don't take.", src:"Wayne Gretzky"},
-  {text:"Get busy living, or get busy dying.", src:"The Shawshank Redemption (1994)"},
-  {text:"Why do we fall? So we can learn to pick ourselves up.", src:"Batman Begins (2005)"},
-  {text:"Do, or do not. There is no try.", src:"Yoda — The Empire Strikes Back (1980)"},
-  {text:"What we do in life echoes in eternity.", src:"Gladiator (2000)"},
-  {text:"My mama always said life was like a box of chocolates. You never know what you're gonna get.", src:"Forrest Gump (1994)"},
-  {text:"It is not our abilities that show what we truly are. It is our choices.", src:"Harry Potter and the Chamber of Secrets (2002)"},
-  {text:"The flower that blooms in adversity is the most rare and beautiful of all.", src:"Mulan (1998)"},
-  {text:"Our lives are defined by opportunities, even the ones we miss.", src:"The Curious Case of Benjamin Button (2008)"},
-  {text:"Hope is a good thing, maybe the best of things, and no good thing ever dies.", src:"The Shawshank Redemption (1994)"},
-  {text:"It's not who I am underneath, but what I do that defines me.", src:"Batman Begins (2005)"},
-  {text:"Sic parvis magna.", src:"Latín · «La grandeza nace de lo pequeño»"},
-  {text:"Acta non verba.", src:"Latín · «Hechos, no palabras»"},
-  {text:"Labor omnia vincit.", src:"Latín · «El trabajo todo lo vence»"},
-  {text:"Ex nihilo nihil fit.", src:"Latín · «Nada surge de la nada»"},
-  {text:"Gutta cavat lapidem non vi, sed saepe cadendo.", src:"Latín · «La gota horada la piedra no por la fuerza, sino por la constancia»"},
-  {text:"Per aspera ad astra.", src:"Latín · «A través de la dificultad, a las estrellas»"},
-  {text:"Vincit qui se vincit.", src:"Latín · «Vence quien se vence a sí mismo»"},
-  {text:"Fortes fortuna adiuvat.", src:"Latín · «La fortuna favorece a los valientes»"},
+  // ===== PELÍCULAS · MOVIES =====
+  {cat:"movies", text:"It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward.", src:"Rocky Balboa (Rocky Balboa, 2006)"},
+  {cat:"movies", text:"Get busy living, or get busy dying.", src:"The Shawshank Redemption (1994)"},
+  {cat:"movies", text:"Why do we fall? So we can learn to pick ourselves up.", src:"Batman Begins (2005)"},
+  {cat:"movies", text:"Do, or do not. There is no try.", src:"Yoda — The Empire Strikes Back (1980)"},
+  {cat:"movies", text:"What we do in life echoes in eternity.", src:"Gladiator (2000)"},
+  {cat:"movies", text:"My mama always said life was like a box of chocolates. You never know what you're gonna get.", src:"Forrest Gump (1994)"},
+  {cat:"movies", text:"It is not our abilities that show what we truly are. It is our choices.", src:"Harry Potter and the Chamber of Secrets (2002)"},
+  {cat:"movies", text:"The flower that blooms in adversity is the most rare and beautiful of all.", src:"Mulan (1998)"},
+  {cat:"movies", text:"Our lives are defined by opportunities, even the ones we miss.", src:"The Curious Case of Benjamin Button (2008)"},
+  {cat:"movies", text:"Hope is a good thing, maybe the best of things, and no good thing ever dies.", src:"The Shawshank Redemption (1994)"},
+  {cat:"movies", text:"It's not who I am underneath, but what I do that defines me.", src:"Batman Begins (2005)"},
+  {cat:"movies", text:"Just keep swimming.", src:"Finding Nemo (2003)"},
+  {cat:"movies", text:"Carpe diem. Seize the day, boys. Make your lives extraordinary.", src:"Dead Poets Society (1989)"},
+  {cat:"movies", text:"The only way out is through.", src:"frase popular en cine y poesía"},
+
+  // ===== DEPORTISTAS · ATHLETES =====
+  {cat:"athletes", text:"You miss 100% of the shots you don't take.", src:"Wayne Gretzky"},
+  {cat:"athletes", text:"I've failed over and over and over again in my life. And that is why I succeed.", src:"Michael Jordan"},
+  {cat:"athletes", text:"I hated every minute of training, but I said, 'Don't quit. Suffer now and live the rest of your life as a champion.'", src:"Muhammad Ali"},
+  {cat:"athletes", text:"Float like a butterfly, sting like a bee.", src:"Muhammad Ali"},
+  {cat:"athletes", text:"It's not whether you get knocked down; it's whether you get up.", src:"Vince Lombardi"},
+  {cat:"athletes", text:"Practice makes permanent.", src:"Bobby Robson"},
+  {cat:"athletes", text:"Hard work beats talent when talent doesn't work hard.", src:"Tim Notke (entrenador)"},
+  {cat:"athletes", text:"You have to expect things of yourself before you can do them.", src:"Michael Jordan"},
+  {cat:"athletes", text:"Champions keep playing until they get it right.", src:"Billie Jean King"},
+  {cat:"athletes", text:"The more difficult the victory, the greater the happiness in winning.", src:"Pelé"},
+  {cat:"athletes", text:"You can't put a limit on anything. The more you dream, the farther you get.", src:"Michael Phelps"},
+
+  // ===== ARTISTAS · ARTISTS =====
+  {cat:"artists", text:"Every artist was first an amateur.", src:"Ralph Waldo Emerson"},
+  {cat:"artists", text:"Creativity takes courage.", src:"Henri Matisse"},
+  {cat:"artists", text:"I am always doing that which I cannot do, in order that I may learn how to do it.", src:"Pablo Picasso"},
+  {cat:"artists", text:"Inspiration exists, but it has to find you working.", src:"Pablo Picasso"},
+  {cat:"artists", text:"It took me four years to paint like Raphael, but a lifetime to paint like a child.", src:"Pablo Picasso"},
+  {cat:"artists", text:"Genius is one percent inspiration and ninety-nine percent perspiration.", src:"Thomas Edison"},
+  {cat:"artists", text:"I dream my painting and I paint my dream.", src:"Vincent van Gogh"},
+  {cat:"artists", text:"Great things are done by a series of small things brought together.", src:"Vincent van Gogh"},
+
+  // ===== SABIDURÍA POPULAR / LATÍN · WISDOM =====
+  {cat:"wisdom", text:"Sic parvis magna.", src:"Latín · «La grandeza nace de lo pequeño»"},
+  {cat:"wisdom", text:"Acta non verba.", src:"Latín · «Hechos, no palabras»"},
+  {cat:"wisdom", text:"Labor omnia vincit.", src:"Latín · «El trabajo todo lo vence»"},
+  {cat:"wisdom", text:"Ex nihilo nihil fit.", src:"Latín · «Nada surge de la nada»"},
+  {cat:"wisdom", text:"Gutta cavat lapidem non vi, sed saepe cadendo.", src:"Latín · «La gota horada la piedra no por la fuerza, sino por la constancia»"},
+  {cat:"wisdom", text:"Per aspera ad astra.", src:"Latín · «A través de la dificultad, a las estrellas»"},
+  {cat:"wisdom", text:"Vincit qui se vincit.", src:"Latín · «Vence quien se vence a sí mismo»"},
+  {cat:"wisdom", text:"Fortes fortuna adiuvat.", src:"Latín · «La fortuna favorece a los valientes»"},
+  {cat:"wisdom", text:"Dum spiro, spero.", src:"Latín · «Mientras respiro, espero»"},
+  {cat:"wisdom", text:"Festina lente.", src:"Latín · «Apresúrate lentamente»"},
+  {cat:"wisdom", text:"The journey of a thousand miles begins with a single step.", src:"Lao Tzu"},
+  {cat:"wisdom", text:"Fall seven times, stand up eight.", src:"Proverbio japonés"},
+  {cat:"wisdom", text:"A river cuts through rock not because of its power but its persistence.", src:"Proverbio (atribuido a James N. Watkins)"},
+  {cat:"wisdom", text:"The best time to plant a tree was 20 years ago. The second best time is now.", src:"Proverbio"},
+
+  // ===== HÁBITOS / LIBROS · HABITS & BOOKS =====
+  {cat:"books", text:"You do not rise to the level of your goals. You fall to the level of your systems.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"Habits are the compound interest of self-improvement.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"Every action you take is a vote for the type of person you wish to become.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"You should be far more concerned with your current trajectory than with your current results.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"Goals are good for setting a direction, but systems are best for making progress.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"All big things come from small beginnings.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"Your actions reveal how badly you want something.", src:"James Clear — Atomic Habits"},
+  {cat:"books", text:"Doing well with money has little to do with how smart you are and a lot to do with how you behave.", src:"Morgan Housel — The Psychology of Money"},
+  {cat:"books", text:"Controlling your time is the highest dividend money pays.", src:"Morgan Housel — The Psychology of Money"},
+  {cat:"books", text:"Planning is important, but the most important part of every plan is to plan on the plan not going according to plan.", src:"Morgan Housel — The Psychology of Money"},
+  {cat:"books", text:"History never repeats itself; man always does.", src:"Voltaire (citado por Morgan Housel)"},
 ];
+
+// Etiquetas de categorías de frases
+const MOTIV_CATS = {
+  all:     {es:"Todas", en:"All"},
+  movies:  {es:"🎬 Películas", en:"🎬 Movies"},
+  athletes:{es:"🏅 Deportistas", en:"🏅 Athletes"},
+  artists: {es:"🎨 Artistas", en:"🎨 Artists"},
+  wisdom:  {es:"📜 Sabiduría popular", en:"📜 Wisdom"},
+  books:   {es:"📚 Libros / Hábitos", en:"📚 Books / Habits"},
+};
+let motivFilter = "all";
 
 const CUSTOM_Q_KEY = "strengthGadgetRojo.customQuotes";
 const HEADER_Q_KEY = "strengthGadgetRojo.headerQuote";
@@ -1824,17 +1943,34 @@ const motivBody = document.getElementById("motivBody");
 
 function renderMotiv(){
   motivBody.innerHTML = "";
-  const custom = getCustomQuotes();
+  // Barra de filtros por categoría
+  const filterBar = document.createElement("div");
+  filterBar.className = "lib-tabs";
+  filterBar.style.padding = "0 0 10px";
+  Object.keys(MOTIV_CATS).forEach(catKey=>{
+    const t = document.createElement("button");
+    t.className = "lib-tab" + (motivFilter===catKey ? " active" : "");
+    t.textContent = lang==="en" ? MOTIV_CATS[catKey].en : MOTIV_CATS[catKey].es;
+    t.onclick = ()=>{ motivFilter = catKey; renderMotiv(); };
+    filterBar.appendChild(t);
+  });
+  motivBody.appendChild(filterBar);
+
   allQuotes().forEach((q, i)=>{
     const isCustom = i >= MOTIV.length;
     const customIdx = i - MOTIV.length;
+    // filtro por categoría (las custom se muestran solo en "Todas")
+    if(motivFilter!=="all"){
+      if(isCustom) return;
+      if(q.cat !== motivFilter) return;
+    }
     const c = document.createElement("div");
     c.className = "quote-card";
     c.innerHTML = `
       <div class="text">"${q.text}"</div>
       <span class="src">${q.src ? "— "+q.src : ""}</span>
       <div class="quote-actions">
-        <button class="q-use">⬆ Llevar al menú · Use on menu</button>
+        <button class="q-use">⬆ ${LL("Llevar al menú","Use on menu")}</button>
         ${isCustom ? '<button class="q-del">🗑</button>' : ''}
       </div>
     `;
@@ -1844,7 +1980,7 @@ function renderMotiv(){
     };
     if(isCustom){
       c.querySelector(".q-del").onclick = ()=>{
-        if(!confirm("¿Borrar esta frase? · Delete?")) return;
+        if(!confirm(LL("¿Borrar esta frase?","Delete this quote?"))) return;
         const arr = getCustomQuotes();
         arr.splice(customIdx,1);
         setCustomQuotes(arr);
@@ -1883,7 +2019,7 @@ try{
 const libModal = document.getElementById("libModal");
 const libTabs = document.getElementById("libTabs");
 const libBody = document.getElementById("libBody");
-const libSearch = document.getElementById("libSearch");
+const libSearch = document.getElementById("libSearchInput");
 let libCategory = Object.keys(LIBRARY)[0];
 let libReplaceIdx = null; // si no es null, estamos reemplazando ese índice
 
@@ -3689,7 +3825,8 @@ function applyLang(l){
     ded.setAttribute("data-placeholder", newPh);
   }
   try{ localStorage.setItem(LANG_KEY, lang); }catch(e){}
-  // Re-render para que ejercicios y modales tomen el idioma
+  // Re-render para que ejercicios, días y modales tomen el idioma
+  renderDays();
   renderList();
 }
 document.getElementById("langToggle").onclick = ()=> applyLang(lang==="es" ? "en" : "es");
@@ -3720,6 +3857,29 @@ try{
 renderWorkoutList();
 renderDays();
 renderList();
+// ---- Instalar app (PWA) ----
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt", (e)=>{
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if(installBtn) installBtn.style.display = "block";
+});
+if(installBtn){
+  installBtn.onclick = async ()=>{
+    if(!deferredInstallPrompt){
+      alert(LL("Para instalar: abrí el menú del navegador y elegí \"Instalar app\" o \"Agregar a pantalla principal\".",
+               "To install: open the browser menu and choose \"Install app\" or \"Add to Home screen\"."));
+      return;
+    }
+    deferredInstallPrompt.prompt();
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    if(outcome==="accepted"){ installBtn.style.display = "none"; }
+    deferredInstallPrompt = null;
+  };
+}
+window.addEventListener("appinstalled", ()=>{ if(installBtn) installBtn.style.display = "none"; });
+
 applyLang(lang);
 </script>
 </body>
