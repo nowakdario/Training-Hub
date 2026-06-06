@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Training Hub 🔴⚪</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d10a14'/%3E%3Ctext x='32' y='44' font-family='Arial Black,Arial' font-size='34' font-weight='900' fill='white' text-anchor='middle'%3ETH%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#d10a14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BURN">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>BURN — Be Unstoppable, Rise Now 🔥</title>
+<link rel="icon" href="data:image/png;base64,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">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -100,11 +107,10 @@
     font-weight:700;
     display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
   }
-  .app-logo{
-    width:40px;height:40px;flex:0 0 auto;border-radius:10px;
-    background:var(--cream);color:var(--violet-deep);
-    display:grid;place-items:center;font-family:var(--font-head);font-weight:700;
-    font-size:1.3rem;box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  .app-logo-img{
+    width:56px;height:56px;flex:0 0 auto;
+    object-fit:contain;vertical-align:middle;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));
   }
   header.app .en{
     display:block;font-size:.5em;font-weight:500;font-family:var(--font-body);
@@ -118,6 +124,13 @@
     font-size:1.1rem;display:grid;place-items:center;transition:transform .15s;
   }
   .theme-toggle:hover{transform:scale(1.1)}
+  .lang-toggle{
+    position:absolute;top:14px;right:60px;
+    border:2px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.15);
+    color:var(--cream);height:38px;min-width:42px;padding:0 8px;border-radius:10px;cursor:pointer;
+    font-size:.8rem;font-weight:700;display:grid;place-items:center;transition:transform .15s;
+  }
+  .lang-toggle:hover{transform:scale(1.1)}
   /* Barra de progreso del día */
   .day-progress{margin:12px auto 2px;max-width:420px}
   .day-progress-bar{height:10px;background:rgba(255,255,255,0.25);border-radius:999px;overflow:hidden}
@@ -197,6 +210,12 @@
   .sb-sep{width:1px;height:22px;background:rgba(247,243,234,0.4)}
   /* Barra rápida (plantillas / propagar) */
   .quick-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+  .mode-switch{display:inline-flex;border:2px solid var(--violet);border-radius:12px;overflow:hidden}
+  .mode-switch button{
+    border:none;background:var(--panel);color:var(--ink);
+    padding:10px 14px;font-weight:bold;font-size:.85rem;cursor:pointer;font-family:var(--font-body);
+  }
+  .mode-switch button.active{background:var(--violet);color:#fff}
   .quick-btn{
     border:2px solid var(--violet);background:var(--panel);color:var(--violet-deep);
     border-radius:12px;padding:10px 16px;font-weight:bold;font-size:.9rem;cursor:pointer;
@@ -220,6 +239,44 @@
   .iv-run.phase-setrest{background:linear-gradient(160deg,#e08e0b,#b36b00)}
   .iv-run.phase-done{background:linear-gradient(160deg,#333,#111)}
   .iv-phase{font-size:1.6rem;font-weight:900;text-transform:uppercase;letter-spacing:2px}
+  .iv-exercise{font-size:1.5rem;font-weight:800;margin-top:4px;font-family:var(--font-head);letter-spacing:.5px;max-width:90%;text-align:center}
+  .iv-mix-seq{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px;font-size:1.3rem}
+  .iv-mix-seq i{opacity:.6;font-style:normal;margin:0 6px}
+  .train-notation{text-align:center;font-weight:700;color:#fff;margin:6px 0 10px;font-size:.95rem}
+  .circuit-notation{
+    background:linear-gradient(135deg, var(--violet), var(--violet-deep));
+    color:#fff;border-radius:14px;padding:12px 16px;margin-bottom:14px;box-shadow:var(--shadow-soft);
+  }
+  .circuit-notation .cn-head{font-weight:700;font-size:1rem;font-family:var(--font-head);letter-spacing:.3px}
+  .circuit-notation .cn-expanded{font-size:.82rem;opacity:.9;margin-top:4px;line-height:1.4}
+  .rounds-control{display:flex;align-items:center;justify-content:space-between;
+    background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:10px}
+  .rounds-control .rc-label{font-weight:700;color:var(--ink);font-family:var(--font-head);letter-spacing:.3px}
+  .rounds-control .rc-label small{font-weight:400;opacity:.6;font-family:var(--font-body);font-size:.7rem}
+  .rounds-control .rc-stepper{display:flex;align-items:center;gap:14px}
+  .rounds-control .rc-val{font-size:1.4rem;font-weight:800;min-width:28px;text-align:center;color:var(--ink)}
+  .start-circuit-btn{width:100%;border:none;border-radius:14px;padding:16px;margin-bottom:16px;cursor:pointer;
+    font-family:var(--font-head);font-size:1.2rem;font-weight:700;letter-spacing:1px;color:#fff;
+    background:linear-gradient(135deg,var(--violet),var(--violet-deep));box-shadow:var(--shadow)}
+  .start-circuit-btn:hover{transform:translateY(-1px)}
+  .circuit-card .card-head{padding:12px 14px}
+  .cc-num{width:26px;height:26px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;
+    background:var(--violet);color:#fff;font-weight:700;font-size:.85rem}
+  .cc-fields{display:flex;gap:12px;padding:12px 14px}
+  .cc-field{flex:1;text-align:center}
+  .cc-field label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;opacity:.6;font-weight:700;margin-bottom:6px}
+  .cc-step{display:flex;align-items:center;justify-content:center;gap:12px}
+  .cc-v{font-size:1.2rem;font-weight:800;min-width:36px;text-align:center;color:var(--ink)}
+  .cc-mix{padding:0 14px 12px}
+  .mix-head{font-size:.82rem;color:var(--violet-deep);background:rgba(209,10,20,0.07);border-radius:8px;padding:8px 10px;margin-bottom:8px;line-height:1.4}
+  .mix-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .mix-row .mix-reps{width:64px;text-align:center;border:1px solid var(--line);border-radius:7px;padding:6px;background:var(--card-bg);color:var(--ink);font-weight:bold}
+  .mix-row .mix-name{flex:1;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:var(--card-bg);color:var(--ink)}
+  .mix-row .mix-select{flex:1;border:1px solid var(--line);border-radius:7px;padding:6px 8px;background:var(--card-bg);color:var(--ink);font-size:.9rem}
+  .mix-row .mix-del{border:none;background:transparent;color:var(--violet);font-size:1rem;cursor:pointer;padding:4px 8px}
+  .mix-add{width:100%;border:2px dashed var(--violet);background:transparent;color:var(--violet-deep);border-radius:10px;padding:8px;font-weight:bold;font-size:.82rem;cursor:pointer;margin-top:2px}
+  .mix-add:hover{background:rgba(209,10,20,0.06)}
+  .train-notation span{font-weight:500;font-size:.8rem;color:rgba(255,255,255,0.8)}
   .iv-clock{font-size:5rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
   .iv-info{font-size:1.2rem;font-weight:bold;opacity:.95}
   .iv-next{font-size:.95rem;opacity:.8}
@@ -578,8 +635,9 @@
 <div class="wrap">
   <header class="app">
     <button class="theme-toggle" id="themeToggle" title="Modo claro/oscuro">🌙</button>
-    <h1><span class="app-logo">TH</span> Training Hub
-      <span class="en">Strength · Hypertrophy · Calisthenics · Cardio</span>
+    <button class="lang-toggle" id="langToggle" title="Idioma / Language">ES</button>
+    <h1><img class="app-logo-img" src="data:image/png;base64,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" alt="BURN" width="54" height="54"> BURN
+      <span class="en">Be Unstoppable, Rise Now</span>
     </h1>
     <div class="quote" id="headerQuote">
       <span class="big">You miss 100% of the shots you don't take</span>
@@ -615,6 +673,10 @@
   </header>
 
   <div class="quick-bar">
+    <div class="mode-switch" id="modeSwitch" title="Modo de entrenamiento del día">
+      <button data-mode="straight" id="modeStraight">↓ Series seguidas</button>
+      <button data-mode="circuit" id="modeCircuit">↻ Circuito ⏱</button>
+    </div>
     <button id="tplBtn" class="quick-btn">🗂️ Plantillas · Templates</button>
     <button id="propagateBtn" class="quick-btn">⚙️ Propagar config · Apply to all</button>
     <button id="intervalBtn" class="quick-btn">⏲️ Intervalos · Interval timer</button>
@@ -634,7 +696,7 @@
     </div>
     <input type="file" id="bgInput" accept="image/*" hidden>
     <div class="dedication" id="dedication" contenteditable="true" data-placeholder="Escribí acá tu frase…">Escribí acá tu frase…</div>
-    <div style="margin-top:8px">Los datos se guardan en tu dispositivo</div>
+    <div style="margin-top:8px" id="dataSavedTxt">Los datos se guardan en tu dispositivo</div>
     <div class="credit">by Darío Nowak</div>
   </footer>
 </div>
@@ -643,7 +705,7 @@
 <div class="modal-overlay" id="tplModal">
   <div class="modal">
     <div class="modal-head">
-      <strong>🗂️ Plantillas · Templates</strong>
+      <strong id="tplTitleEl">🗂️ Plantillas · Templates</strong>
       <button class="modal-close" id="tplClose">✕</button>
     </div>
     <div class="lib-tabs" id="tplTabs"></div>
@@ -655,7 +717,7 @@
 <div class="modal-overlay" id="motivModal">
   <div class="modal">
     <div class="modal-head">
-      <strong>🔥 Frases · Motivation</strong>
+      <strong id="motivTitleEl">🔥 Frases · Motivation</strong>
       <button class="modal-close" id="motivClose">✕</button>
     </div>
     <div class="motiv-add">
@@ -682,7 +744,7 @@
 <div class="modal-overlay" id="histModal">
   <div class="modal">
     <div class="modal-head">
-      <strong>📈 Progreso · Progress</strong>
+      <strong id="progTitleEl">📈 Progreso · Progress</strong>
       <button class="modal-close" id="histClose">✕</button>
     </div>
     <div class="lib-body" id="histBody"></div>
@@ -707,10 +769,10 @@
 <div class="modal-overlay" id="libModal">
   <div class="modal">
     <div class="modal-head">
-      <strong>📚 Biblioteca · Library</strong>
+      <strong id="libTitleEl">📚 Biblioteca · Library</strong>
       <button class="modal-close" id="libClose">✕</button>
     </div>
-    <input type="text" id="libSearch" class="lib-search" placeholder="Buscar ejercicio · Search…">
+    <input type="text" id="libSearch" class="lib-search" placeholder="Buscar ejercicio · Search…" id="libSearchInput">
     <div class="lib-tabs" id="libTabs"></div>
     <div class="lib-body" id="libBody"></div>
   </div>
@@ -719,7 +781,7 @@
 <!-- Temporizador de descanso / Rest timer -->
 <div class="timer" id="timer">
   <div>
-    <div class="lab">Descanso · Rest</div>
+    <div class="lab" id="restLabEl">Descanso · Rest</div>
     <div class="big" id="timerDisplay">00:00</div>
   </div>
   <button class="add" id="timerAdd">+15s</button>
@@ -730,18 +792,18 @@
 <div class="modal-overlay" id="intervalModal">
   <div class="modal">
     <div class="modal-head">
-      <strong>⏲️ Temporizador de intervalos</strong>
+      <strong id="ivTitle">⏲️ Temporizador de intervalos</strong>
       <button class="modal-close" id="intervalClose">✕</button>
     </div>
     <div class="lib-body">
       <div class="iv-presets" id="ivPresets"></div>
       <div class="iv-grid">
-        <div class="field"><label>Preparación (s)</label><input type="number" id="ivPrep" value="10"></div>
-        <div class="field"><label>Trabajo (s)</label><input type="number" id="ivWork" value="40"></div>
-        <div class="field"><label>Descanso (s)</label><input type="number" id="ivRest" value="20"></div>
-        <div class="field"><label>Rondas</label><input type="number" id="ivRounds" value="8"></div>
-        <div class="field"><label>Sets/ciclos</label><input type="number" id="ivSets" value="1"></div>
-        <div class="field"><label>Descanso entre sets (s)</label><input type="number" id="ivSetRest" value="60"></div>
+        <div class="field"><label id="ivLabPrep">Preparación (s)</label><input type="number" id="ivPrep" value="10"></div>
+        <div class="field" id="ivFieldWork"><label id="ivLabWork">Trabajo (s)</label><input type="number" id="ivWork" value="40"></div>
+        <div class="field" id="ivFieldRest"><label id="ivLabRest">Descanso (s)</label><input type="number" id="ivRest" value="20"></div>
+        <div class="field" id="ivFieldRounds"><label id="ivLabRounds">Rondas</label><input type="number" id="ivRounds" value="8"></div>
+        <div class="field"><label id="ivLabSets">Sets/ciclos</label><input type="number" id="ivSets" value="1"></div>
+        <div class="field"><label id="ivLabSetRest">Descanso entre sets (s)</label><input type="number" id="ivSetRest" value="60"></div>
       </div>
       <div class="iv-total" id="ivTotal"></div>
       <button class="rest-btn" id="ivStart" style="width:100%;margin-top:6px">▶ Iniciar · Start</button>
@@ -752,8 +814,9 @@
 <!-- Pantalla completa del temporizador de intervalos -->
 <div class="iv-run" id="ivRun">
   <div class="iv-phase" id="ivPhase">Preparación</div>
+  <div class="iv-exercise" id="ivExercise"></div>
   <div class="iv-clock" id="ivClock">00:10</div>
-  <div class="iv-info" id="ivInfo">Ronda 1 / 8</div>
+  <div class="iv-info" id="ivInfo">Serie 1 / 8</div>
   <div class="iv-next" id="ivNext"></div>
   <div class="iv-controls">
     <button id="ivPause">⏸ Pausar</button>
@@ -934,6 +997,7 @@ const LIBRARY = {
     {es:"Elevación de piernas colgado", en:"Hanging leg raise", muscle:"Core"},
     {es:"Subida a cajón", en:"Box step-ups", muscle:"Piernas"},
     {es:"Superman", en:"Superman", muscle:"Lumbares"},
+    {es:"Nadadores en el suelo", en:"Swimmers", muscle:"Lumbares/Glúteos"},
   ],
   "Calistenia · Calisthenics": [
     // --- Empuje horizontal ---
@@ -1015,11 +1079,49 @@ const LIBRARY = {
     {es:"Saltos al cajón", en:"Box jumps", muscle:"Piernas (potencia)"},
     {es:"Skipping / rodillas altas", en:"High knees", muscle:"Cardio"},
   ],
+  "Bicicleta fija · Stationary bike": [
+    {es:"Bici fija — ritmo constante", en:"Stationary bike — steady pace", muscle:"Cardio"},
+    {es:"Bici fija — calentamiento", en:"Stationary bike — warm-up", muscle:"Cardio"},
+    {es:"Bici fija — resistencia (Zona 2)", en:"Stationary bike — endurance (Zone 2)", muscle:"Cardio"},
+    {es:"Bici fija — tempo", en:"Stationary bike — tempo", muscle:"Cardio"},
+    {es:"Bici fija — intervalos", en:"Stationary bike — intervals", muscle:"Cardio"},
+    {es:"Bici fija — sprint", en:"Stationary bike — sprint", muscle:"Cardio (potencia)"},
+    {es:"Bici fija — HIIT", en:"Stationary bike — HIIT", muscle:"Cardio"},
+    {es:"Bici fija — cuesta / alta resistencia", en:"Stationary bike — hill / high resistance", muscle:"Piernas/Cardio"},
+    {es:"Bici fija — de pie (climbing)", en:"Stationary bike — standing climb", muscle:"Piernas/Cardio"},
+    {es:"Bici fija — pirámide", en:"Stationary bike — pyramid", muscle:"Cardio"},
+    {es:"Bici fija — vuelta a la calma", en:"Stationary bike — cool-down", muscle:"Cardio"},
+    {es:"Spinning", en:"Spinning / indoor cycling", muscle:"Cardio"},
+  ],
 };
 
 const STORE_KEY = "strengthGadgetRojo.v1";
 let data = load();
+migrateData();
 let currentDay = Object.keys(data)[0];
+
+/* Migración: corrige días de cardio continuo guardados con tiempo en segundos (valores enormes).
+   Si un ejercicio tiene 1 sola serie y un valor de "reps" gigante (>120), estaba en segundos
+   y lo pasamos a minutos para que se lea bien (ej: 3600 -> 60). */
+function migrateData(){
+  let changed = false;
+  Object.keys(data).forEach(dayName=>{
+    const list = data[dayName];
+    if(!Array.isArray(list)) return;
+    list.forEach(ex=>{
+      const reps = +ex.reps;
+      // cardio continuo: 1 serie, sin peso, tiempo larguísimo en segundos
+      if((+ex.sets===1) && (ex.weight===0 || ex.weight==null) && reps>120){
+        ex.reps = Math.round(reps/60);   // segundos -> minutos
+        if(Array.isArray(ex.setsDone)){
+          ex.setsDone.forEach(s=>{ if(s && +s.r>120) s.r = Math.round(+s.r/60); });
+        }
+        changed = true;
+      }
+    });
+  });
+  if(changed){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){} }
+}
 
 function load(){
   try{
@@ -1030,6 +1132,36 @@ function load(){
 }
 function save(){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
+  try{ localStorage.setItem(MODE_KEY, JSON.stringify(dayModes)); }catch(e){}
+}
+
+/* ---------- Modo de día: "straight" (series seguidas) o "circuit" (circuito) ---------- */
+const MODE_KEY = "strengthGadgetRojo.dayModes";
+let dayModes = {};
+try{
+  const rawM = localStorage.getItem(MODE_KEY);
+  if(rawM) dayModes = JSON.parse(rawM) || {};
+}catch(e){ dayModes = {}; }
+// Circuit por defecto si el nombre sugiere cardio/intervalo/hiit/tabata/circuito; si no, straight
+function defaultModeFor(dayName){
+  const n = (dayName||"").toLowerCase();
+  if(/(circuit|circuito|tabata|hiit|amrap|emom|cardio|interval|sprint|fartlek|tempo|carrera|trote|metaból|chipper)/.test(n)) return "circuit";
+  return "straight";
+}
+function getDayMode(dayName){
+  if(!dayModes[dayName]) dayModes[dayName] = defaultModeFor(dayName);
+  return dayModes[dayName];
+}
+function setDayMode(dayName, mode){
+  dayModes[dayName] = mode; save();
+}
+// Descansos de circuito por día (entre ejercicios / entre rondas)
+function getCircuitRests(dayName){
+  const m = dayModes["__rest_"+dayName];
+  return m || {between:20, round:90};
+}
+function setCircuitRests(dayName, between, round){
+  dayModes["__rest_"+dayName] = {between, round}; save();
 }
 
 /* ---------- Undo / Redo ---------- */
@@ -1087,6 +1219,14 @@ function propagateConfig(){
 
 /* ---------- Render días ---------- */
 const daysEl = document.getElementById("days");
+function dayLabel(day){
+  // Si el día tiene formato bilingüe "ES · EN", mostrar el lado del idioma activo
+  if(typeof day==="string" && day.includes(" · ")){
+    const parts = day.split(" · ");
+    if(parts.length===2) return lang==="en" ? parts[1] : parts[0];
+  }
+  return day;
+}
 function renderDays(){
   daysEl.innerHTML = "";
   const multiple = Object.keys(data).length > 1;
@@ -1095,7 +1235,7 @@ function renderDays(){
     wrap.className = "day-chip" + (day===currentDay?" active":"");
     const b = document.createElement("button");
     b.className = "day-btn-inner";
-    b.textContent = day;
+    b.textContent = dayLabel(day);
     b.onclick = ()=>{
       if(day===currentDay){ renameDay(day); }
       else{ currentDay = day; renderDays(); renderList(); }
@@ -1105,7 +1245,7 @@ function renderDays(){
       const x = document.createElement("button");
       x.className = "day-x";
       x.textContent = "🗑";
-      x.title = "Borrar este día · Delete this day";
+      x.title = lang==="en" ? "Delete this day" : "Borrar este día";
       x.onclick = (e)=>{ e.stopPropagation(); deleteDayNamed(day); };
       wrap.appendChild(x);
     }
@@ -1186,10 +1326,203 @@ function deleteDayNamed(day){
 const listEl = document.getElementById("list");
 function renderList(){
   listEl.innerHTML = "";
-  data[currentDay].forEach((ex, i)=>{
+  const list = data[currentDay] || [];
+  const isCircuit = getDayMode(currentDay)==="circuit";
+
+  if(isCircuit && list.length){
+    // ----- VISTA DE CIRCUITO -----
+    const rounds = Math.max(1, ...list.map(e=>+e.sets||1));
+    const names = list.map(e=> lang==="en" ? (e.en||e.es) : e.es);
+    const exWord = list.length===1 ? LL("ejercicio","exercise") : LL("ejercicios","exercises");
+    const setWord = rounds===1 ? "round" : "rounds";
+
+    // Notación
+    const banner = document.createElement("div");
+    banner.className = "circuit-notation";
+    banner.innerHTML = `<div class="cn-head">↻ ${LL("Circuito","Circuit")}: ${list.length} ${exWord} × ${rounds} ${setWord}</div>`
+      + `<div class="cn-expanded">(${names.join(" + ")}) × ${rounds}</div>`;
+    listEl.appendChild(banner);
+
+    // Control único de rounds (vueltas del circuito)
+    const rc = document.createElement("div");
+    rc.className = "rounds-control";
+    rc.innerHTML = `
+      <span class="rc-label">↻ Rounds <small>${LL("(vueltas del circuito)","(circuit loops)")}</small></span>
+      <div class="rc-stepper">
+        <button class="stepper" id="circMinus">−</button>
+        <span class="rc-val" id="circRoundsVal">${rounds}</span>
+        <button class="stepper" id="circPlus">＋</button>
+      </div>`;
+    listEl.appendChild(rc);
+
+    // Botón grande iniciar circuito
+    const startBtn = document.createElement("button");
+    startBtn.className = "start-circuit-btn";
+    startBtn.innerHTML = `▶ ${LL("Iniciar circuito","Start circuit")}`;
+    startBtn.onclick = ()=> document.getElementById("intervalBtn").click();
+    listEl.appendChild(startBtn);
+
+    // Lista simplificada
+    list.forEach((ex, i)=> listEl.appendChild(makeCircuitCard(ex, i)));
+
+    // wiring del stepper de rounds (aplica a TODOS los ejercicios)
+    const applyRounds = (val)=>{
+      val = Math.max(1, val);
+      pushUndo();
+      list.forEach(e=>{ e.sets = val; });
+      save(); renderList();
+    };
+    document.getElementById("circMinus").onclick = ()=> applyRounds(rounds-1);
+    document.getElementById("circPlus").onclick = ()=> applyRounds(rounds+1);
+
+    updateDayProgress();
+    return;
+  }
+
+  // ----- VISTA NORMAL (straight sets) -----
+  list.forEach((ex, i)=>{
     listEl.appendChild(makeCard(ex, i));
   });
   updateDayProgress();
+}
+
+// Tarjeta simplificada para circuito: nombre + tiempo de trabajo + descanso
+// Opciones del dropdown del mix: todos los ejercicios de la biblioteca
+function mixAllExercises(){
+  const out = [];
+  Object.values(LIBRARY).forEach(list=> list.forEach(e=> out.push(e)));
+  // quitar duplicados por nombre es
+  const seen = new Set(); const uniq = [];
+  out.forEach(e=>{ const k=e.es+"|"+e.en; if(!seen.has(k)){ seen.add(k); uniq.push(e); } });
+  return uniq;
+}
+function mixLabel(e){ return lang==="en" ? (e.en||e.es) : (e.es||e.en); }
+function mixOptions(currentLabel){
+  const exs = mixAllExercises().sort((a,b)=> mixLabel(a).localeCompare(mixLabel(b)));
+  let html = `<option value="">${lang==="en"?"— pick exercise —":"— elegí ejercicio —"}</option>`;
+  let matched = false;
+  exs.forEach(e=>{
+    const lbl = mixLabel(e);
+    const sel = (lbl===currentLabel) ? " selected" : "";
+    if(sel) matched = true;
+    html += `<option value="${lbl.replace(/"/g,'&quot;')}"${sel}>${lbl}</option>`;
+  });
+  // si el actual no está en la biblioteca (custom), lo mostramos seleccionado
+  if(currentLabel && !matched){
+    html = `<option value="${currentLabel.replace(/"/g,'&quot;')}" selected>${currentLabel}</option>` + html;
+  }
+  html += `<option value="__custom__">${lang==="en"?"✏️ Custom…":"✏️ Personalizado…"}</option>`;
+  return html;
+}
+function mixFindByLabel(lbl){
+  return mixAllExercises().find(e=> mixLabel(e)===lbl) || null;
+}
+
+function makeCircuitCard(ex, idx){
+  const Lc = (es,en)=> lang==="en" ? en : es;
+  const card = document.createElement("div");
+  card.className = "card circuit-card" + (ex.done?" done":"");
+  const primaryName = lang==="en" ? (ex.en||ex.es) : (ex.es||ex.en);
+  const secondaryName = lang==="en" ? (ex.es||"") : (ex.en||"");
+  card.innerHTML = `
+    <div class="card-head">
+      <span class="cc-num">${idx+1}</span>
+      <div class="titles">
+        <div class="es" contenteditable="true">${primaryName}</div>
+        <div class="en" contenteditable="true">${secondaryName}</div>
+      </div>
+      <div class="reorder">
+        <button class="move-up" title="${Lc('Subir','Move up')}" ${idx===0?"disabled":""}>▲</button>
+        <button class="move-down" title="${Lc('Bajar','Move down')}" ${idx===data[currentDay].length-1?"disabled":""}>▼</button>
+      </div>
+      <button class="swap" title="${Lc('Cambiar ejercicio','Replace exercise')}">🔄</button>
+      <button class="info cc-info" title="${Lc('Ver técnica','How-to')}">ℹ️</button>
+      <button class="del" title="${Lc('Eliminar','Delete')}">🗑</button>
+    </div>
+    <div class="cc-fields">
+      <div class="cc-field">
+        <label>${Lc('Tiempo (s)','Time (s)')}</label>
+        <div class="cc-step"><button class="stepper cc-m" data-f="reps">−</button><span class="cc-v" data-v="reps">${ex.reps}</span><button class="stepper cc-p" data-f="reps">＋</button></div>
+      </div>
+      <div class="cc-field">
+        <label>${Lc('Descanso (s)','Rest (s)')}</label>
+        <div class="cc-step"><button class="stepper cc-m" data-f="rest">−</button><span class="cc-v" data-v="rest">${ex.rest}</span><button class="stepper cc-p" data-f="rest">＋</button></div>
+      </div>
+    </div>
+    <div class="cc-mix" id="ccmix-${idx}"></div>
+  `;
+  // ----- Sección MIX (secuencia de sub-ejercicios por reps, repetida durante el tiempo) -----
+  function renderMix(){
+    const box = card.querySelector(".cc-mix");
+    box.innerHTML = "";
+    const mix = ex.mix || [];
+    if(mix.length){
+      const seq = mix.map(m=> `${m.reps} ${lang==="en"?(m.en||m.es):(m.es||m.en)}`).join("  +  ");
+      const head = document.createElement("div");
+      head.className = "mix-head";
+      head.innerHTML = `🔀 ${Lc('Secuencia (se repite durante el tiempo)','Sequence (loops during the time)')}: <b>${seq}</b>`;
+      box.appendChild(head);
+      mix.forEach((m, mi)=>{
+        const row = document.createElement("div");
+        row.className = "mix-row";
+        const curName = (lang==="en"?(m.en||m.es):(m.es||m.en))||"";
+        row.innerHTML = `
+          <input type="number" class="mix-reps" value="${m.reps}" inputmode="numeric" aria-label="reps">
+          <select class="mix-select">${mixOptions(curName)}</select>
+          <button class="mix-del" title="${Lc('Quitar','Remove')}">✕</button>`;
+        row.querySelector(".mix-reps").onchange = e=>{ m.reps = Math.max(1,+e.target.value||1); save(); renderMix(); };
+        row.querySelector(".mix-select").onchange = e=>{
+          const v = e.target.value;
+          if(v==="__custom__"){
+            const typed = prompt(Lc("Nombre del movimiento:","Movement name:"), curName||"");
+            if(typed){ if(lang==="en"){ m.en=typed; } else { m.es=typed; } }
+          } else {
+            const found = mixFindByLabel(v);
+            if(found){ m.es=found.es; m.en=found.en; }
+          }
+          save(); renderMix();
+        };
+        row.querySelector(".mix-del").onclick = ()=>{ pushUndo(); ex.mix.splice(mi,1); if(!ex.mix.length) delete ex.mix; save(); renderList(); };
+        box.appendChild(row);
+      });
+    }
+    const addBtn = document.createElement("button");
+    addBtn.className = "mix-add";
+    addBtn.textContent = mix.length ? Lc('＋ Agregar movimiento','＋ Add movement') : Lc('🔀 Convertir en mix (varios movimientos)','🔀 Make it a mix (multiple moves)');
+    addBtn.onclick = ()=>{
+      pushUndo();
+      ex.mix = ex.mix || [];
+      // si es el primer movimiento, sembramos con el ejercicio actual y un segundo en blanco
+      if(!ex.mix.length){ ex.mix.push({es:ex.es, en:ex.en, reps:8}); }
+      ex.mix.push({es:"", en:"", reps:8});
+      save(); renderList();
+    };
+    box.appendChild(addBtn);
+  }
+  renderMix();
+  // edición de nombres
+  card.querySelector(".es").onblur = e=>{ const v=e.target.textContent.trim(); if(lang==="en") ex.en=v; else ex.es=v; save(); };
+  card.querySelector(".en").onblur = e=>{ const v=e.target.textContent.trim(); if(lang==="en") ex.es=v; else ex.en=v; save(); };
+  card.querySelector(".swap").onclick = ()=> openLibraryToReplace(idx);
+  card.querySelector(".cc-info").onclick = ()=>{
+    const term = encodeURIComponent(((ex.en || ex.es) + " exercise technique").trim());
+    window.open("https://www.youtube.com/results?search_query=" + term, "_blank");
+  };
+  card.querySelector(".del").onclick = ()=>{ if(confirm(Lc(`¿Eliminar "${primaryName}"?`,`Delete "${primaryName}"?`))){ pushUndo(); data[currentDay].splice(idx,1); save(); renderList(); } };
+  card.querySelector(".move-up").onclick = ()=>{ if(idx>0){ pushUndo(); [data[currentDay][idx-1],data[currentDay][idx]]=[data[currentDay][idx],data[currentDay][idx-1]]; save(); renderList(); } };
+  card.querySelector(".move-down").onclick = ()=>{ if(idx<data[currentDay].length-1){ pushUndo(); [data[currentDay][idx+1],data[currentDay][idx]]=[data[currentDay][idx],data[currentDay][idx+1]]; save(); renderList(); } };
+  // steppers de tiempo/descanso
+  card.querySelectorAll(".cc-m, .cc-p").forEach(btn=>{
+    btn.onclick = ()=>{
+      const f = btn.dataset.f;
+      const step = f==="rest" ? 5 : 5;
+      const delta = btn.classList.contains("cc-p") ? step : -step;
+      ex[f] = Math.max(0, (+ex[f]||0) + delta);
+      save();
+      card.querySelector(`[data-v="${f}"]`).textContent = ex[f];
+    };
+  });
+  return card;
 }
 
 function updateDayProgress(){
@@ -1200,7 +1533,24 @@ function updateDayProgress(){
   const txt = document.getElementById("dayProgressTxt");
   if(fill) fill.style.width = total ? (done/total*100)+"%" : "0%";
   if(txt) txt.textContent = `${done} / ${total} completados`;
+  updateModeSwitch();
 }
+
+function modeForCategory(cat){
+  const c = (cat||"").toLowerCase();
+  if(/(intervalos|intervals|hiit|cardio|resistencia|endurance)/.test(c)) return "circuit";
+  return "straight";
+}
+
+function updateModeSwitch(){
+  const mode = getDayMode(currentDay);
+  const s = document.getElementById("modeStraight");
+  const c = document.getElementById("modeCircuit");
+  if(s) s.classList.toggle("active", mode==="straight");
+  if(c) c.classList.toggle("active", mode==="circuit");
+}
+document.getElementById("modeStraight").onclick = ()=>{ setDayMode(currentDay,"straight"); updateModeSwitch(); };
+document.getElementById("modeCircuit").onclick = ()=>{ setDayMode(currentDay,"circuit"); updateModeSwitch(); };
 
 function makeCard(ex, idx){
   ex.setsDone = ex.setsDone || [];
@@ -1210,24 +1560,28 @@ function makeCard(ex, idx){
   // Cabecera
   const head = document.createElement("div");
   head.className = "card-head";
+  const Lc = (es,en)=> lang==="en" ? en : es;
+  const primaryName = lang==="en" ? (ex.en||ex.es) : (ex.es||ex.en);
+  const secondaryName = lang==="en" ? (ex.es||"") : (ex.en||"");
   head.innerHTML = `
-    <div class="check" title="Completar · Complete"></div>
+    <div class="check" title="${Lc('Completar','Complete')}"></div>
     <div class="titles">
-      <div class="es" contenteditable="true">${ex.es}</div>
-      <div class="en" contenteditable="true">${ex.en}</div>
+      <div class="es" contenteditable="true">${primaryName}</div>
+      <div class="en" contenteditable="true">${secondaryName}</div>
     </div>
     <span class="muscle" contenteditable="true">${ex.muscle||""}</span>
     <div class="reorder">
-      <button class="move-up" title="Subir · Move up" ${idx===0?"disabled":""}>▲</button>
-      <button class="move-down" title="Bajar · Move down" ${idx===data[currentDay].length-1?"disabled":""}>▼</button>
+      <button class="move-up" title="${Lc('Subir','Move up')}" ${idx===0?"disabled":""}>▲</button>
+      <button class="move-down" title="${Lc('Bajar','Move down')}" ${idx===data[currentDay].length-1?"disabled":""}>▼</button>
     </div>
-    <button class="swap" title="Cambiar ejercicio · Replace">🔄</button>
-    <button class="info" title="Ver técnica · How-to">ℹ️</button>
-    <button class="del" title="Eliminar · Delete">🗑</button>
+    <button class="swap" title="${Lc('Cambiar ejercicio','Replace exercise')}">🔄</button>
+    <button class="info" title="${Lc('Ver técnica','How-to')}">ℹ️</button>
+    <button class="del" title="${Lc('Eliminar','Delete')}">🗑</button>
   `;
   head.querySelector(".check").onclick = ()=>{ ex.done=!ex.done; save(); renderList(); };
-  head.querySelector(".es").onblur = e=>{ ex.es=e.target.textContent.trim(); save(); };
-  head.querySelector(".en").onblur = e=>{ ex.en=e.target.textContent.trim(); save(); };
+  // El campo primario edita el idioma activo; el secundario, el otro
+  head.querySelector(".es").onblur = e=>{ const v=e.target.textContent.trim(); if(lang==="en") ex.en=v; else ex.es=v; save(); };
+  head.querySelector(".en").onblur = e=>{ const v=e.target.textContent.trim(); if(lang==="en") ex.es=v; else ex.en=v; save(); };
   head.querySelector(".muscle").onblur = e=>{ ex.muscle=e.target.textContent.trim(); save(); };
   head.querySelector(".swap").onclick = ()=> openLibraryToReplace(idx);
   head.querySelector(".move-up").onclick = ()=>{
@@ -1260,23 +1614,35 @@ function makeCard(ex, idx){
   const body = document.createElement("div");
   body.className = "card-body";
 
-  // Campos numéricos: sets, reps, peso, descanso
+  // Campos numéricos: sets, reps/tiempo, peso, descanso
   const grid = document.createElement("div");
   grid.className = "grid";
-  grid.appendChild(numField("Series · Sets", ex.sets, 1, v=>{ ex.sets=v; ex.setsDone=[]; save(); renderList(); }));
-  grid.appendChild(numField("Reps · Reps", ex.reps, 1, v=>{ ex.reps=v; save(); }));
-  grid.appendChild(numField("Peso · Weight (kg)", ex.weight, 1, v=>{ ex.weight=v; save(); }, true));
-  grid.appendChild(numField("Descanso · Rest (s)", ex.rest, 5, v=>{ ex.rest=v; save(); }));
+  const isCircuit = getDayMode(currentDay)==="circuit";
+  const L = (es,en)=> lang==="en" ? en : es;
+  const isContinuous = isCircuit && (+ex.sets===1) && (+ex.reps>=10);
+  const repsLabel = isContinuous ? L("Tiempo · Time (min)","Time (min)")
+                   : isCircuit ? L("Tiempo · Time (s)","Time (s)")
+                   : L("Reps","Reps");
+  const setsLabel = isCircuit ? L("Rondas · Rounds","Rounds") : L("Series · Sets","Sets");
+  const weightLabel = L("Peso · Weight (kg)","Weight (kg)");
+  const restLabel = L("Descanso · Rest (s)","Rest (s)");
+  grid.appendChild(numField(setsLabel, ex.sets, 1, v=>{ ex.sets=v; ex.setsDone=[]; save(); renderList(); }));
+  grid.appendChild(numField(repsLabel, ex.reps, 1, v=>{ ex.reps=v; save(); }));
+  grid.appendChild(numField(weightLabel, ex.weight, 1, v=>{ ex.weight=v; save(); }, true));
+  grid.appendChild(numField(restLabel, ex.rest, 5, v=>{ ex.rest=v; save(); }));
   body.appendChild(grid);
 
   // Tracker de series con peso/reps por serie
   const track = document.createElement("div");
   track.className = "sets-track";
-  track.innerHTML = `<div class="lbl">Registro por serie · Per-set log</div>
+  const perSetLabel = L("Registro por serie · Per-set log","Per-set log");
+  const colReps = isCircuit ? L("Tiempo","Time") : L("Reps","Reps");
+  const colWeight = L("Peso","Weight");
+  track.innerHTML = `<div class="lbl">${perSetLabel}</div>
     <div class="set-row set-head${ex.customRest?" with-rest":""}">
       <span class="n"></span>
-      <span class="col-h">Peso</span>
-      <span class="col-h">Reps</span>
+      <span class="col-h">${colWeight}</span>
+      <span class="col-h">${colReps}</span>
       ${ex.customRest ? '<span class="col-h">⏱ s</span>' : ''}
       <span class="col-h">✔</span>
     </div>`;
@@ -1290,7 +1656,7 @@ function makeCard(ex, idx){
     const row = document.createElement("div");
     row.className = "set-row" + (log.done?" done":"") + (ex.customRest?" with-rest":"");
     const restCell = ex.customRest
-      ? `<input type="number" class="set-rest" value="${log.rest}" inputmode="numeric" title="Descanso serie ${s+1} (s)" aria-label="Descanso serie ${s+1}">`
+      ? `<input type="number" class="set-rest" value="${log.rest}" inputmode="numeric" title="${LL('Descanso serie','Rest set')} ${s+1} (s)" aria-label="Descanso serie ${s+1}">`
       : "";
     row.innerHTML = `
       <span class="n">#${s+1}</span>
@@ -1324,9 +1690,9 @@ function makeCard(ex, idx){
   restCustom.innerHTML = `
     <label for="${cbId}">
       <input type="checkbox" id="${cbId}" ${ex.customRest?"checked":""}>
-      Descansos por serie · Custom rests
+      ${L("Descansos por serie","Per-set rests")}
     </label>
-    <span class="rc-hint">${ex.customRest ? "Editá el descanso de cada serie en la columna ⏱" : "Activalo para fijar un descanso distinto en cada serie"}</span>
+    <span class="rc-hint">${ex.customRest ? L("Editá el descanso de cada serie en la columna ⏱","Edit each set's rest in the ⏱ column") : L("Activalo para fijar un descanso distinto en cada serie","Turn on to set a different rest per set")}</span>
   `;
   const cb = restCustom.querySelector("input[type=checkbox]");
   cb.onchange = ()=>{
@@ -1338,8 +1704,8 @@ function makeCard(ex, idx){
   // Notas del ejercicio
   const notesWrap = document.createElement("div");
   notesWrap.className = "notes-wrap";
-  notesWrap.innerHTML = `<label>📝 Notas · Notes</label>
-    <textarea class="ex-notes" placeholder="Ej: subir 2.5kg, cuidar la espalda…">${ex.notes||""}</textarea>`;
+  notesWrap.innerHTML = `<label>${L("📝 Notas","📝 Notes")}</label>
+    <textarea class="ex-notes" placeholder="${L('Ej: subir 2.5kg, cuidar la espalda…','E.g.: add 2.5kg, mind your back…')}">${ex.notes||""}</textarea>`;
   notesWrap.querySelector("textarea").onchange = e=>{ ex.notes = e.target.value; save(); };
   body.appendChild(notesWrap);
 
@@ -1355,13 +1721,13 @@ function makeCard(ex, idx){
 
   const histBtn = document.createElement("button");
   histBtn.className = "mini-btn";
-  histBtn.textContent = "📈 Progreso";
+  histBtn.textContent = L("📈 Progreso","📈 Progress");
   histBtn.onclick = ()=> openHistory(ex);
   actions.appendChild(histBtn);
 
   const logBtn = document.createElement("button");
   logBtn.className = "mini-btn save";
-  logBtn.textContent = "✔ Registrar sesión · Log";
+  logBtn.textContent = L("✔ Registrar sesión","✔ Log session");
   logBtn.onclick = ()=> logSession(ex);
   actions.appendChild(logBtn);
 
@@ -1370,7 +1736,7 @@ function makeCard(ex, idx){
   // Botón de descanso manual
   const restBtn = document.createElement("button");
   restBtn.className = "rest-btn";
-  restBtn.innerHTML = `⏱ Iniciar descanso · Start rest (${ex.rest}s)`;
+  restBtn.innerHTML = L(`⏱ Iniciar descanso (${ex.rest}s)`,`⏱ Start rest (${ex.rest}s)`);
   restBtn.onclick = ()=> startTimer(ex.rest);
   body.appendChild(restBtn);
 
@@ -1558,7 +1924,7 @@ function renderLibBody(){
     const cur = data[currentDay][libReplaceIdx];
     const banner = document.createElement("div");
     banner.className = "lib-replace-banner";
-    banner.innerHTML = `🔄 Reemplazando: <b>${cur ? cur.es : ""}</b> — elegí el nuevo ejercicio`;
+    banner.innerHTML = `🔄 ${LL("Reemplazando","Replacing")}: <b>${cur ? (lang==="en"?(cur.en||cur.es):cur.es) : ""}</b> — ${LL("elegí el nuevo ejercicio","pick the new exercise")}`;
     libBody.appendChild(banner);
   }
   let items;
@@ -1575,7 +1941,7 @@ function renderLibBody(){
   if(!items.length){
     const e = document.createElement("div");
     e.className = "lib-empty";
-    e.textContent = "Sin resultados · No results";
+    e.textContent = LL("Sin resultados","No results");
     libBody.appendChild(e);
     return;
   }
@@ -1588,7 +1954,7 @@ function renderLibBody(){
         <div class="es">${ex.es}</div>
         <div class="en">${ex.en} · ${ex.muscle}</div>
       </div>
-      <button class="add-btn" title="${replacing?'Reemplazar · Replace':'Añadir · Add'}">${replacing?'🔄':'＋'}</button>
+      <button class="add-btn" title="${replacing?LL('Reemplazar','Replace'):LL('Añadir','Add')}">${replacing?'🔄':'＋'}</button>
     `;
     row.querySelector(".add-btn").onclick = ()=>{
       pushUndo();
@@ -2047,19 +2413,38 @@ function openHistory(ex){
 /* ---------- Modo entrenar (pantalla completa) ---------- */
 const trainOverlay = document.getElementById("trainMode");
 const trainContent = document.getElementById("trainContent");
-let trainIdx = 0;
+let trainIdx = 0;          // straight: índice de ejercicio
+let circRound = 0;         // circuit: ronda actual (0-based)
+let circRounds = 1;        // circuit: total de rondas
+let trainModeNow = "straight";
+
 document.getElementById("trainBtn").onclick = ()=>{
   if(!data[currentDay].length){ alert("Este día no tiene ejercicios todavía · No exercises yet"); return; }
-  trainIdx = 0;
-  document.getElementById("trainTitle").textContent = currentDay;
+  trainModeNow = getDayMode(currentDay);
+  trainIdx = 0; circRound = 0;
+  // En circuito, las rondas = el máximo de "series" entre los ejercicios
+  circRounds = Math.max(1, ...data[currentDay].map(e=>+e.sets||1));
+  document.getElementById("trainTitle").textContent = currentDay + (trainModeNow==="circuit" ? LL("  ·  ↻ Circuito","  ·  ↻ Circuit") : LL("  ·  ↓ Series seguidas","  ·  ↓ Straight sets"));
   renderTrain();
   trainOverlay.classList.add("show");
 };
 document.getElementById("trainExit").onclick = ()=>{ trainOverlay.classList.remove("show"); renderList(); };
-document.getElementById("trainPrev").onclick = ()=>{ if(trainIdx>0){ trainIdx--; renderTrain(); } };
-document.getElementById("trainNext").onclick = ()=>{ if(trainIdx<data[currentDay].length-1){ trainIdx++; renderTrain(); } };
+document.getElementById("trainPrev").onclick = ()=>{
+  if(trainModeNow==="circuit"){ if(circRound>0){ circRound--; renderTrain(); } }
+  else { if(trainIdx>0){ trainIdx--; renderTrain(); } }
+};
+document.getElementById("trainNext").onclick = ()=>{
+  if(trainModeNow==="circuit"){ if(circRound<circRounds-1){ circRound++; renderTrain(); } }
+  else { if(trainIdx<data[currentDay].length-1){ trainIdx++; renderTrain(); } }
+};
 
 function renderTrain(){
+  if(trainModeNow==="circuit") return renderTrainCircuit();
+  return renderTrainStraight();
+}
+
+/* ---- Modo SERIES SEGUIDAS (straight sets): un ejercicio, todas sus series ---- */
+function renderTrainStraight(){
   const list = data[currentDay];
   const ex = list[trainIdx];
   ex.setsDone = ex.setsDone || [];
@@ -2070,7 +2455,7 @@ function renderTrain(){
     ex.setsDone[s] = log;
     if(log.rest === undefined || log.rest === null) log.rest = ex.rest;
     const restCell = ex.customRest
-      ? `<input type="number" class="trest" value="${log.rest}" placeholder="s" title="Descanso (s)">`
+      ? `<input type="number" class="trest" value="${log.rest}" placeholder="s" title="${LL('Descanso (s)','Rest (s)')}">`
       : "";
     setsHtml += `
       <div class="train-set ${log.done?'done':''}" data-s="${s}">
@@ -2087,13 +2472,13 @@ function renderTrain(){
       <div class="train-ex-en">${ex.en||""} · ${ex.muscle||""}</div>
     </div>
     <div class="train-meta">
-      <span>${ex.sets} series</span>
+      <span>${ex.sets} ${LL("series","sets")}</span>
       <span>${ex.reps} reps</span>
       <span>${ex.weight} kg</span>
-      <span>⏱ ${ex.customRest ? "por serie" : ex.rest+"s"}</span>
+      <span>⏱ ${ex.customRest ? LL("por serie","per set") : ex.rest+"s"}</span>
     </div>
     <div class="train-sets">${setsHtml}</div>
-    <button class="train-rest">⏱ Iniciar descanso (${ex.customRest ? "1ª serie" : ex.rest+"s"})</button>
+    <button class="train-rest">⏱ ${LL("Iniciar descanso","Start rest")} (${ex.customRest ? LL("1ª serie","set 1") : ex.rest+"s"})</button>
   `;
   trainContent.querySelectorAll(".train-set").forEach(row=>{
     const s = +row.dataset.s;
@@ -2103,13 +2488,70 @@ function renderTrain(){
     const trestIn = row.querySelector(".trest");
     if(trestIn) trestIn.onchange = e=>{ log.rest=+e.target.value||0; save(); };
     row.querySelector(".tok").onclick = ()=>{
-      log.done = !log.done; save(); renderTrain();
+      log.done = !log.done; save(); renderTrainStraight();
       if(log.done) startTimer(ex.customRest ? (log.rest ?? ex.rest) : ex.rest);
     };
   });
   trainContent.querySelector(".train-rest").onclick = ()=>{
     const first = ex.setsDone[0];
     startTimer(ex.customRest && first ? (first.rest ?? ex.rest) : ex.rest);
+  };
+}
+
+/* ---- Modo CIRCUITO (circuit): una serie de cada ejercicio por ronda ---- */
+function renderTrainCircuit(){
+  const list = data[currentDay];
+  const rests = getCircuitRests(currentDay);
+  document.getElementById("trainProgress").textContent = `${LL("Serie","Set")} ${circRound+1} / ${circRounds}`;
+  let rowsHtml = "";
+  list.forEach((ex, ei)=>{
+    ex.setsDone = ex.setsDone || [];
+    const log = ex.setsDone[circRound] || {w:ex.weight, r:ex.reps, done:false};
+    ex.setsDone[circRound] = log;
+    rowsHtml += `
+      <div class="train-set ${log.done?'done':''}" data-ei="${ei}">
+        <span class="tn" style="width:auto;flex:1;text-align:left">${ex.es}<br><span style="opacity:.7;font-size:.8rem">${ex.reps} reps · ${ex.weight||0} kg</span></span>
+        <input type="number" class="tw" value="${log.w}" placeholder="kg" style="max-width:70px">
+        <input type="number" class="tr" value="${log.r}" placeholder="reps" style="max-width:70px">
+        <button class="tok"></button>
+      </div>`;
+  });
+  const circNames = list.map(e=> lang==="en" ? (e.en||e.es) : e.es);
+  const circNotation = "(" + circNames.join(" + ") + ") × " + circRounds;
+  trainContent.innerHTML = `
+    <div>
+      <div class="train-ex-name">↻ ${LL("Circuito — Serie","Circuit — Set")} ${circRound+1} / ${circRounds}</div>
+      <div class="train-ex-en">${LL("Hacé 1 serie de cada ejercicio, luego descansá","Do 1 set of each exercise, then rest")}</div>
+    </div>
+    <div class="train-notation">${list.length} ${list.length===1?LL("ejercicio","exercise"):LL("ejercicios","exercises")} × ${circRounds} ${circRounds===1?LL("serie","set"):LL("series","sets")}<br><span>${circNotation}</span></div>
+    <div class="train-meta">
+      <span>${list.length} ${LL("ejercicios","exercises")}</span>
+      <span>${circRounds} ${LL("series","sets")}</span>
+      <span>⏱ ${rests.between}s ${LL("entre ej.","between")}</span>
+      <span>🛑 ${rests.round}s ${LL("por serie","per set")}</span>
+    </div>
+    <div class="train-sets">${rowsHtml}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="train-rest" style="flex:1">⏱ ${LL("Descanso entre ej.","Rest between ex.")} (${rests.between}s)</button>
+      <button class="train-rest" style="flex:1;border-color:var(--cream)">🛑 ${LL("Fin de serie","End of set")} (${rests.round}s)</button>
+    </div>
+  `;
+  trainContent.querySelectorAll(".train-set").forEach(row=>{
+    const ei = +row.dataset.ei;
+    const ex = list[ei];
+    const log = ex.setsDone[circRound];
+    row.querySelector(".tw").onchange = e=>{ log.w=+e.target.value; save(); };
+    row.querySelector(".tr").onchange = e=>{ log.r=+e.target.value; save(); };
+    row.querySelector(".tok").onclick = ()=>{
+      log.done = !log.done; save(); renderTrainCircuit();
+      if(log.done) startTimer(rests.between);
+    };
+  });
+  const btns = trainContent.querySelectorAll(".train-rest");
+  btns[0].onclick = ()=> startTimer(rests.between);
+  btns[1].onclick = ()=>{
+    startTimer(rests.round);
+    if(circRound < circRounds-1){ circRound++; setTimeout(renderTrainCircuit, 300); }
   };
 }
 
@@ -2646,89 +3088,89 @@ const TEMPLATES = {
   ],
   "Cardio · Cardio": [
     {
-      "Mixto":[E("Elíptica","Elliptical","Cardio",1,900,0,0)],
-      "Trote suave":[E("Escaladora","Stair climber","Cardio",1,900,0,0)],
-      "Escaladora":[E("Carrera de fondo","Long run","Cardio",1,900,0,0)],
-      "Cross-training":[E("Carrera continua","Steady run","Cardio",1,900,0,0)],
-      "Elíptica":[E("Natación","Swimming","Cardio",1,900,0,0),E("Carrera ritmo medio","Tempo run","Cardio",1,900,0,0)],
-      "Resistencia":[E("Carrera continua","Steady run","Cardio",1,900,0,0)],
-      "Cuerda":[E("Marcha en cinta","Treadmill walk","Cardio",1,900,0,0)],
-      "Bici larga":[E("Bicicleta","Cycling","Cardio",1,900,0,0)],
-      "Sesión larga":[E("Carrera ritmo medio","Tempo run","Cardio",1,900,0,0)],
-      "Fartlek":[E("Saltos de cuerda","Jump rope","Cardio",1,900,0,0)],
-      "Carrera continua":[E("Remo continuo","Steady rowing","Cardio",1,900,0,0)],
-      "Remo":[E("Trote ligero","Easy jog","Cardio",1,900,0,0)],
-      "Carrera larga":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,900,0,0)],
-      "Tempo":[E("Bicicleta","Cycling","Cardio",1,900,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,900,0,0)],
-      "Bici moderada":[E("Carrera continua","Steady run","Cardio",1,900,0,0)]
+      "Mixto":[E("Elíptica","Elliptical","Cardio",1,15,0,0)],
+      "Trote suave":[E("Escaladora","Stair climber","Cardio",1,15,0,0)],
+      "Escaladora":[E("Carrera de fondo","Long run","Cardio",1,15,0,0)],
+      "Cross-training":[E("Carrera continua","Steady run","Cardio",1,15,0,0)],
+      "Elíptica":[E("Natación","Swimming","Cardio",1,15,0,0),E("Carrera ritmo medio","Tempo run","Cardio",1,15,0,0)],
+      "Resistencia":[E("Carrera continua","Steady run","Cardio",1,15,0,0)],
+      "Cuerda":[E("Marcha en cinta","Treadmill walk","Cardio",1,15,0,0)],
+      "Bici larga":[E("Bicicleta","Cycling","Cardio",1,15,0,0)],
+      "Sesión larga":[E("Carrera ritmo medio","Tempo run","Cardio",1,15,0,0)],
+      "Fartlek":[E("Saltos de cuerda","Jump rope","Cardio",1,15,0,0)],
+      "Carrera continua":[E("Remo continuo","Steady rowing","Cardio",1,15,0,0)],
+      "Remo":[E("Trote ligero","Easy jog","Cardio",1,15,0,0)],
+      "Carrera larga":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,15,0,0)],
+      "Tempo":[E("Bicicleta","Cycling","Cardio",1,15,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,15,0,0)],
+      "Bici moderada":[E("Carrera continua","Steady run","Cardio",1,15,0,0)]
     },
     {
-      "Tempo 2":[E("Elíptica","Elliptical","Cardio",1,1500,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,1500,0,0)],
-      "Cuerda 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,1500,0,0),E("Carrera variable","Fartlek run","Cardio",1,1500,0,0)],
-      "Carrera larga 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,1500,0,0)],
-      "Remo 2":[E("Natación","Swimming","Cardio",1,1500,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,1500,0,0)],
-      "Escaladora 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,1500,0,0)],
-      "Cross-training 2":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,1500,0,0)],
-      "Mixto 2":[E("Marcha en cinta","Treadmill walk","Cardio",1,1500,0,0),E("Carrera de fondo","Long run","Cardio",1,1500,0,0)],
-      "Elíptica 2":[E("Carrera continua","Steady run","Cardio",1,1500,0,0)],
-      "Trote suave 2":[E("Carrera de fondo","Long run","Cardio",1,1500,0,0),E("Remo continuo","Steady rowing","Cardio",1,1500,0,0)],
-      "Bici moderada 2":[E("Natación","Swimming","Cardio",1,1500,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,1500,0,0)],
-      "Carrera continua 2":[E("Remo continuo","Steady rowing","Cardio",1,1500,0,0)],
-      "Resistencia 2":[E("Trote ligero","Easy jog","Cardio",1,1500,0,0)],
-      "Fartlek 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,1500,0,0)],
-      "Sesión larga 2":[E("Carrera variable","Fartlek run","Cardio",1,1500,0,0)],
-      "Bici larga 2":[E("Marcha en cinta","Treadmill walk","Cardio",1,1500,0,0)]
+      "Tempo 2":[E("Elíptica","Elliptical","Cardio",1,25,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,25,0,0)],
+      "Cuerda 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,25,0,0),E("Carrera variable","Fartlek run","Cardio",1,25,0,0)],
+      "Carrera larga 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,25,0,0)],
+      "Remo 2":[E("Natación","Swimming","Cardio",1,25,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,25,0,0)],
+      "Escaladora 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,25,0,0)],
+      "Cross-training 2":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,25,0,0)],
+      "Mixto 2":[E("Marcha en cinta","Treadmill walk","Cardio",1,25,0,0),E("Carrera de fondo","Long run","Cardio",1,25,0,0)],
+      "Elíptica 2":[E("Carrera continua","Steady run","Cardio",1,25,0,0)],
+      "Trote suave 2":[E("Carrera de fondo","Long run","Cardio",1,25,0,0),E("Remo continuo","Steady rowing","Cardio",1,25,0,0)],
+      "Bici moderada 2":[E("Natación","Swimming","Cardio",1,25,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,25,0,0)],
+      "Carrera continua 2":[E("Remo continuo","Steady rowing","Cardio",1,25,0,0)],
+      "Resistencia 2":[E("Trote ligero","Easy jog","Cardio",1,25,0,0)],
+      "Fartlek 2":[E("Carrera ritmo medio","Tempo run","Cardio",1,25,0,0)],
+      "Sesión larga 2":[E("Carrera variable","Fartlek run","Cardio",1,25,0,0)],
+      "Bici larga 2":[E("Marcha en cinta","Treadmill walk","Cardio",1,25,0,0)]
     },
     {
-      "Escaladora 3":[E("Saltos de cuerda","Jump rope","Cardio",1,2100,0,0),E("Remo continuo","Steady rowing","Cardio",1,2100,0,0)],
-      "Resistencia 3":[E("Carrera variable","Fartlek run","Cardio",1,2100,0,0)],
-      "Cross-training 3":[E("Saltos de cuerda","Jump rope","Cardio",1,2100,0,0)],
-      "Remo 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,2100,0,0)],
-      "Carrera larga 3":[E("Carrera continua","Steady run","Cardio",1,2100,0,0)],
-      "Fartlek 3":[E("Bicicleta","Cycling","Cardio",1,2100,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0)],
-      "Cuerda 3":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,2100,0,0)],
-      "Elíptica 3":[E("Caminata rápida","Brisk walk","Cardio",1,2100,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,2100,0,0)],
-      "Mixto 3":[E("Natación","Swimming","Cardio",1,2100,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0)],
-      "Bici larga 3":[E("Bicicleta","Cycling","Cardio",1,2100,0,0),E("Caminata rápida","Brisk walk","Cardio",1,2100,0,0)],
-      "Sesión larga 3":[E("Carrera variable","Fartlek run","Cardio",1,2100,0,0)],
-      "Trote suave 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0),E("Trote ligero","Easy jog","Cardio",1,2100,0,0)],
-      "Tempo 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,2100,0,0)],
-      "Carrera continua 3":[E("Escaladora","Stair climber","Cardio",1,2100,0,0)],
-      "Bici moderada 3":[E("Trote ligero","Easy jog","Cardio",1,2100,0,0)]
+      "Escaladora 3":[E("Saltos de cuerda","Jump rope","Cardio",1,35,0,0),E("Remo continuo","Steady rowing","Cardio",1,35,0,0)],
+      "Resistencia 3":[E("Carrera variable","Fartlek run","Cardio",1,35,0,0)],
+      "Cross-training 3":[E("Saltos de cuerda","Jump rope","Cardio",1,35,0,0)],
+      "Remo 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,35,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,35,0,0)],
+      "Carrera larga 3":[E("Carrera continua","Steady run","Cardio",1,35,0,0)],
+      "Fartlek 3":[E("Bicicleta","Cycling","Cardio",1,35,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,35,0,0)],
+      "Cuerda 3":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,35,0,0)],
+      "Elíptica 3":[E("Caminata rápida","Brisk walk","Cardio",1,35,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,35,0,0)],
+      "Mixto 3":[E("Natación","Swimming","Cardio",1,35,0,0),E("Bicicleta sostenida","Sustained cycling","Cardio",1,35,0,0)],
+      "Bici larga 3":[E("Bicicleta","Cycling","Cardio",1,35,0,0),E("Caminata rápida","Brisk walk","Cardio",1,35,0,0)],
+      "Sesión larga 3":[E("Carrera variable","Fartlek run","Cardio",1,35,0,0)],
+      "Trote suave 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,35,0,0),E("Trote ligero","Easy jog","Cardio",1,35,0,0)],
+      "Tempo 3":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,35,0,0)],
+      "Carrera continua 3":[E("Escaladora","Stair climber","Cardio",1,35,0,0)],
+      "Bici moderada 3":[E("Trote ligero","Easy jog","Cardio",1,35,0,0)]
     },
     {
-      "Resistencia 4":[E("Remo continuo","Steady rowing","Cardio",1,3000,0,0)],
-      "Escaladora 4":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,3000,0,0),E("Trote ligero","Easy jog","Cardio",1,3000,0,0)],
-      "Tempo 4":[E("Carrera variable","Fartlek run","Cardio",1,3000,0,0)],
-      "Carrera larga 4":[E("Carrera ritmo medio","Tempo run","Cardio",1,3000,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,3000,0,0)],
-      "Cross-training 4":[E("Carrera de fondo","Long run","Cardio",1,3000,0,0)],
-      "Cuerda 4":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,3000,0,0)],
-      "Mixto 4":[E("Remo continuo","Steady rowing","Cardio",1,3000,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,3000,0,0)],
-      "Remo 4":[E("Carrera variable","Fartlek run","Cardio",1,3000,0,0)],
-      "Elíptica 4":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,3000,0,0)],
-      "Bici larga 4":[E("Carrera de fondo","Long run","Cardio",1,3000,0,0),E("Natación","Swimming","Cardio",1,3000,0,0)],
-      "Carrera continua 4":[E("Carrera de fondo","Long run","Cardio",1,3000,0,0)],
-      "Bici moderada 4":[E("Remo continuo","Steady rowing","Cardio",1,3000,0,0),E("Elíptica","Elliptical","Cardio",1,3000,0,0)],
-      "Fartlek 4":[E("Caminata rápida","Brisk walk","Cardio",1,3000,0,0)],
-      "Sesión larga 4":[E("Elíptica","Elliptical","Cardio",1,3000,0,0)],
-      "Trote suave 4":[E("Carrera de fondo","Long run","Cardio",1,3000,0,0)]
+      "Resistencia 4":[E("Remo continuo","Steady rowing","Cardio",1,50,0,0)],
+      "Escaladora 4":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,50,0,0),E("Trote ligero","Easy jog","Cardio",1,50,0,0)],
+      "Tempo 4":[E("Carrera variable","Fartlek run","Cardio",1,50,0,0)],
+      "Carrera larga 4":[E("Carrera ritmo medio","Tempo run","Cardio",1,50,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,50,0,0)],
+      "Cross-training 4":[E("Carrera de fondo","Long run","Cardio",1,50,0,0)],
+      "Cuerda 4":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,50,0,0)],
+      "Mixto 4":[E("Remo continuo","Steady rowing","Cardio",1,50,0,0),E("Remo ritmo fuerte","Hard rowing","Cardio",1,50,0,0)],
+      "Remo 4":[E("Carrera variable","Fartlek run","Cardio",1,50,0,0)],
+      "Elíptica 4":[E("Remo ritmo fuerte","Hard rowing","Cardio",1,50,0,0)],
+      "Bici larga 4":[E("Carrera de fondo","Long run","Cardio",1,50,0,0),E("Natación","Swimming","Cardio",1,50,0,0)],
+      "Carrera continua 4":[E("Carrera de fondo","Long run","Cardio",1,50,0,0)],
+      "Bici moderada 4":[E("Remo continuo","Steady rowing","Cardio",1,50,0,0),E("Elíptica","Elliptical","Cardio",1,50,0,0)],
+      "Fartlek 4":[E("Caminata rápida","Brisk walk","Cardio",1,50,0,0)],
+      "Sesión larga 4":[E("Elíptica","Elliptical","Cardio",1,50,0,0)],
+      "Trote suave 4":[E("Carrera de fondo","Long run","Cardio",1,50,0,0)]
     },
     {
-      "Cross-training 5":[E("Carrera ritmo medio","Tempo run","Cardio",1,3600,0,0)],
-      "Remo 5":[E("Saltos de cuerda","Jump rope","Cardio",1,3600,0,0)],
-      "Elíptica 5":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,3600,0,0),E("Caminata rápida","Brisk walk","Cardio",1,3600,0,0)],
-      "Escaladora 5":[E("Natación","Swimming","Cardio",1,3600,0,0)],
-      "Carrera larga 5":[E("Carrera continua","Steady run","Cardio",1,3600,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,3600,0,0)],
-      "Trote suave 5":[E("Carrera ritmo medio","Tempo run","Cardio",1,3600,0,0)],
-      "Cuerda 5":[E("Elíptica","Elliptical","Cardio",1,3600,0,0)],
-      "Sesión larga 5":[E("Elíptica","Elliptical","Cardio",1,3600,0,0)],
-      "Mixto 5":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,3600,0,0)],
-      "Resistencia 5":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,3600,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,3600,0,0)],
-      "Tempo 5":[E("Remo continuo","Steady rowing","Cardio",1,3600,0,0)],
-      "Bici moderada 5":[E("Trote ligero","Easy jog","Cardio",1,3600,0,0)],
-      "Carrera continua 5":[E("Caminata rápida","Brisk walk","Cardio",1,3600,0,0),E("Escaladora","Stair climber","Cardio",1,3600,0,0)],
-      "Bici larga 5":[E("Carrera variable","Fartlek run","Cardio",1,3600,0,0)],
-      "Fartlek 5":[E("Remo continuo","Steady rowing","Cardio",1,3600,0,0),E("Caminata rápida","Brisk walk","Cardio",1,3600,0,0)]
+      "Cross-training 5":[E("Carrera ritmo medio","Tempo run","Cardio",1,60,0,0)],
+      "Remo 5":[E("Saltos de cuerda","Jump rope","Cardio",1,60,0,0)],
+      "Elíptica 5":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,60,0,0),E("Caminata rápida","Brisk walk","Cardio",1,60,0,0)],
+      "Escaladora 5":[E("Natación","Swimming","Cardio",1,60,0,0)],
+      "Carrera larga 5":[E("Carrera continua","Steady run","Cardio",1,60,0,0),E("Marcha en cinta","Treadmill walk","Cardio",1,60,0,0)],
+      "Trote suave 5":[E("Carrera ritmo medio","Tempo run","Cardio",1,60,0,0)],
+      "Cuerda 5":[E("Elíptica","Elliptical","Cardio",1,60,0,0)],
+      "Sesión larga 5":[E("Elíptica","Elliptical","Cardio",1,60,0,0)],
+      "Mixto 5":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,60,0,0)],
+      "Resistencia 5":[E("Bicicleta sostenida","Sustained cycling","Cardio",1,60,0,0),E("Saltos de cuerda","Jump rope","Cardio",1,60,0,0)],
+      "Tempo 5":[E("Remo continuo","Steady rowing","Cardio",1,60,0,0)],
+      "Bici moderada 5":[E("Trote ligero","Easy jog","Cardio",1,60,0,0)],
+      "Carrera continua 5":[E("Caminata rápida","Brisk walk","Cardio",1,60,0,0),E("Escaladora","Stair climber","Cardio",1,60,0,0)],
+      "Bici larga 5":[E("Carrera variable","Fartlek run","Cardio",1,60,0,0)],
+      "Fartlek 5":[E("Remo continuo","Steady rowing","Cardio",1,60,0,0),E("Caminata rápida","Brisk walk","Cardio",1,60,0,0)]
     }
   ]
 };
@@ -2754,7 +3196,7 @@ function renderTpl(){
   if(tplStep !== "type"){
     const back = document.createElement("button");
     back.className = "lib-tab active";
-    back.textContent = "‹ Volver";
+    back.textContent = LL("‹ Volver","‹ Back");
     back.onclick = ()=>{
       if(tplStep==="circuit"){ tplStep="level"; tplLevel=null; }
       else if(tplStep==="level"){ tplStep="type"; tplType=null; }
@@ -2773,13 +3215,13 @@ function renderTpl(){
   if(tplStep === "type"){
     const intro = document.createElement("div");
     intro.className = "tpl-step-title";
-    intro.textContent = "Elegí el tipo de entrenamiento";
+    intro.textContent = LL("Elegí el tipo de entrenamiento","Choose training type");
     tplBody.appendChild(intro);
     Object.keys(TEMPLATES).forEach(t=>{
       const totalCirc = TEMPLATES[t].reduce((a,lvl)=>a+Object.keys(lvl).length,0);
       const card = document.createElement("button");
       card.className = "tpl-pick";
-      card.innerHTML = `<span class="tpl-pick-name">${t}</span><span class="tpl-pick-sub">${totalCirc} circuitos · 5 niveles</span>`;
+      card.innerHTML = `<span class="tpl-pick-name">${t}</span><span class="tpl-pick-sub">${totalCirc} ${LL("circuitos · 5 niveles","circuits · 5 levels")}</span>`;
       card.onclick = ()=>{ tplType=t; tplStep="level"; renderTpl(); };
       tplBody.appendChild(card);
     });
@@ -2790,13 +3232,13 @@ function renderTpl(){
   if(tplStep === "level"){
     const intro = document.createElement("div");
     intro.className = "tpl-step-title";
-    intro.textContent = "Elegí el nivel de dificultad";
+    intro.textContent = LL("Elegí el nivel de dificultad","Choose difficulty level");
     tplBody.appendChild(intro);
     TEMPLATES[tplType].forEach((lvlObj, li)=>{
       const n = Object.keys(lvlObj).length;
       const card = document.createElement("button");
       card.className = "tpl-pick lvl-"+(li+1);
-      card.innerHTML = `<span class="tpl-pick-name">${TPL_DIFFS[li]}</span><span class="tpl-pick-sub">${n} circuitos para elegir</span>`;
+      card.innerHTML = `<span class="tpl-pick-name">${TPL_DIFFS[li]}</span><span class="tpl-pick-sub">${n} ${LL("circuitos para elegir","circuits to choose")}</span>`;
       card.onclick = ()=>{ tplLevel=li; tplStep="circuit"; renderTpl(); };
       tplBody.appendChild(card);
     });
@@ -2807,7 +3249,7 @@ function renderTpl(){
   if(tplStep === "circuit"){
     const intro = document.createElement("div");
     intro.className = "tpl-step-title";
-    intro.textContent = "Elegí un circuito";
+    intro.textContent = LL("Elegí un circuito","Choose a circuit");
     tplBody.appendChild(intro);
     const lvlObj = TEMPLATES[tplType][tplLevel];
     Object.entries(lvlObj).forEach(([cname, exs])=>{
@@ -2818,23 +3260,25 @@ function renderTpl(){
         <div class="text" style="font-style:normal;font-weight:bold">${cname}</div>
         <span class="src">${exs.length} ejercicios — ${preview}</span>
         <div class="quote-actions">
-          <button class="q-use">➕ Agregar como día · Add</button>
-          <button class="q-del" style="border-color:var(--accent-2);color:var(--accent-2)">♻ Reemplazar todo</button>
+          <button class="q-use">${LL("➕ Agregar como día","➕ Add as day")}</button>
+          <button class="q-del" style="border-color:var(--accent-2);color:var(--accent-2)">${LL("♻ Reemplazar todo","♻ Replace all")}</button>
         </div>`;
       card.querySelector(".q-use").onclick = ()=>{
         pushUndo();
         let name = cname, n=2;
         while(data[name]) name = `${cname} (${n++})`;
         data[name] = structuredClone(exs);
+        dayModes[name] = modeForCategory(tplType);
         currentDay = name;
         save(); renderDays(); renderList();
         tplModal.classList.remove("show");
-        alert(`"${cname}" agregado como día nuevo · Added`);
+        alert(`"${cname}" ${LL("agregado como día nuevo","added as a new day")}`);
       };
       card.querySelector(".q-del").onclick = ()=>{
         if(!confirm("Esto reemplaza TODOS tus días por este circuito. ¿Seguir?")) return;
         pushUndo();
         data = { [cname]: structuredClone(exs) };
+        dayModes = { [cname]: modeForCategory(tplType) };
         currentDay = cname;
         save(); renderDays(); renderList();
         tplModal.classList.remove("show");
@@ -2963,10 +3407,35 @@ const ivRun = document.getElementById("ivRun");
 const ivIds = ["ivPrep","ivWork","ivRest","ivRounds","ivSets","ivSetRest"];
 
 document.getElementById("intervalBtn").onclick = ()=>{
+  // Cargar los ejercicios del día actual (si tiene), sea cual sea el modo
+  const list = data[currentDay] || [];
+  if(list.length){
+    ivExercises = list.map(e=>({es:e.es, en:e.en, reps:+e.reps||0, rest:+e.rest||0, sets:+e.sets||1, mix:e.mix||null}));
+    const maxSets = Math.max(1, ...list.map(e=>+e.sets||1));
+    document.getElementById("ivRounds").value = list.length;
+    document.getElementById("ivSets").value = maxSets;
+    // Cada ejercicio tiene su propio tiempo/descanso: ocultar campos globales para no confundir
+    document.getElementById("ivFieldWork").style.display = "none";
+    document.getElementById("ivFieldRest").style.display = "none";
+    document.getElementById("ivFieldRounds").style.display = "none";
+  } else {
+    ivExercises = [];
+    document.getElementById("ivFieldWork").style.display = "";
+    document.getElementById("ivFieldRest").style.display = "";
+    document.getElementById("ivFieldRounds").style.display = "";
+  }
   renderIvPresets();
   updateIvTotal();
+  updateIvRoundsLabel();
   intervalModal.classList.add("show");
 };
+function updateIvRoundsLabel(){
+  const lab = document.getElementById("ivLabRounds");
+  if(!lab) return;
+  lab.textContent = ivExercises.length
+    ? LL("Ejercicios","Exercises")
+    : LL("Rondas","Rounds");
+}
 document.getElementById("intervalClose").onclick = ()=> intervalModal.classList.remove("show");
 intervalModal.onclick = e=>{ if(e.target===intervalModal) intervalModal.classList.remove("show"); };
 ivIds.forEach(id=> document.getElementById(id).oninput = updateIvTotal);
@@ -2979,12 +3448,17 @@ function renderIvPresets(){
     b.className = "iv-preset";
     b.textContent = p.name;
     b.onclick = ()=>{
+      ivExercises = [];   // preset genérico, ignora ejercicios del día
+      document.getElementById("ivFieldWork").style.display = "";
+      document.getElementById("ivFieldRest").style.display = "";
+      document.getElementById("ivFieldRounds").style.display = "";
       document.getElementById("ivPrep").value = p.prep;
       document.getElementById("ivWork").value = p.work;
       document.getElementById("ivRest").value = p.rest;
       document.getElementById("ivRounds").value = p.rounds;
       document.getElementById("ivSets").value = p.sets;
       document.getElementById("ivSetRest").value = p.setRest;
+      updateIvRoundsLabel();
       updateIvTotal();
     };
     box.appendChild(b);
@@ -3002,33 +3476,63 @@ function ivConfig(){
 }
 function updateIvTotal(){
   const c = ivConfig();
-  const perSet = c.work*c.rounds + c.rest*c.rounds;
-  let total = c.prep + perSet*c.sets + c.setRest*(c.sets-1);
-  const m = Math.floor(total/60), s = total%60;
-  document.getElementById("ivTotal").textContent = `Duración total ≈ ${m}m ${s}s`;
+  const el = document.getElementById("ivTotal");
+  if(ivExercises.length){
+    // total con tiempos por ejercicio
+    let work = ivExercises.reduce((a,e)=>a+(e.reps||0),0);
+    let rest = ivExercises.slice(0,-1).reduce((a,e)=>a+(e.rest||0),0);
+    let perSet = work + rest;
+    let total = c.prep + perSet*c.sets + c.setRest*(c.sets-1);
+    const m = Math.floor(total/60), s = total%60;
+    // notación expandida con nombres reales
+    const names = ivExercises.map(e=> lang==="en" ? (e.en||e.es) : e.es);
+    const expanded = "(" + names.join(" + ") + ") × " + c.sets;
+    el.innerHTML = `<div style="font-weight:700;margin-bottom:4px">${ivExercises.length} ${LL("ejercicios","exercises")} × ${c.sets} ${LL("series","sets")}</div>`
+      + `<div style="font-size:.8rem;opacity:.85;line-height:1.4">${expanded}</div>`
+      + `<div style="margin-top:4px">${LL("Duración total","Total time")} ≈ ${m}m ${s}s</div>`;
+  } else {
+    const perSet = c.work*c.rounds + c.rest*c.rounds;
+    let total = c.prep + perSet*c.sets + c.setRest*(c.sets-1);
+    const m = Math.floor(total/60), s = total%60;
+    el.textContent = `${LL("Duración total","Total time")} ≈ ${m}m ${s}s`;
+  }
 }
 
-// Construir la secuencia de fases
+// Construir la secuencia de fases.
+// Si hay ejercicios del día (circuito), cada "trabajo" es un ejercicio concreto;
+// una SERIE = una pasada completa por todos los ejercicios; se repite c.sets veces.
 function buildIvPhases(c){
   const phases = [];
-  if(c.prep>0) phases.push({type:"prep", label:"Preparación · Get ready", secs:c.prep});
+  if(c.prep>0) phases.push({type:"prep", label:LL("Preparación","Get ready"), secs:c.prep});
+  const exs = ivExercises;          // array de ejercicios del día (puede estar vacío)
+  const perSet = exs.length ? exs.length : c.rounds;  // cuántos bloques de trabajo por serie
   for(let set=1; set<=c.sets; set++){
-    for(let r=1; r<=c.rounds; r++){
-      if(c.work>0) phases.push({type:"work", label:"💪 Trabajo · Work", secs:c.work, round:r, set:set});
-      if(c.rest>0 && r<c.rounds) phases.push({type:"rest", label:"😮‍💨 Descanso · Rest", secs:c.rest, round:r, set:set});
-      else if(c.rest>0 && r===c.rounds && set<c.sets){ /* el descanso de ronda final se omite si hay setRest */ }
-      else if(c.rest>0 && r===c.rounds && set===c.sets){ /* fin, sin descanso final */ }
+    for(let r=1; r<=perSet; r++){
+      const exObj = exs.length ? exs[r-1] : null;
+      const exName = exObj ? (lang==="en" ? (exObj.en||exObj.es) : exObj.es) : "";
+      // si el ejercicio es un mix, armar la secuencia "8 Mountain climbers + 4 Push-ups"
+      let mixSeq = "";
+      if(exObj && exObj.mix && exObj.mix.length){
+        mixSeq = exObj.mix.map(m=> `${m.reps} ${lang==="en"?(m.en||m.es):(m.es||m.en)}`).join(" + ");
+      }
+      const workSecs = exs.length ? (+exs[r-1].reps||c.work) : c.work;
+      const restSecs = exs.length ? (+exs[r-1].rest||c.rest) : c.rest;
+      if(workSecs>0) phases.push({type:"work", label:LL("💪 Trabajo","💪 Work"), secs:workSecs, idx:r, set:set, ex:exName, mix:mixSeq});
+      // descanso entre ejercicios (micro-pausa), salvo el último de la serie
+      if(restSecs>0 && r<perSet) phases.push({type:"rest", label:LL("😮‍💨 Descanso","😮‍💨 Rest"), secs:restSecs, idx:r, set:set});
     }
-    if(set<c.sets && c.setRest>0) phases.push({type:"setrest", label:"🛑 Descanso entre sets · Set rest", secs:c.setRest, set:set});
+    if(set<c.sets && c.setRest>0) phases.push({type:"setrest", label:LL("🛑 Descanso entre series","🛑 Set rest"), secs:c.setRest, set:set});
   }
   return phases;
 }
 
 let ivPhases = [], ivIdx = 0, ivLeft = 0, ivInt = null, ivPaused = false, ivConf = null;
+let ivExercises = [];   // ejercicios del día cuando se abre desde un circuito
+
 document.getElementById("ivStart").onclick = ()=>{
   ivConf = ivConfig();
   ivPhases = buildIvPhases(ivConf);
-  if(!ivPhases.length){ alert("Configurá al menos trabajo y rondas."); return; }
+  if(!ivPhases.length){ alert(LL("Configurá al menos trabajo y series.","Set at least work and sets.")); return; }
   ivIdx = 0; ivPaused = false;
   intervalModal.classList.remove("show");
   ivRun.classList.add("show");
@@ -3040,15 +3544,37 @@ function startIvPhase(){
   ivLeft = ph.secs;
   ivRun.className = "iv-run show phase-" + ph.type;
   document.getElementById("ivPhase").textContent = ph.label;
-  // info de ronda/set
+  // nombre del ejercicio (solo en trabajo, si hay ejercicios)
+  const exEl = document.getElementById("ivExercise");
+  if(ph.type==="work" && ph.ex){
+    if(ph.mix){
+      exEl.innerHTML = `<div class="iv-mix-seq">${ph.mix.split(" + ").map(s=>`<span>${s}</span>`).join('<i> + </i>')}</div>`;
+    } else {
+      exEl.textContent = ph.ex;
+    }
+  } else {
+    exEl.textContent = "";
+  }
+  // info: serie X/Y · ejercicio i/n
   let info = "";
-  if(ph.round){ info = `Ronda ${ph.round} / ${ivConf.rounds}`; if(ivConf.sets>1) info += ` · Set ${ph.set} / ${ivConf.sets}`; }
-  else if(ph.type==="setrest"){ info = `Fin del set ${ph.set} / ${ivConf.sets}`; }
-  else { info = "¡Prepárate!"; }
+  const perSet = ivExercises.length ? ivExercises.length : ivConf.rounds;
+  if(ph.set){
+    info = `${LL("Serie","Set")} ${ph.set} / ${ivConf.sets}`;
+    if(ph.idx) info += ` · ${LL("Ej.","Ex.")} ${ph.idx} / ${perSet}`;
+  } else if(ph.type==="setrest"){
+    info = `${LL("Fin de la serie","End of set")} ${ph.set}`;
+  } else {
+    info = LL("¡Prepárate!","Get ready!");
+  }
   document.getElementById("ivInfo").textContent = info;
   // próximo
   const next = ivPhases[ivIdx+1];
-  document.getElementById("ivNext").textContent = next ? `Sigue: ${next.label.replace(/^[^A-Za-zÁ-ú]+/,"")}` : "Última fase";
+  let nextTxt = "";
+  if(next){
+    if(next.type==="work" && next.ex) nextTxt = `${LL("Sigue","Next")}: ${next.ex}`;
+    else nextTxt = `${LL("Sigue","Next")}: ${next.label.replace(/^[^A-Za-zÁ-ú]+/,"").trim()}`;
+  } else nextTxt = LL("Última fase","Last phase");
+  document.getElementById("ivNext").textContent = nextTxt;
   renderIvClock();
   ivInt = setInterval(ivTick, 1000);
 }
@@ -3072,9 +3598,9 @@ function renderIvClock(){
 function ivFinish(){
   clearInterval(ivInt);
   ivRun.className = "iv-run show phase-done";
-  document.getElementById("ivPhase").textContent = "✅ ¡Completado!";
+  document.getElementById("ivPhase").textContent = LL("✅ ¡Completado!","✅ Done!");
   document.getElementById("ivClock").textContent = "00:00";
-  document.getElementById("ivInfo").textContent = "Buen trabajo · Well done";
+  document.getElementById("ivInfo").textContent = LL("Buen trabajo","Well done");
   document.getElementById("ivNext").textContent = "";
   beep(1320);
 }
@@ -3086,6 +3612,90 @@ document.getElementById("ivStop").onclick = ()=>{
   clearInterval(ivInt);
   ivRun.classList.remove("show");
 };
+
+/* ---------- Idioma · Language (ES / EN) ---------- */
+const LANG_KEY = "strengthGadgetRojo.lang";
+let lang = "es";
+// Diccionario de textos de interfaz por id de elemento
+const I18N = {
+  es:{
+    trainBtn:"🏋️ Modo entrenar", motivBtn:"🔥 Frases motivacionales",
+    browseLib:"📚 Biblioteca de ejercicios", addEx:"＋ Añadir ejercicio en blanco",
+    tplBtn:"🗂️ Plantillas", propagateBtn:"⚙️ Propagar config", intervalBtn:"⏲️ Intervalos",
+    modeStraight:"↓ Series seguidas", modeCircuit:"↻ Circuito ⏱",
+    wkLoad:"📂 Cargar", wkSave:"💾 Guardar", wkExport:"📊 Excel",
+    wkExcelImport:"📗 Desde Excel", wkShare:"📤 Compartir", wkImport:"📥 Importar",
+    sessionToggle:"▶ Iniciar sesión", undoBtn:"↶ Deshacer", redoBtn:"↷ Rehacer",
+    bgPick:"🖼 Elegir imagen de fondo", bgClear:"✕ Sin imagen",
+    dataSavedTxt:"Los datos se guardan en tu dispositivo",
+    ivTitle:"⏲️ Temporizador de intervalos", ivLabPrep:"Preparación (s)", ivLabWork:"Trabajo (s)",
+    ivLabRest:"Descanso (s)", ivLabRounds:"Rondas", ivLabSets:"Sets/ciclos", ivLabSetRest:"Descanso entre sets (s)",
+    ivStart:"▶ Iniciar", ivPause:"⏸ Pausar", ivStop:"■ Terminar",
+    tplTitle:"🗂️ Plantillas", motivTitle:"🔥 Frases", progTitle:"📈 Progreso", libTitle:"📚 Biblioteca",
+    restLab:"Descanso", libSearchPh:"Buscar ejercicio…", addQuoteBtn:"＋ Agregar frase",
+    headerEn:"Be Unstoppable, Rise Now",
+  },
+  en:{
+    trainBtn:"🏋️ Train mode", motivBtn:"🔥 Motivation",
+    browseLib:"📚 Exercise library", addEx:"＋ Add blank exercise",
+    tplBtn:"🗂️ Templates", propagateBtn:"⚙️ Apply to all", intervalBtn:"⏲️ Interval timer",
+    modeStraight:"↓ Straight sets", modeCircuit:"↻ Circuit ⏱",
+    wkLoad:"📂 Load", wkSave:"💾 Save", wkExport:"📊 Excel",
+    wkExcelImport:"📗 From Excel", wkShare:"📤 Share", wkImport:"📥 Import",
+    sessionToggle:"▶ Start session", undoBtn:"↶ Undo", redoBtn:"↷ Redo",
+    bgPick:"🖼 Choose background", bgClear:"✕ No image",
+    dataSavedTxt:"Your data is saved on your device",
+    ivTitle:"⏲️ Interval timer", ivLabPrep:"Prep (s)", ivLabWork:"Work (s)",
+    ivLabRest:"Rest (s)", ivLabRounds:"Rounds", ivLabSets:"Sets/cycles", ivLabSetRest:"Rest between sets (s)",
+    ivStart:"▶ Start", ivPause:"⏸ Pause", ivStop:"■ Stop",
+    tplTitle:"🗂️ Templates", motivTitle:"🔥 Quotes", progTitle:"📈 Progress", libTitle:"📚 Library",
+    restLab:"Rest", libSearchPh:"Search exercise…", addQuoteBtn:"＋ Add quote",
+    headerEn:"Be Unstoppable, Rise Now",
+  }
+};
+function LL(es,en){ return lang==="en" ? en : es; }
+function applyLang(l){
+  lang = (l==="en") ? "en" : "es";
+  const dict = I18N[lang];
+  Object.keys(dict).forEach(id=>{
+    if(id==="headerEn"){
+      const el = document.querySelector("header.app .en");
+      if(el) el.textContent = dict[id];
+      return;
+    }
+    const el = document.getElementById(id);
+    if(el) el.textContent = dict[id];
+  });
+  const lt = document.getElementById("langToggle");
+  if(lt) lt.textContent = lang.toUpperCase();
+  document.documentElement.setAttribute("lang", lang);
+  // Títulos de modales y campos con id propio
+  const map = {
+    tplTitleEl:dict.tplTitle, motivTitleEl:dict.motivTitle,
+    progTitleEl:dict.progTitle, libTitleEl:dict.libTitle, restLabEl:dict.restLab,
+    ivPause:dict.ivPause, ivStop:dict.ivStop
+  };
+  Object.keys(map).forEach(id=>{ const el=document.getElementById(id); if(el&&map[id]) el.textContent=map[id]; });
+  const srch = document.getElementById("libSearchInput");
+  if(srch) srch.setAttribute("placeholder", dict.libSearchPh);
+  // Dedicatoria: traducir el placeholder y, si está sin tocar, el texto visible
+  const ded = document.getElementById("dedication");
+  if(ded){
+    const phEs = "Escribí acá tu frase…", phEn = "Write your phrase here…";
+    const newPh = lang==="en" ? phEn : phEs;
+    const cur = ded.textContent.trim();
+    if(cur===phEs || cur===phEn || cur===""){ ded.textContent = newPh; }
+    ded.setAttribute("data-placeholder", newPh);
+  }
+  try{ localStorage.setItem(LANG_KEY, lang); }catch(e){}
+  // Re-render para que ejercicios y modales tomen el idioma
+  renderList();
+}
+document.getElementById("langToggle").onclick = ()=> applyLang(lang==="es" ? "en" : "es");
+try{
+  const savedLang = localStorage.getItem(LANG_KEY);
+  if(savedLang) lang = savedLang;
+}catch(e){}
 
 /* ---------- Modo oscuro ---------- */
 const THEME_KEY = "strengthGadgetRojo.theme";
@@ -3109,6 +3719,7 @@ try{
 renderWorkoutList();
 renderDays();
 renderList();
+applyLang(lang);
 </script>
 </body>
 </html>
