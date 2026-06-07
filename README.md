@@ -1,4 +1,4 @@
-Burn 🔴
+BURN 🔴
 Aplicación web de entrenamiento (ES/EN) para fuerza, hipertrofia, calistenia y resistencia. Todo corre en un solo archivo HTML, sin instalación, y guarda los datos en tu propio dispositivo.
 A bilingual (ES/EN) web training app for strength, hypertrophy, calisthenics and endurance. Runs from a single HTML file, no install, and stores data on your own device.
 ✨ Funciones · Features
